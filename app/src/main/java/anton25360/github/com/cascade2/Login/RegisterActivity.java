@@ -1,0 +1,146 @@
+package anton25360.github.com.cascade2.Login;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+
+import anton25360.github.com.cascade2.R;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static android.support.constraint.Constraints.TAG;
+
+public class RegisterActivity extends AppCompatActivity {
+
+    @BindView(R.id.registerName) TextInputLayout inputName;
+    @BindView(R.id.registerEmail) TextInputLayout inputEmail;
+    @BindView(R.id.registerPassword) TextInputLayout inputPassword;
+    @BindView(R.id.registerButton) Button register;
+    @BindView(R.id.registerProgress) ProgressBar progressRegister;
+    private String name, email, password;
+
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        ButterKnife.bind(this);
+
+        progressRegister.setVisibility(View.INVISIBLE);
+
+        register.setTransformationMethod(null);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                name = inputName.getEditText().getText().toString();
+                email = inputEmail. getEditText().getText().toString();
+                password = inputPassword.getEditText().getText().toString();
+
+                if (TextUtils.isEmpty(name)) {
+                    inputName.setError("Field can't be empty");
+                    return;
+                } else {
+                    inputName.setError(null);
+                }
+
+                if (TextUtils.isEmpty(email)) {
+                    inputEmail.setError("Field can't be empty");
+                    return;
+                } else {
+                    inputEmail.setError(null);
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    inputPassword.setError("Field can't be empty");
+                    return;
+                } else {
+                    inputPassword.setError(null);
+                }
+
+                progressRegister.setVisibility(View.VISIBLE); // makes progressbar visible, so user knows something is happening
+
+                // When the user presses "Log In", hide the keyboard so they can see the progressbar
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+                RegisterNewUser();
+            }
+
+            private void RegisterNewUser() {
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "createUserWithEmail:success");
+                                    Toast.makeText(RegisterActivity.this, "Account created", Toast.LENGTH_SHORT).show();
+                                    progressRegister.setVisibility(View.INVISIBLE);
+
+                                    //uniqueID = user.getUid();
+
+                                    createDisplayName();
+
+                                    startLogin(); //goes to login tab so user can login
+
+
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                    Toast.makeText(RegisterActivity.this, "Account creation failed", Toast.LENGTH_SHORT).show();
+                                    progressRegister.setVisibility(View.INVISIBLE);
+                                }
+
+                                // ...
+                            }
+                        });
+
+            }
+
+            private void createDisplayName() {
+
+                mUser = FirebaseAuth.getInstance().getCurrentUser();
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                mUser.updateProfile(profileUpdates);
+
+            }
+
+            private void startLogin() {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+
+        });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+}

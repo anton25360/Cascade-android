@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/SilverLight"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/edit_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_descriptionSET"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Description"
+            android:inputType="text" />
+
+    </android.support.design.widget.TextInputLayout> <!-- desc input -->
+
+    <TextView
+        android:id="@+id/x1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Date: "
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/popup_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_description" />
+
+    <TextView
+        android:id="@+id/edit_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="October 30th, 2008"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/popup_text_size"
+        app:layout_constraintStart_toEndOf="@id/x1"
+        app:layout_constraintTop_toBottomOf="@id/edit_description" />
+
+    <TextView
+        android:id="@+id/x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Time: "
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/popup_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_date" />
+
+    <TextView
+        android:id="@+id/edit_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="20:00"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/popup_text_size"
+        app:layout_constraintTop_toTopOf="@id/x2"
+        app:layout_constraintStart_toEndOf="@id/x2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="or"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/popup_text_size"
+        app:layout_constraintTop_toTopOf="@id/x2"
+        app:layout_constraintStart_toEndOf="@id/edit_time"
+        app:layout_constraintEnd_toStartOf="@id/edit_timeAllDay"/>
+
+    <TextView
+        android:id="@+id/edit_timeAllDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:text="All Day"
+        android:textSize="@dimen/popup_text_size"
+        app:layout_constraintTop_toTopOf="@id/x2"
+        app:layout_constraintEnd_toStartOf="@id/edit_checkbox"/>
+
+    <CheckBox
+        android:id="@+id/edit_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toTopOf="@id/x2"
+        app:layout_constraintBottom_toBottomOf="@id/edit_timeAllDay"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/edit_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_time">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_noteSET"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Add a Note..."
+            android:inputType="textMultiLine"
+            android:maxLines="4" />
+
+    </android.support.design.widget.TextInputLayout> <!-- note input -->
+
+    <!-- card backgrounds below -->
+    <Button
+        android:id="@+id/edit_gradientBlue"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/gradient_blue"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/edit_note"/> <!-- bg blue -->
+    <Button
+        android:id="@+id/edit_gradientOrange"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/gradient_orange"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/edit_gradientBlue" /> <!-- bg orange -->
+    <Button
+        android:id="@+id/edit_gradientRed"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/gradient_red"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/edit_gradientOrange"/> <!-- bg red -->
+    <Button
+        android:id="@+id/edit_gradientGreen"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/gradient_green"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/edit_gradientRed"/> <!-- bg green -->
+    <Button
+        android:id="@+id/edit_gradientPurple"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/gradient_purple"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/edit_gradientGreen"/> <!-- bg purple -->
+
+
+
+    <Button
+        android:id="@+id/edit_btnDelete"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/btn_delete"
+        android:text="Delete"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" /> <!-- delete -->
+
+    <Button
+        android:id="@+id/edit_btnEdit"
+        android:layout_width="140dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/btn_edit"
+        android:text="Finished Editing"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" /> <!-- finish edits -->
+
+</android.support.constraint.ConstraintLayout>

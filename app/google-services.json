@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "274137776411",
+    "firebase_url": "https://cascade-35f38.firebaseio.com",
+    "project_id": "cascade-35f38",
+    "storage_bucket": "cascade-35f38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274137776411:android:7c6f303f04633cf3",
+        "android_client_info": {
+          "package_name": "anton25360.github.com.cascade2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "274137776411-mahh7e31d0jmc9t4sgu0vraihf6flnjr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "anton25360.github.com.cascade2",
+            "certificate_hash": "c0c91483928d24c12017ade02cb1e0e9e11c7437"
+          }
+        },
+        {
+          "client_id": "274137776411-uu5c4b84o8omj4b5amrkqk1p02l6au3o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "anton25360.github.com.cascade2",
+            "certificate_hash": "ec029139ce97c5440e24d8396eb17578ed0b0ac4"
+          }
+        },
+        {
+          "client_id": "274137776411-3e34rc7afmko7koq67foeptt3f7uqg8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb5rTF2PqS1RzKFl84xj83Lz5nL_fPIIc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "274137776411-3e34rc7afmko7koq67foeptt3f7uqg8t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
