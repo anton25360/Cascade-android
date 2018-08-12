@@ -3,6 +3,7 @@ package anton25360.github.com.cascade2;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
@@ -18,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton FAB;
     RecyclerView recyclerView;
     CardView cvItem;
-    String userID;
+    String userID, sortID;
     public static String docID;
     CoordinatorLayout mCoordinatorLayout;
     //SearchView mSearchView;
@@ -117,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Query query = db.collection("Reminders"); //todo use .orderBy to order Firebase reminders by date
 
+        sortID = PreferenceManager.getDefaultSharedPreferences(this).getString("sortID", "colour");
+
         if (user != null) {
             userID = user.getUid();
         } else {
@@ -125,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Query query = FirebaseFirestore.getInstance()
                 .collection("Cascade").document(" " + userID).collection("reminders")
-                .orderBy("date", Query.Direction.ASCENDING);
+                .orderBy(sortID, Query.Direction.ASCENDING); //todo sort
 
                 //.orderBy("timestamp",Query.Direction.DESCENDING);
                 //use limit() to limit the number of displayed items in rv
@@ -182,14 +186,7 @@ public class MainActivity extends AppCompatActivity {
     //shows the buttons on toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_buttons, menu);
-
-        // Retrieve the SearchView and plug it into SearchManager
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
+        getMenuInflater().inflate(R.menu.toolbar_buttons, menu);
         return true;
     }
 
@@ -204,8 +201,21 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_profile: //if user clicks profile button
-
                 openProfileTab();
+                return true;
+
+            case R.id.menu_sortByColour:
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("sortID", "colour").apply();
+
+                initRecyclerView(); //re-creates the adapter with the new Query
+                adapter.startListening();
+                return true;
+
+            case R.id.menu_sortByDate:
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("sortID", "date").apply();
+
+                initRecyclerView(); //re-creates the adapter with the new Query
+                adapter.startListening();
                 return true;
 
             default: //default message below
