@@ -62,6 +62,10 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
     private String colour = "";
     @BindView(R.id.popup_buttonBlue)Button mBlue;
     @BindView(R.id.popup_buttonOrange)Button mOrange;
+    @BindView(R.id.popup_buttonGreen)Button mGreen;
+    @BindView(R.id.popup_buttonRed)Button mRed;
+    @BindView(R.id.popup_buttonPurple)Button mPurple;
+    @BindView(R.id.popup_buttonPeach)Button mPeach;
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -109,6 +113,10 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         //init buttons for onclick
         mBlue.setOnClickListener(this);
         mOrange.setOnClickListener(this);
+        mGreen.setOnClickListener(this);
+        mRed.setOnClickListener(this);
+        mPurple.setOnClickListener(this);
+        mPeach.setOnClickListener(this);
 
         cancel.setTransformationMethod(null); //set button to lowercase
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -256,6 +264,22 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
 
             case R.id.popup_buttonOrange:
                 colour = "orange";
+                break;
+
+            case R.id.popup_buttonGreen:
+                colour = "green";
+                break;
+
+            case R.id.popup_buttonRed:
+                colour = "red";
+                break;
+
+            case R.id.popup_buttonPurple:
+                colour = "purple";
+                break;
+
+            case R.id.popup_buttonPeach:
+                colour = "peach";
                 break;
         }
     } //control colour selection here
