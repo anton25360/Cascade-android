@@ -7,4 +7,5 @@
         android:angle="0" />
 
     <corners android:radius="6dp" />
+
 </shape>

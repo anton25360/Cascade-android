@@ -13,6 +13,10 @@
     <color name="SilverLight">#f2f2f2</color>
     <color name="dark">#000D1E</color>
 
+    <color name="error_color">#C62828</color> // Error color (Red 800)
+    <color name="hint_color_active">#00897B</color> // Active label color (Teal 600)
+    <color name="hint_color_inactive">#9E9E9E</color> // Inactive label / Hint (Grey 500)
+
     <color name="bright_pink">#FF007F</color>
     <color name="red">#FF0000</color>
     <color name="orange">#FF7F00</color>

@@ -116,9 +116,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        //Query query = db.collection("Reminders"); //todo use .orderBy to order Firebase reminders by date
-
         sortID = PreferenceManager.getDefaultSharedPreferences(this).getString("sortID", "colour");
 
         if (user != null) {
@@ -129,14 +126,8 @@ public class MainActivity extends AppCompatActivity {
 
         final Query query = FirebaseFirestore.getInstance()
                 .collection("Cascade").document(" " + userID).collection("reminders")
-                .orderBy(sortID, Query.Direction.ASCENDING); //todo sort
+                .orderBy(sortID, Query.Direction.ASCENDING);
 
-                //.orderBy("timestamp",Query.Direction.DESCENDING);
-                //use limit() to limit the number of displayed items in rv
-
-        // Configure recycler adapter options:
-        //  * query is the Query object defined above.
-        //  * Reminder.class instructs the adapter to convert each DocumentSnapshot to a Reminder object
         FirestoreRecyclerOptions<Reminder> options = new FirestoreRecyclerOptions.Builder<Reminder>()
                 .setQuery(query, Reminder.class)
                 .build();

@@ -171,6 +171,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
 
         if (descValidate.isEmpty()) {
             desc.setError("Field can't be empty");
+
         } else {
             addItem(); //adds the card to the main screen (and db)
             finish(); //closes popup

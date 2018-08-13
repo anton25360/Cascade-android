@@ -16,6 +16,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="25"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Description"
+            android:maxLength="25"
             android:inputType="text" />
 
     </android.support.design.widget.TextInputLayout><!--desc input-->
