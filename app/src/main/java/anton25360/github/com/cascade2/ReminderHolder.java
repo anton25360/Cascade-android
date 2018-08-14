@@ -1,11 +1,9 @@
 package anton25360.github.com.cascade2;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ReminderHolder extends RecyclerView.ViewHolder {
 
@@ -16,7 +14,7 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
     final private ImageView mBackground;
 
 
-    public ReminderHolder(View itemView) {
+    ReminderHolder(View itemView) {
         super(itemView);
         mTitle = itemView.findViewById(R.id.widget_title);
         mDate = itemView.findViewById(R.id.widget_date);
@@ -56,6 +54,8 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
     }
 
     private void setBackground(String colour) {
+
+        //int purplePath = R.drawable.gradient_purple;
 
         if (colour == null){
             colour = "";

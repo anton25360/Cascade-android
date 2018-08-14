@@ -27,6 +27,9 @@
             <item
                 android:id="@+id/menu_sortByDate"
                 android:title="Sort by date" />
+            <item
+                android:id="@+id/menu_sortByAlphabet"
+                android:title="Sort alphabetically" />
         </menu>
     </item>
 

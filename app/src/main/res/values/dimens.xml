@@ -10,5 +10,7 @@
 
     <!--Colour selection buttons width+height-->
     <dimen name="popup_colourButton_size">50dp</dimen>
+    <dimen name="popup_colourButton_margin">5dp</dimen>
+
 
 </resources>

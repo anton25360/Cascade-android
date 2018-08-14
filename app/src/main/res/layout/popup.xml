@@ -104,7 +104,7 @@
         app:layout_constraintTop_toTopOf="@id/x2"
         app:layout_constraintBottom_toBottomOf="@id/popup_timeAllDay"
         app:layout_constraintEnd_toEndOf="parent"/> <!--all day checkbox-->
-    
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/popup_note"
         android:layout_width="match_parent"
@@ -151,9 +151,23 @@
         app:layout_constraintEnd_toEndOf="parent" /> <!--add task-->
 
 
+
+
+    <TextView
+        android:id="@+id/x3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Gradients:"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/popup_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/popup_note" /> <!--gradients: -->
+
     <HorizontalScrollView
-        android:id="@+id/popup_scrollView"
-        app:layout_constraintTop_toBottomOf="@id/popup_note"
+        android:id="@+id/popup_scrollGradients"
+        app:layout_constraintTop_toBottomOf="@id/x3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -165,42 +179,42 @@
 
             <Button
                 android:id="@+id/popup_buttonBlue"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_blue" /> <!--blue-->
 
             <Button
                 android:id="@+id/popup_buttonOrange"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_orange"/> <!--orange-->
 
             <Button
                 android:id="@+id/popup_buttonGreen"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_green" /> <!--green-->
 
             <Button
                 android:id="@+id/popup_buttonRed"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_red"/> <!--red-->
 
             <Button
                 android:id="@+id/popup_buttonPurple"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_purple" /> <!--purple-->
 
             <Button
                 android:id="@+id/popup_buttonPeach"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_peach"/> <!--peach-->
@@ -209,7 +223,5 @@
         </LinearLayout> <!--horizontal layout containing the buttons-->
 
     </HorizontalScrollView> <!--coloured buttons selection-->
-
-
 
 </android.support.constraint.ConstraintLayout>

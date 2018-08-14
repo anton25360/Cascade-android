@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="anton25360.github.com.cascade2">
 
+    <!-- Step 1: Add the following permission to the app -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <!-- Step 2: This permission is depreciated in Android P -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
     <application
         android:name=".Cascade"
         android:allowBackup="true"
@@ -22,12 +28,11 @@
             android:name=".Popups.PopupFragment"
             android:theme="@style/AppTheme.PopupTheme" />
         <activity
-            android:name=".Popups.EditTask"
-            android:theme="@style/AppTheme.PopupTheme" />
+            android:name=".Popups.EditTask" />
+            <!--android:theme="@style/AppTheme.PopupTheme"-->
         <activity android:name=".Login.ProfileFragment" />
         <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".Login.RegisterActivity"></activity>
-
+        <activity android:name=".Login.RegisterActivity" />
     </application>
 
 </manifest>

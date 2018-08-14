@@ -67,6 +67,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
     @BindView(R.id.popup_buttonPurple)Button mPurple;
     @BindView(R.id.popup_buttonPeach)Button mPeach;
 
+
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     String userID;
@@ -76,6 +77,8 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private NotificationManagerCompat notificationManager;
+
+
 
     @Override
     protected void onStart() {
@@ -117,6 +120,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         mRed.setOnClickListener(this);
         mPurple.setOnClickListener(this);
         mPeach.setOnClickListener(this);
+
 
         cancel.setTransformationMethod(null); //set button to lowercase
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -282,6 +286,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
             case R.id.popup_buttonPeach:
                 colour = "peach";
                 break;
+
         }
     } //control colour selection here
 

@@ -1,26 +1,20 @@
 package anton25360.github.com.cascade2;
 
-import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -32,14 +26,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import anton25360.github.com.cascade2.Login.LoginActivity;
 import anton25360.github.com.cascade2.Login.ProfileFragment;
 import anton25360.github.com.cascade2.Popups.EditTask;
 import anton25360.github.com.cascade2.Popups.PopupFragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -164,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
 
     } //initialises the recyclerView and FirebaseRecyclerAdapter
 
-
     private void initToolbar() {
         //sets the custom toolbar + title
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.custom_toolbar);
@@ -172,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Cascade"); //set toolbar title
         toolbar.setTitleTextColor(0xFFFFFFFF); //set toolbar colour in UJML to white(0xFFFFFFFF) OR black(0xFF000000 )
     } //initialises the toolbar
-
 
     //shows the buttons on toolbar
     @Override
@@ -197,14 +187,18 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_sortByColour:
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putString("sortID", "colour").apply();
-
                 initRecyclerView(); //re-creates the adapter with the new Query
                 adapter.startListening();
                 return true;
 
             case R.id.menu_sortByDate:
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putString("sortID", "date").apply();
+                initRecyclerView(); //re-creates the adapter with the new Query
+                adapter.startListening();
+                return true;
 
+            case R.id.menu_sortByAlphabet:
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("sortID", "title").apply();
                 initRecyclerView(); //re-creates the adapter with the new Query
                 adapter.startListening();
                 return true;

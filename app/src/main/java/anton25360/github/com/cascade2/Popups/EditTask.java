@@ -50,16 +50,16 @@ public class EditTask extends Activity{
     //bind all views here
     @BindView(R.id.edit_btnEdit) Button edit;
     @BindView(R.id.edit_btnDelete) Button delete;
-    @BindView(R.id.edit_descriptionSET) TextInputEditText titleField;
     @BindView(R.id.edit_noteSET) TextInputEditText noteField;
+    @BindView(R.id.edit_background) ImageView background;
+    @BindView(R.id.edit_title) TextView titleField;
     @BindView(R.id.edit_date) TextView dateField;
     @BindView(R.id.edit_time) TextView timeField;
     @BindView(R.id.edit_checkbox)CheckBox mCheckBox;
-    //@BindView(R.id.edit_palette) SpectrumPalette mPalette;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String title, date, time, note;
+    String title, date, time, note, colour;
     boolean hasNote;
 
     @SuppressLint("SetTextI18n")
@@ -69,26 +69,22 @@ public class EditTask extends Activity{
         setContentView(R.layout.popup_edit);
         ButterKnife.bind(this);
 
-        //mPalette.setColors(getResources().getIntArray(R.array.rainbow));
-
-        //sets button text to lowercase
-        edit.setTransformationMethod(null);
-        delete.setTransformationMethod(null);
+        edit.setTransformationMethod(null); //sets button text to lowercase
+        delete.setTransformationMethod(null); //sets button text to lowercase
 
         getDocInfo(); //gets title, date, and time from doc (in db)
-        setDisplayMetics();
         ButtonCode(); //controls onclicklisteners
-        getHasNote();
+        //getHasNote(); //gets hasNote boolean
 
     }
 
-    private void getHasNote() {
+    /*private void getHasNote() {
         if (TextUtils.isEmpty(noteField.toString())) {
             hasNote = false;
         } else {
             hasNote = true;
         }
-    }
+    }*/
 
     private void getDocInfo() {
 
@@ -105,11 +101,14 @@ public class EditTask extends Activity{
                         date = documentSnapshot.getString("date");
                         time = documentSnapshot.getString("time");
                         note = documentSnapshot.getString("note");
+                        colour = documentSnapshot.getString("colour");
 
                         titleField.setText(title);
                         dateField.setText(date);
                         timeField.setText(time);
                         noteField.setText(note);
+
+                        setBackground();
 
                     }
                 })
@@ -122,17 +121,32 @@ public class EditTask extends Activity{
 
     }
 
-    private void setDisplayMetics() {
+    private void setBackground() {
 
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        if (colour.equals("blue")) { //blue
+            background.setBackgroundResource(R.drawable.gradient_blue);
 
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
+        } else if (colour.equals("orange")) { //orange
+            background.setBackgroundResource(R.drawable.gradient_orange);
 
-        getWindow().setLayout((int)(width*.8), (int)(height*.8));
+        } else if (colour.equals("green")) { //green
+            background.setBackgroundResource(R.drawable.gradient_green);
 
-    } //sets the popup size
+        } else if (colour.equals("red")) { //red
+            background.setBackgroundResource(R.drawable.gradient_red);
+
+        } else if (colour.equals("purple")) { //purple
+            background.setBackgroundResource(R.drawable.gradient_purple);
+
+        } else if (colour.equals("peach")) { //peach
+            background.setBackgroundResource(R.drawable.gradient_peach);
+
+        } else {
+            background.setBackgroundResource(R.drawable.gradient_cascade);
+        } //blank
+        
+        
+    }
 
     private void ButtonCode() {
 
@@ -180,6 +194,12 @@ public class EditTask extends Activity{
 
         String userID = user.getUid();
 
+        if (noteField.length() == 0) {
+            hasNote = false;
+        } else {
+            hasNote = true;
+        }
+
         final DocumentReference documentReference = db.collection("Cascade").document(" " + userID).collection("reminders").document(docID); //gets docID from MainActivity (when card is first clicked)
 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -190,7 +210,6 @@ public class EditTask extends Activity{
                         //String date = dateField.toString();
                         //String time = timeField.toString();
                         String note = noteField.getEditableText().toString();
-                        String colour = "";
 
                         Reminder reminder = new Reminder(title, date, time, note, hasNote, colour);
 

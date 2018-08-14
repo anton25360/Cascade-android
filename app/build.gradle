@@ -49,6 +49,8 @@ dependencies {
     //implementation 'com.algolia:algoliasearch-android:3.24.0'
     //implementation 'com.algolia:algoliasearch-android:3.+'
 
+    //Biometric auth
+
 
 }
 
