@@ -10,7 +10,6 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
     final private TextView mTitle;
     final private TextView mDate;
     final private TextView mTime;
-    final private ImageView mNoteIcon;
     final private ImageView mBackground;
 
 
@@ -19,7 +18,6 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
         mTitle = itemView.findViewById(R.id.widget_title);
         mDate = itemView.findViewById(R.id.widget_date);
         mTime = itemView.findViewById(R.id.widget_time);
-        mNoteIcon = itemView.findViewById(R.id.widget_noteIcon);
         mBackground = itemView.findViewById(R.id.widget_background);
     }
 
@@ -28,7 +26,6 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
         setTitle(reminder.getTitle());
         setDate(reminder.getDate());
         setTime(reminder.getTime());
-        setNoteIcon(reminder.getHasNote());
         setBackground(reminder.getColour());
     }
 
@@ -42,15 +39,6 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
 
     private void setTime(String time) {
         mTime.setText(time);
-    }
-
-    private void setNoteIcon(boolean hasNote) {
-
-        if (hasNote) { //true
-            mNoteIcon.setVisibility(View.VISIBLE);
-        } else { //false
-            mNoteIcon.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void setBackground(String colour) {

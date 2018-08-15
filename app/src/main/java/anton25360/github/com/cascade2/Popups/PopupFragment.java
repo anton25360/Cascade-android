@@ -50,7 +50,6 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
     String notificationTitle;
 
     @BindView(R.id.popup_description)TextInputLayout desc;
-    @BindView(R.id.popup_note) TextInputLayout note;
     @BindView(R.id.popup_date)TextView date;
     @BindView(R.id.popup_time)TextView time;
     @BindView(R.id.popup_timeAllDay) TextView timeAllDay;
@@ -140,7 +139,6 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         });
 
     }
-
 
     private void checkSwitch() {
 
@@ -296,8 +294,6 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         final String titleString = desc.getEditText().getText().toString();
         final String dateString = date.getText().toString();
         String timeString = time.getText().toString();
-        final String noteString = note.getEditText().getText().toString();
-        final boolean hasNote;
 
         notificationTitle = titleString;
 
@@ -310,19 +306,8 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
             //set time to user defined time
         }
 
-        if (TextUtils.isEmpty(noteString)) {
-            //if note is empty
-            Toast.makeText(this, "no note", Toast.LENGTH_SHORT).show();
-            hasNote = false;
-        } else {
-            //if note not empty
-            Toast.makeText(this, "note present", Toast.LENGTH_SHORT).show();
-            hasNote = true;
-
-        }
-
         //uses our custom Reminder class to easily add the "reminder" to Cloud Firestore
-        Reminder reminder = new Reminder(titleString, dateString, timeString, noteString, hasNote, colour);
+        Reminder reminder = new Reminder(titleString, dateString, timeString, colour);
 
         userID = user.getUid();
         db.collection("Cascade").document(" " + userID).collection("reminders").document().set(reminder) //Because document parameter is empty, Firebase auto generates the document id (So reminders don't get overwritten)

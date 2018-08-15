@@ -12,4 +12,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="title_activity_login_fragment">LoginFragmentActivity</string>
+
+    <string name="instructions">Place your fingertip on the Home button to verify your identity</string>
 </resources>

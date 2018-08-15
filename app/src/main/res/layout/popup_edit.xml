@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/edit_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,18 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_margin="5dp"
-        app:layout_constraintTop_toTopOf="parent"/> <!--background-->
+        app:layout_constraintTop_toTopOf="parent" /> <!--background-->
 
     <TextView
         android:id="@+id/edit_title"
-        android:text="Title goes here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:text="Title goes here"
         android:textColor="@android:color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@id/edit_background"
-        app:layout_constraintStart_toStartOf="@id/edit_background"/> <!--title in background-->
+        app:layout_constraintStart_toStartOf="@id/edit_background" /> <!--title in background-->
 
     <TextView
         android:id="@+id/x1"
@@ -55,8 +55,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Time: "
         android:layout_marginTop="20dp"
+        android:text="Time: "
         android:textColor="@android:color/black"
         android:textSize="@dimen/popup_text_size"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,8 +70,8 @@
         android:text="20:00"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/popup_text_size"
-        app:layout_constraintTop_toTopOf="@id/x2"
-        app:layout_constraintStart_toEndOf="@id/x2" /> <!--20:00-->
+        app:layout_constraintStart_toEndOf="@id/x2"
+        app:layout_constraintTop_toTopOf="@id/x2" /> <!--20:00-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -79,49 +79,70 @@
         android:text="or"
         android:textColor="@android:color/black"
         android:textSize="@dimen/popup_text_size"
-        app:layout_constraintTop_toTopOf="@id/x2"
+        app:layout_constraintEnd_toStartOf="@id/edit_timeAllDay"
         app:layout_constraintStart_toEndOf="@id/edit_time"
-        app:layout_constraintEnd_toStartOf="@id/edit_timeAllDay"/> <!--or-->
+        app:layout_constraintTop_toTopOf="@id/x2" /> <!--or-->
 
     <TextView
         android:id="@+id/edit_timeAllDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
         android:text="All Day"
+        android:textColor="@android:color/darker_gray"
         android:textSize="@dimen/popup_text_size"
-        app:layout_constraintTop_toTopOf="@id/x2"
-        app:layout_constraintEnd_toStartOf="@id/edit_checkbox"/> <!--all day-->
+        app:layout_constraintEnd_toStartOf="@id/edit_checkbox"
+        app:layout_constraintTop_toTopOf="@id/x2" /> <!--all day-->
 
     <CheckBox
         android:id="@+id/edit_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:layout_constraintTop_toTopOf="@id/x2"
         app:layout_constraintBottom_toBottomOf="@id/edit_timeAllDay"
-        app:layout_constraintEnd_toEndOf="parent"/> <!--checkbox-->
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/x2" /> <!--checkbox-->
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/edit_note"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/edit_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_time">
+        app:layout_constraintTop_toTopOf="@id/guidelineStart">
+
+    </android.support.v7.widget.RecyclerView> <!--sub rv-->
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/edit_rvInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_rv">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_noteSET"
+            android:id="@+id/edit_rvInputString"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Add a Note..."
-            android:inputType="textMultiLine"
-            android:maxLines="4" />
+            android:hint="Add a subtask..."
+            android:inputType="text" />
 
-    </android.support.design.widget.TextInputLayout> <!-- note input -->
+    </android.support.design.widget.TextInputLayout> <!--rv editText-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/edit_rvSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_white_24dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="@id/edit_rvInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/edit_rvInput"
+        app:layout_constraintTop_toTopOf="@id/edit_rvInput" /> <!--send to rv-->
 
     <Button
         android:id="@+id/edit_btnDelete"
@@ -146,5 +167,19 @@
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" /> <!-- finish edits -->
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="175dp"/> <!--rv guideline start-->
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="105dp"/> <!--rv guideline end-->
 
 </android.support.constraint.ConstraintLayout>
