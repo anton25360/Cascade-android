@@ -1,22 +1,17 @@
 package anton25360.github.com.cascade2.Login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -36,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.registerEmail) TextInputLayout inputEmail;
     @BindView(R.id.registerPassword) TextInputLayout inputPassword;
     @BindView(R.id.registerButton) Button register;
-    @BindView(R.id.registerProgress) ProgressBar progressRegister;
+    @BindView(R.id.registerLogin) TextView login;
     private String name, email, password;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -48,7 +43,12 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
 
-        progressRegister.setVisibility(View.INVISIBLE);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLogin();
+            }
+        });
 
         register.setTransformationMethod(null);
         register.setOnClickListener(new View.OnClickListener() {
@@ -80,12 +80,6 @@ public class RegisterActivity extends AppCompatActivity {
                     inputPassword.setError(null);
                 }
 
-                progressRegister.setVisibility(View.VISIBLE); // makes progressbar visible, so user knows something is happening
-
-                // When the user presses "Log In", hide the keyboard so they can see the progressbar
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
                 RegisterNewUser();
             }
 
@@ -99,23 +93,17 @@ public class RegisterActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     Toast.makeText(RegisterActivity.this, "Account created", Toast.LENGTH_SHORT).show();
-                                    progressRegister.setVisibility(View.INVISIBLE);
-
-                                    //uniqueID = user.getUid();
 
                                     createDisplayName();
 
                                     startLogin(); //goes to login tab so user can login
 
-
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(RegisterActivity.this, "Account creation failed", Toast.LENGTH_SHORT).show();
-                                    progressRegister.setVisibility(View.INVISIBLE);
                                 }
 
-                                // ...
                             }
                         });
 
@@ -129,13 +117,13 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
 
-            private void startLogin() {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-
         });
+    }
+
+    private void startLogin() {
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     @Override

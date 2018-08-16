@@ -5,28 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_dark"
+    android:id="@+id/registerLayout"
     tools:context=".Login.RegisterActivity">
 
     <TextView
         android:id="@+id/registerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:text="@string/app_name"
         android:textSize="40sp"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" /><!-- title -->
+        app:layout_constraintTop_toTopOf="parent" /> <!--Cascade-->
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/registerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
         app:errorEnabled="true"
+        android:theme="@style/customWhiteAccent"
         app:layout_constraintTop_toBottomOf="@id/registerTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -37,16 +40,16 @@
             android:hint="Name"
             android:inputType="textPersonName" />
 
-    </android.support.design.widget.TextInputLayout><!-- name -->
+    </android.support.design.widget.TextInputLayout> <!--name input-->
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/registerEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         app:errorEnabled="true"
+        android:theme="@style/customWhiteAccent"
         app:layout_constraintTop_toBottomOf="@id/registerName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -57,19 +60,21 @@
             android:hint="Email"
             android:inputType="textEmailAddress" />
 
-    </android.support.design.widget.TextInputLayout><!-- email -->
+    </android.support.design.widget.TextInputLayout> <!--email input-->
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/registerPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         app:errorEnabled="true"
+        android:theme="@style/customWhiteAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/registerEmail"
-        app:passwordToggleEnabled="true">
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/whiteAccentColour">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -77,27 +82,30 @@
             android:hint="Password"
             android:inputType="textPassword" />
 
-    </android.support.design.widget.TextInputLayout><!-- password -->
+    </android.support.design.widget.TextInputLayout> <!--password input-->
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="140dp"
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/btn_edit"
-        android:text="Sign Up"
+        android:background="@drawable/gradient_blue"
+        android:text="Sign up"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/registerEmail"
+        android:layout_marginStart="8dp"
         app:layout_constraintTop_toBottomOf="@+id/registerPassword" /><!-- register button -->
 
-    <ProgressBar
-        android:id="@+id/registerProgress"
+    <TextView
+        android:id="@+id/registerLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
+        android:textColor="@color/lightBlue"
+        android:text="Login"
+        android:textSize="17sp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="2dp"
+        app:layout_constraintStart_toStartOf="@id/registerButton"
+        app:layout_constraintTop_toBottomOf="@id/registerButton"/> <!--login-->
 
 </android.support.constraint.ConstraintLayout>

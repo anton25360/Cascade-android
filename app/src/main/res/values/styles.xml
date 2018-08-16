@@ -22,4 +22,14 @@
     </style>
 
 
+    <style name="customWhiteAccent" parent="AppTheme">
+        <item name="colorAccent">@color/whiteAccentColour</item>
+        <item name="colorControlActivated">@color/whiteAccentColour</item>
+        <item name="colorControlHighlight">@color/whiteAccentColour</item>
+        <item name="android:textColorHint">@color/whiteAccentColour</item>
+        <item name="android:textColor">@color/whiteAccentColour</item>
+        <item name="colorControlNormal">@color/whiteAccentColour</item>
+        <item name="android:textColorPrimary">@color/whiteAccentColour</item>
+    </style>
+
 </resources>
