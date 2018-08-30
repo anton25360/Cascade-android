@@ -3,7 +3,11 @@ package anton25360.github.com.cascade2;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Build;
+
+import anton25360.github.com.cascade2.Login.LoginActivity;
+import anton25360.github.com.cascade2.Popups.EditTask;
 
 public class Cascade extends Application {
 

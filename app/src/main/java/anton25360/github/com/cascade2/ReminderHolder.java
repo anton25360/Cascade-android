@@ -51,6 +51,7 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
 
         if (colour.equals("blue")) { //blue
             mBackground.setBackgroundResource(R.drawable.gradient_blue);
+            //mBackground.setAlpha(0.8f); //setAlpha for transparency
 
         } else if (colour.equals("orange")) { //orange
             mBackground.setBackgroundResource(R.drawable.gradient_orange);

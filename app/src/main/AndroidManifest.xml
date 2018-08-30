@@ -23,7 +23,6 @@
         <activity
             android:name=".Popups.EditTask" />
             <!--android:theme="@style/AppTheme.PopupTheme"-->
-        <activity android:name=".Login.ProfileFragment" />
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Login.RegisterActivity" />
     </application>

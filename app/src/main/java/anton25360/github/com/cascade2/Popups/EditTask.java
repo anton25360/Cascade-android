@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -68,7 +69,7 @@ public class EditTask extends Activity{
 
     @BindView(R.id.edit_rv)RecyclerView mRecyclerView;
     @BindView(R.id.edit_rvInputString)TextInputEditText mInput;
-    @BindView(R.id.edit_rvSend)FloatingActionButton mSend;
+    @BindView(R.id.edit_rvSend)ImageButton mSend;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

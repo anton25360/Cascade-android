@@ -133,12 +133,11 @@
 
     </android.support.design.widget.TextInputLayout> <!--rv editText-->
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/edit_rvSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_white_24dp"
-        app:fabSize="mini"
+        android:background="@drawable/ic_send_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/edit_rvInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/edit_rvInput"
