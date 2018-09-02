@@ -13,7 +13,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -21,10 +20,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +35,7 @@ import java.util.Calendar;
 
 import anton25360.github.com.cascade2.Cascade;
 import anton25360.github.com.cascade2.R;
-import anton25360.github.com.cascade2.Reminder;
+import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.DateTimeFragments.DatePickerFragment;
 import anton25360.github.com.cascade2.DateTimeFragments.TimePickerFragment;
 import butterknife.BindView;
@@ -348,7 +345,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
 
         Notification notification = new NotificationCompat.Builder(this, Cascade.CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_chat_bubble_black) //todo change notification icon
-                .setContentTitle(notificationTitle) //todo change title
+                .setContentTitle(notificationTitle) //todo change notification title
                 .setContentText("You have a new reminder")
 
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

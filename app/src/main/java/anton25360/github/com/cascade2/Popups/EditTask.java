@@ -39,15 +39,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.uniquestudio.library.CircleCheckBox;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import anton25360.github.com.cascade2.Classes.Reminder;
+import anton25360.github.com.cascade2.Classes.Tab;
+import anton25360.github.com.cascade2.Classes.TabHolder;
 import anton25360.github.com.cascade2.R;
-import anton25360.github.com.cascade2.Reminder;
-import anton25360.github.com.cascade2.ReminderHolder;
-import anton25360.github.com.cascade2.Tab;
-import anton25360.github.com.cascade2.TabHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -120,7 +120,7 @@ public class EditTask extends Activity{
 
         final Query query = FirebaseFirestore.getInstance()
                 .collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection)
-                .orderBy("title", Query.Direction.ASCENDING);
+                .orderBy("checked", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Tab> options = new FirestoreRecyclerOptions.Builder<Tab>()
                 .setQuery(query, Tab.class)
@@ -133,26 +133,31 @@ public class EditTask extends Activity{
                 holder.bind(model);
 
                 //checkbox
-                holder.itemView.findViewById(R.id.tab_checkbox).setOnClickListener(new View.OnClickListener() {
+                final CircleCheckBox checkBox = holder.itemView.findViewById(R.id.tab_checkBox);
+                checkBox.setListener(new CircleCheckBox.OnCheckedChangeListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onCheckedChanged(boolean isChecked) {
 
-                        CheckBox checkBox = holder.itemView.findViewById(R.id.tab_checkbox);
-                        boolean isChecked;
+
                         DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
                         String tabID = snapshot.getString("title");
                         String snapshotID = snapshot.getId();
                         String userID = user.getUid();
+                        boolean checked;
 
-                        if (checkBox.isChecked()) {
-                            isChecked = true;
+                        if (checkBox.isChecked()){
+                            Toast.makeText(EditTask.this, "checked", Toast.LENGTH_SHORT).show();
+                            checked = true;
+
                         } else {
-                            isChecked = false;
+                            Toast.makeText(EditTask.this, "unchecked", Toast.LENGTH_SHORT).show();
+                            checked = false;
                         }
 
-                        Tab tab = new Tab(tabID, isChecked); //uses our custom Tab class to easily add the item to db.
+
+                        Tab tab = new Tab(tabID, checked); //uses our custom Tab class to easily add the item to db.
                         String docID_collection = docID + "collection";
-                        db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document(snapshotID).set(tab); //Because document parameter is empty, Firebase auto generates the document id (So reminders don't get overwritten)
+                        db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document(snapshotID).set(tab);
                     }
                 });
             }
@@ -227,8 +232,8 @@ public class EditTask extends Activity{
         } else {
             background.setBackgroundResource(R.drawable.gradient_cascade);
         } //blank
-        
-        
+
+
     }
 
     private void ButtonCode() {
@@ -280,26 +285,26 @@ public class EditTask extends Activity{
         final DocumentReference documentReference = db.collection("Cascade").document(" " + userID).collection("reminders").document(docID); //gets docID from MainActivity (when card is first clicked)
 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                        String title = titleField.getText().toString();
-                        //String date = dateField.toString();
-                        //String time = timeField.toString();
+                String title = titleField.getText().toString();
+                //String date = dateField.toString();
+                //String time = timeField.toString();
 
-                        Reminder reminder = new Reminder(title, date, time, colour);
+                Reminder reminder = new Reminder(title, date, time, colour);
 
-                        documentReference.set(reminder);
+                documentReference.set(reminder);
 
-                        Log.d(TAG, "onSuccess: edit");
+                Log.d(TAG, "onSuccess: edit");
 
 
-                    }
-                })
+            }
+        })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                         Log.d(TAG, "onFailure: "+ e.getLocalizedMessage());
+                        Log.d(TAG, "onFailure: "+ e.getLocalizedMessage());
                     }
                 });
 
@@ -317,19 +322,19 @@ public class EditTask extends Activity{
 
         db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document().set(tab) //Because document parameter is empty, Firebase auto generates the document id (So reminders don't get overwritten)
 
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "onSuccess: " + titleString);
-                }
-            })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "onSuccess: " + titleString);
+                    }
+                })
 
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Error: " + e.toString());
-                }
-            });
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error: " + e.toString());
+                    }
+                });
 
         mInput.getText().clear(); //clear edittext field
 

@@ -1,30 +1,30 @@
-package anton25360.github.com.cascade2;
+package anton25360.github.com.cascade2.Classes;
 
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView;
-
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-public class TabHolder extends RecyclerView.ViewHolder {
+import com.airbnb.lottie.LottieAnimationView;
+
+import anton25360.github.com.cascade2.R;
+
+public class TabSubHolder extends RecyclerView.ViewHolder {
 
     final private TextView mTitle;
-    final private CheckBox mCheckBox;
+    final private LottieAnimationView mAnimationView;
     private boolean checked;
 
-    public TabHolder(View itemView) {
+    public TabSubHolder(View itemView) {
         super(itemView);
 
-        mTitle = itemView.findViewById(R.id.tab_title);
-        mCheckBox = itemView.findViewById(R.id.tab_checkbox);
+        mTitle = itemView.findViewById(R.id.tabSub_title);
+        mAnimationView = itemView.findViewById(R.id.tabSub_lottieCheck);
 
     }
 
-    public void bind(Tab tab) {
+    public void bind(TabSub tab) {
 
         setTitle(tab.getTitle());
         setChecked(tab.getChecked());
@@ -38,12 +38,12 @@ public class TabHolder extends RecyclerView.ViewHolder {
     private void setChecked(boolean checked) {
 
         if (checked) {
-            mCheckBox.setChecked(true);
+            mAnimationView.playAnimation();
             mTitle.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG); //strikes text
             mTitle.setTextColor(Color.GRAY);
 
         } else {
-            mCheckBox.setChecked(false);
+            //todo uncheck lottie animation
         }
 
     }

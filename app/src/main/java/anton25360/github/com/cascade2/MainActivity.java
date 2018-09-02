@@ -18,22 +18,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import anton25360.github.com.cascade2.Classes.Reminder;
+import anton25360.github.com.cascade2.Classes.ReminderHolder;
+import anton25360.github.com.cascade2.Classes.TabSub;
+import anton25360.github.com.cascade2.Classes.TabSubHolder;
 import anton25360.github.com.cascade2.Login.LoginActivity;
 import anton25360.github.com.cascade2.Popups.EditTask;
 import anton25360.github.com.cascade2.Popups.PopupFragment;
@@ -153,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
                         DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
                         docID = snapshot.getId();
-                        Toast.makeText(MainActivity.this, docID, Toast.LENGTH_SHORT).show();
 
 
                     }
@@ -169,13 +167,8 @@ public class MainActivity extends AppCompatActivity {
                 });*/
 
 
-                path = docID;
-                TextView title;
-                title = holder.itemView.findViewById(R.id.widget_title);
-                title.setText(path);
 
                 recyclerViewSub = holder.itemView.findViewById(R.id.widget_rvSub);
-                recyclerViewSub.setAdapter(adapterSub);
 
 
 
@@ -323,8 +316,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void createSubAdaper() {
 
-        recyclerViewSub = findViewById(R.id.widget_rvSub);
-
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViewSub.setLayoutManager(layoutManager);
@@ -335,25 +326,25 @@ public class MainActivity extends AppCompatActivity {
 
         final Query query = FirebaseFirestore.getInstance()
                 .collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection)
-                .orderBy("title", Query.Direction.ASCENDING);
+                .orderBy("checked", Query.Direction.ASCENDING); //todo sort by true FOR THE SUB ADAPTER
 
-        FirestoreRecyclerOptions<Tab> options = new FirestoreRecyclerOptions.Builder<Tab>()
-                .setQuery(query, Tab.class)
+        FirestoreRecyclerOptions<TabSub> options = new FirestoreRecyclerOptions.Builder<TabSub>()
+                .setQuery(query, TabSub.class)
                 .build();
 
-        //create new FirestoreRecyclerAdapter:
-        adapterSub = new FirestoreRecyclerAdapter<Tab, TabHolder>(options) {
+        //create new FirestoreRecyclerAdapter: (SUB)
+        adapterSub = new FirestoreRecyclerAdapter<TabSub, TabSubHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final TabHolder holder, final int position, @NonNull Tab model) {
+            protected void onBindViewHolder(@NonNull final TabSubHolder holder, final int position, @NonNull TabSub model) {
                 holder.bind(model);
 
 
             }
 
             @Override
-            public TabHolder onCreateViewHolder(ViewGroup group, int i) {
-                View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tab, group, false);
-                return new TabHolder(view);
+            public TabSubHolder onCreateViewHolder(ViewGroup group, int i) {
+                View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tab_sub, group, false);
+                return new TabSubHolder(view);
             }
         };
 

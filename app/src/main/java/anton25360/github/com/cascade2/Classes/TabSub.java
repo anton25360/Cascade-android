@@ -1,14 +1,14 @@
-package anton25360.github.com.cascade2;
+package anton25360.github.com.cascade2.Classes;
 
-import android.widget.CheckBox;
+import com.airbnb.lottie.LottieAnimationView;
 
-public class Tab {
+public class TabSub {
     private String title;
     private boolean checked;
 
-    public Tab() {} //public no-arg constructor needed
+    public TabSub() {} //public no-arg constructor needed
 
-    public Tab(String title, boolean checked) {
+    public TabSub(String title, boolean checked) {
         this.title = title;
         this.checked = checked;
     }

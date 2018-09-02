@@ -1,4 +1,4 @@
-package anton25360.github.com.cascade2;
+package anton25360.github.com.cascade2.Classes;
 
 public class Reminder {
     private String title;

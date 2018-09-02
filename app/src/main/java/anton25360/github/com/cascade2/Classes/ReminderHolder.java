@@ -1,9 +1,11 @@
-package anton25360.github.com.cascade2;
+package anton25360.github.com.cascade2.Classes;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import anton25360.github.com.cascade2.R;
 
 public class ReminderHolder extends RecyclerView.ViewHolder {
 
@@ -13,7 +15,7 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
     final private ImageView mBackground;
 
 
-    ReminderHolder(View itemView) {
+    public ReminderHolder(View itemView) {
         super(itemView);
         mTitle = itemView.findViewById(R.id.widget_title);
         mDate = itemView.findViewById(R.id.widget_date);
