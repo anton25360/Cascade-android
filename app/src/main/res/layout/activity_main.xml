@@ -8,6 +8,7 @@
     android:background="@drawable/background_dark"
     android:orientation="vertical"
     android:id="@+id/mainLayout"
+    android:animateLayoutChanges="true"
     tools:context=".MainActivity">
 
     <!-- Toolbar -->
@@ -21,7 +22,6 @@
 
     </android.support.v7.widget.RecyclerView>
 
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnFAB2"
         app:fabSize="normal"
@@ -31,5 +31,6 @@
         app:layout_anchor="@id/rv"
         android:layout_margin="16dp"
         app:layout_anchorGravity="bottom|right|end" />
+
 
 </android.support.design.widget.CoordinatorLayout>

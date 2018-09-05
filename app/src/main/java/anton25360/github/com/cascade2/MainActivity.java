@@ -28,9 +28,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.uniquestudio.library.CircleCheckBox;
 
 import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.Classes.ReminderHolder;
+import anton25360.github.com.cascade2.Classes.Tab;
 import anton25360.github.com.cascade2.Classes.TabSub;
 import anton25360.github.com.cascade2.Classes.TabSubHolder;
 import anton25360.github.com.cascade2.Login.LoginActivity;
@@ -67,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
             adapter.startListening(); //connects to firebase collection
             adapter.notifyDataSetChanged();
-
 
 
             Toast.makeText(this, "listening...", Toast.LENGTH_SHORT).show();
@@ -157,61 +158,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
-                /*RecyclerView recyclerView = holder.itemView.findViewById(R.id.widget_rvSub);
-                recyclerView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "haaaa", Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-
-
-
                 recyclerViewSub = holder.itemView.findViewById(R.id.widget_rvSub);
-
-
-
-
-
-                //todo sort out sub rv here
-
-                /*adapterSub.startListening(); //connects to firebase collection
-                adapterSub.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, "listening1", Toast.LENGTH_SHORT).show();*/
-
-
                 createSubAdaper();
-
                 adapterSub.startListening(); //connects to firebase collection
-                adapterSub.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, "listening2", Toast.LENGTH_SHORT).show();
-
-
-                recyclerViewSub.setAdapter(adapterSub);
-                adapterSub.notifyDataSetChanged();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             }
 
             @Override
             public ReminderHolder onCreateViewHolder(ViewGroup group, int i) {
-                View view = LayoutInflater.from(group.getContext()).inflate(R.layout.item, group, false); //todo use beta item layout
+                View view = LayoutInflater.from(group.getContext()).inflate(R.layout.item, group, false);
                 return new ReminderHolder(view);
             }
         };
@@ -246,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_profile: //if user clicks profile button
-                //openProfileTab();
                 openProfileDialog();
                 return true;
 
@@ -310,10 +264,6 @@ public class MainActivity extends AppCompatActivity {
 
     } //onStop
 
-
-
-
-
     private void createSubAdaper() {
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -326,7 +276,9 @@ public class MainActivity extends AppCompatActivity {
 
         final Query query = FirebaseFirestore.getInstance()
                 .collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection)
-                .orderBy("checked", Query.Direction.ASCENDING); //todo sort by true FOR THE SUB ADAPTER
+                .orderBy("checked", Query.Direction.ASCENDING) //todo only display true FOR THE SUB ADAPTER
+                .whereEqualTo("checked", false)
+                .limit(3);
 
         FirestoreRecyclerOptions<TabSub> options = new FirestoreRecyclerOptions.Builder<TabSub>()
                 .setQuery(query, TabSub.class)
@@ -337,6 +289,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull final TabSubHolder holder, final int position, @NonNull TabSub model) {
                 holder.bind(model);
+
+                //checkbox
+                final CircleCheckBox checkBox = holder.itemView.findViewById(R.id.tabSub_checkBox);
+                checkBox.setListener(new CircleCheckBox.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(boolean isChecked) {
+
+                        adapterSub.startListening();
+                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                        String tabID = snapshot.getString("title");
+                        String snapshotID = snapshot.getId();
+                        String userID = user.getUid();
+                        boolean checked;
+
+                        if (checkBox.isChecked()){
+                            Toast.makeText(MainActivity.this, "checked", Toast.LENGTH_SHORT).show();
+                            checked = true;
+
+                        } else {
+                            Toast.makeText(MainActivity.this, "unchecked", Toast.LENGTH_SHORT).show();
+                            checked = false;
+                        }
+
+
+                        TabSub tabsub = new TabSub(tabID, checked); //uses our custom Tab class to easily add the item to db.
+                        String docID_collection = docID + "collection";
+                        db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document(snapshotID).set(tabsub);
+
+                        adapter.notifyDataSetChanged();
+                    }
+                });
 
 
             }
@@ -349,13 +332,11 @@ public class MainActivity extends AppCompatActivity {
         };
 
         recyclerViewSub.setAdapter(adapterSub);
+        adapterSub.startListening();
         adapterSub.notifyDataSetChanged();
         Log.d(TAG, "adapterSub: created");
 
 
     }
-
-
-
 
 }

@@ -65,7 +65,6 @@ public class EditTask extends Activity{
     @BindView(R.id.edit_title) TextView titleField;
     @BindView(R.id.edit_date) TextView dateField;
     @BindView(R.id.edit_time) TextView timeField;
-    @BindView(R.id.edit_checkbox)CheckBox mCheckBox;
 
     @BindView(R.id.edit_rv)RecyclerView mRecyclerView;
     @BindView(R.id.edit_rvInputString)TextInputEditText mInput;
