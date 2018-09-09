@@ -69,7 +69,7 @@
         android:layout_width="140dp"
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/gradient_blue"
+        android:background="@drawable/gradient_blue_checked"
         android:text="Login"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="@id/loginEmail"

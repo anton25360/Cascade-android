@@ -1,6 +1,7 @@
 package anton25360.github.com.cascade2.Login;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.loginPassword) TextInputLayout inputPassword;
     @BindView(R.id.loginButton) Button loginEmail;
     @BindView(R.id.loginSignUp) TextView signUp;
+    @BindView(R.id.loginTitle) TextView title;
     @BindView(R.id.loginLayout) ConstraintLayout layout;
     @BindView(R.id.loginForgottenPassword) TextView forgottenPW;
     private String email, password;
@@ -43,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        //title.setText("balls");
 
 
         signUp.setOnClickListener(new View.OnClickListener() {

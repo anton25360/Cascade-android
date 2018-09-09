@@ -52,23 +52,23 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
         }
 
         if (colour.equals("blue")) { //blue
-            mBackground.setBackgroundResource(R.drawable.gradient_blue);
+            mBackground.setBackgroundResource(R.drawable.gradient_blue_bg);
             //mBackground.setAlpha(0.8f); //setAlpha for transparency
 
         } else if (colour.equals("orange")) { //orange
-            mBackground.setBackgroundResource(R.drawable.gradient_orange);
+            mBackground.setBackgroundResource(R.drawable.gradient_orange_bg);
 
         } else if (colour.equals("green")) { //green
-            mBackground.setBackgroundResource(R.drawable.gradient_green);
+            mBackground.setBackgroundResource(R.drawable.gradient_green_bg);
 
         } else if (colour.equals("red")) { //red
-            mBackground.setBackgroundResource(R.drawable.gradient_red);
+            mBackground.setBackgroundResource(R.drawable.gradient_red_bg);
 
         } else if (colour.equals("purple")) { //purple
-            mBackground.setBackgroundResource(R.drawable.gradient_purple);
+            mBackground.setBackgroundResource(R.drawable.gradient_purple_bg);
 
         } else if (colour.equals("peach")) { //peach
-            mBackground.setBackgroundResource(R.drawable.gradient_peach);
+            mBackground.setBackgroundResource(R.drawable.gradient_peach_bg);
 
         } else {
             mBackground.setBackgroundResource(R.drawable.gradient_cascade);

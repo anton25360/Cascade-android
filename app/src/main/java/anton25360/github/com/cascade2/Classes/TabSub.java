@@ -1,7 +1,5 @@
 package anton25360.github.com.cascade2.Classes;
 
-import com.airbnb.lottie.LottieAnimationView;
-
 public class TabSub {
     private String title;
     private boolean checked;

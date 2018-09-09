@@ -22,7 +22,9 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.dunst.check.CheckableButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,7 +65,6 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
     @BindView(R.id.popup_buttonPurple)Button mPurple;
     @BindView(R.id.popup_buttonPeach)Button mPeach;
 
-
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     String userID;
@@ -94,6 +95,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup);
         ButterKnife.bind(this);
+
 
         notificationManager = NotificationManagerCompat.from(this);
 
@@ -259,26 +261,62 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
 
         switch (v.getId()) {
             case R.id.popup_buttonBlue:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_checked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "blue";
                 break;
 
             case R.id.popup_buttonOrange:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_checked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "orange";
                 break;
 
             case R.id.popup_buttonGreen:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_checked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "green";
                 break;
 
             case R.id.popup_buttonRed:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_checked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "red";
                 break;
 
             case R.id.popup_buttonPurple:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_checked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "purple";
                 break;
 
             case R.id.popup_buttonPeach:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_checked);
                 colour = "peach";
                 break;
 

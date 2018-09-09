@@ -163,43 +163,42 @@
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_blue" /> <!--blue-->
+                android:background="@drawable/gradient_blue_unchecked" /> <!--blue-->
 
             <Button
                 android:id="@+id/popup_buttonOrange"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_orange"/> <!--orange-->
+                android:background="@drawable/gradient_orange_unchecked"/> <!--orange-->
 
             <Button
                 android:id="@+id/popup_buttonGreen"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_green" /> <!--green-->
+                android:background="@drawable/gradient_green_unchecked" /> <!--green-->
 
             <Button
                 android:id="@+id/popup_buttonRed"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_red"/> <!--red-->
+                android:background="@drawable/gradient_red_unchecked"/> <!--red-->
 
             <Button
                 android:id="@+id/popup_buttonPurple"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_purple" /> <!--purple-->
+                android:background="@drawable/gradient_purple_unchecked" /> <!--purple-->
 
             <Button
                 android:id="@+id/popup_buttonPeach"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_peach"/> <!--peach-->
-
+                android:background="@drawable/gradient_peach_unchecked"/> <!--peach-->
 
         </LinearLayout> <!--horizontal layout containing the buttons-->
 

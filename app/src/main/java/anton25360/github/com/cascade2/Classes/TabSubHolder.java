@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.uniquestudio.library.CircleCheckBox;
 
 import anton25360.github.com.cascade2.R;

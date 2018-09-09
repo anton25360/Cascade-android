@@ -5,23 +5,16 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,18 +24,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.uniquestudio.library.CircleCheckBox;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.Classes.Tab;
@@ -211,22 +197,22 @@ public class EditTask extends Activity{
     private void setBackground() {
 
         if (colour.equals("blue")) { //blue
-            background.setBackgroundResource(R.drawable.gradient_blue);
+            background.setBackgroundResource(R.drawable.gradient_blue_checked);
 
         } else if (colour.equals("orange")) { //orange
-            background.setBackgroundResource(R.drawable.gradient_orange);
+            background.setBackgroundResource(R.drawable.gradient_orange_checked);
 
         } else if (colour.equals("green")) { //green
-            background.setBackgroundResource(R.drawable.gradient_green);
+            background.setBackgroundResource(R.drawable.gradient_green_checked);
 
         } else if (colour.equals("red")) { //red
-            background.setBackgroundResource(R.drawable.gradient_red);
+            background.setBackgroundResource(R.drawable.gradient_red_checked);
 
         } else if (colour.equals("purple")) { //purple
-            background.setBackgroundResource(R.drawable.gradient_purple);
+            background.setBackgroundResource(R.drawable.gradient_purple_checked);
 
         } else if (colour.equals("peach")) { //peach
-            background.setBackgroundResource(R.drawable.gradient_peach);
+            background.setBackgroundResource(R.drawable.gradient_peach_checked);
 
         } else {
             background.setBackgroundResource(R.drawable.gradient_cascade);
