@@ -8,6 +8,7 @@ import android.os.Build;
 
 import anton25360.github.com.cascade2.Login.LoginActivity;
 import anton25360.github.com.cascade2.Popups.EditTask;
+import io.armcha.debugBanner.DebugBanner;
 
 public class Cascade extends Application {
 
@@ -16,7 +17,7 @@ public class Cascade extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        
+
         createNotificationChannel();
     }
 

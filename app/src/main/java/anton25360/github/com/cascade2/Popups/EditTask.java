@@ -2,10 +2,13 @@ package anton25360.github.com.cascade2.Popups;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,6 +36,8 @@ import com.uniquestudio.library.CircleCheckBox;
 import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.Classes.Tab;
 import anton25360.github.com.cascade2.Classes.TabHolder;
+import anton25360.github.com.cascade2.Login.LoginActivity;
+import anton25360.github.com.cascade2.MainActivity;
 import anton25360.github.com.cascade2.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,22 +49,21 @@ public class EditTask extends Activity{
     private static final String TAG = "EditTask";
 
     //todo use butterknife throughout app, dont forget to init in onCreate
-    //bind all views here
-    @BindView(R.id.edit_btnEdit) Button edit;
-    @BindView(R.id.edit_btnDelete) Button delete;
+
     @BindView(R.id.edit_background) ImageView background;
     @BindView(R.id.edit_title) TextView titleField;
     @BindView(R.id.edit_date) TextView dateField;
     @BindView(R.id.edit_time) TextView timeField;
 
     @BindView(R.id.edit_rv)RecyclerView mRecyclerView;
-    @BindView(R.id.edit_rvInputString)TextInputEditText mInput;
-    @BindView(R.id.edit_rvSend)ImageButton mSend;
+    @BindView(R.id.edit_input)TextInputEditText mInput;
+    @BindView(R.id.edit_inputSend)Button mSend;
+    @BindView(R.id.edit_delete)Button mDelete;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static FirestoreRecyclerAdapter adapter;
-    String title, date, time, note, colour;
+    String title, date, time, note, colour; //todo delete "note"
 
     @Override
     protected void onStart() {
@@ -76,13 +80,10 @@ public class EditTask extends Activity{
         setContentView(R.layout.popup_edit);
         ButterKnife.bind(this);
 
-        edit.setTransformationMethod(null); //sets button text to lowercase
-        delete.setTransformationMethod(null); //sets button text to lowercase
-
         getDocInfo(); //gets title, date, and time from doc (in db)
-        ButtonCode(); //controls onclicklisteners
         createAdaper(); // creates adapter
 
+        mSend.setTransformationMethod(null);
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +93,14 @@ public class EditTask extends Activity{
                 } else {
                     addItem(); //adds the item to the sub rv
                 }
+            }
+        });
+
+        mDelete.setTransformationMethod(null);
+        mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTask();
             }
         });
     }
@@ -197,22 +206,22 @@ public class EditTask extends Activity{
     private void setBackground() {
 
         if (colour.equals("blue")) { //blue
-            background.setBackgroundResource(R.drawable.gradient_blue_checked);
+            background.setBackgroundResource(R.drawable.gradient_blue_bg);
 
         } else if (colour.equals("orange")) { //orange
-            background.setBackgroundResource(R.drawable.gradient_orange_checked);
+            background.setBackgroundResource(R.drawable.gradient_orange_bg);
 
         } else if (colour.equals("green")) { //green
-            background.setBackgroundResource(R.drawable.gradient_green_checked);
+            background.setBackgroundResource(R.drawable.gradient_green_bg);
 
         } else if (colour.equals("red")) { //red
-            background.setBackgroundResource(R.drawable.gradient_red_checked);
+            background.setBackgroundResource(R.drawable.gradient_red_bg);
 
         } else if (colour.equals("purple")) { //purple
-            background.setBackgroundResource(R.drawable.gradient_purple_checked);
+            background.setBackgroundResource(R.drawable.gradient_purple_bg);
 
         } else if (colour.equals("peach")) { //peach
-            background.setBackgroundResource(R.drawable.gradient_peach_checked);
+            background.setBackgroundResource(R.drawable.gradient_peach_bg);
 
         } else {
             background.setBackgroundResource(R.drawable.gradient_cascade);
@@ -221,78 +230,47 @@ public class EditTask extends Activity{
 
     }
 
-    private void ButtonCode() {
+    private void deleteTask() {
 
-        edit.setOnClickListener(new View.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                EditReminder();
-                finish();
+            public void onClick(DialogInterface dialog, int which) {
+
+                openMainActivity();
+
+                String userID = user.getUid();
+                db.collection("Cascade").document(" " + userID).collection("reminders")
+                        .document(docID) //gets docID from MainActivity (when card is first clicked)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "onSuccess: deleted");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "Error: " + e.getLocalizedMessage());
+                            }
+                        });
+                adapter.notifyDataSetChanged();
+
+
+
             }
         });
+        builder.setNegativeButton("No", null);
 
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DeleteReminder();
-                finish();
-            }
-        });
-    } //controls onclicklisteners
+        builder.show();
 
-    private void DeleteReminder() {
-
-        String userID = user.getUid();
-
-        db.collection("Cascade").document(" " + userID).collection("reminders")
-                .document(docID) //gets docID from MainActivity (when card is first clicked)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "onSuccess: deleted");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error: " + e.getLocalizedMessage());
-                    }
-                });
-        adapter.notifyDataSetChanged();
     }
 
-    private void EditReminder() {
-        //apply edits
-
-        String userID = user.getUid();
-
-        final DocumentReference documentReference = db.collection("Cascade").document(" " + userID).collection("reminders").document(docID); //gets docID from MainActivity (when card is first clicked)
-
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                String title = titleField.getText().toString();
-                //String date = dateField.toString();
-                //String time = timeField.toString();
-
-                Reminder reminder = new Reminder(title, date, time, colour);
-
-                documentReference.set(reminder);
-
-                Log.d(TAG, "onSuccess: edit");
-
-
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: "+ e.getLocalizedMessage());
-                    }
-                });
-
+    private void openMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void addItem() {

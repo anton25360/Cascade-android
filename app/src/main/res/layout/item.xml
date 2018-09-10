@@ -28,7 +28,7 @@
             <ImageView
                 android:id="@+id/widget_background"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent" /><!--background-->
 
             <TextView
                 android:id="@+id/widget_title"
@@ -41,7 +41,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="25sp"
                 app:layout_constraintTop_toBottomOf="@id/widget_date"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" /><!--title-->
 
             <TextView
                 android:id="@+id/widget_date"
@@ -53,7 +53,7 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" /><!--date-->
 
             <TextView
                 android:id="@+id/widget_time"
@@ -65,7 +65,7 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" /><!--time-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/widget_rvSub"

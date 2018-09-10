@@ -5,15 +5,16 @@
     android:id="@+id/edit_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/SilverLight"
+    android:background="@drawable/background_dark"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/edit_background"
+        android:background="@drawable/gradient_blue_bg"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_margin="5dp"
-        app:layout_constraintTop_toTopOf="parent" /> <!--background-->
+        android:layout_margin="8dp"
+        app:layout_constraintTop_toTopOf="parent" /> <!--background gradient-->
 
     <TextView
         android:id="@+id/edit_title"
@@ -24,161 +25,88 @@
         android:textColor="@android:color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@id/edit_background"
-        app:layout_constraintStart_toStartOf="@id/edit_background" /> <!--title in background-->
-
-    <TextView
-        android:id="@+id/x1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:text="Date: "
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/popup_text_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_background" /> <!--date:-->
+        app:layout_constraintStart_toStartOf="@id/edit_background" /> <!--title-->
 
     <TextView
         android:id="@+id/edit_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:text="October 30th, 2008"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/popup_text_size"
-        app:layout_constraintStart_toEndOf="@id/x1"
-        app:layout_constraintTop_toBottomOf="@id/edit_background" /> <!--October 30th-->
-
-    <TextView
-        android:id="@+id/x2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:text="Time: "
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/popup_text_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_date" /> <!--time:-->
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="@id/edit_background"
+        app:layout_constraintStart_toStartOf="@id/edit_background" /> <!--date-->
 
     <TextView
         android:id="@+id/edit_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
         android:text="20:00"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/popup_text_size"
-        app:layout_constraintStart_toEndOf="@id/x2"
-        app:layout_constraintTop_toTopOf="@id/x2" /> <!--20:00-->
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="@id/edit_background"
+        app:layout_constraintEnd_toEndOf="@id/edit_background" /> <!--time-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="or"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/popup_text_size"
-        app:layout_constraintEnd_toStartOf="@id/edit_timeAllDay"
-        app:layout_constraintStart_toEndOf="@id/edit_time"
-        app:layout_constraintTop_toTopOf="@id/x2" /> <!--or-->
-
-    <TextView
-        android:id="@+id/edit_timeAllDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="All Day"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="@dimen/popup_text_size"
-        app:layout_constraintEnd_toStartOf="@id/edit_checkbox"
-        app:layout_constraintTop_toTopOf="@id/x2" /> <!--all day-->
-
-    <CheckBox
-        android:id="@+id/edit_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/edit_timeAllDay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/x2" /> <!--checkbox-->
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/edit_rv"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
+        app:cardBackgroundColor="@color/white"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/guidelineEnd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guidelineStart">
+        android:layout_margin="8dp"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintTop_toBottomOf="@id/edit_background"
+        app:layout_constraintBottom_toTopOf="@id/edit_delete">
 
-    </android.support.v7.widget.RecyclerView> <!--sub rv-->
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/edit_rvInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_rv">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_rvInputString"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Add a subtask..."
-            android:inputType="text" />
+            android:focusableInTouchMode="true">
 
-    </android.support.design.widget.TextInputLayout> <!--rv editText-->
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_input"
+                android:layout_marginEnd="70dp"
+                android:layout_marginStart="5dp"
+                android:hint="Add a task..."
+                android:backgroundTint="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <ImageButton
-        android:id="@+id/edit_rvSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_send_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@id/edit_rvInput"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/edit_rvInput"
-        app:layout_constraintTop_toTopOf="@id/edit_rvInput" /> <!--send to rv-->
+            <Button
+                android:id="@+id/edit_inputSend"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:text="Add"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_edit"
+                android:layout_margin="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/edit_rv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/edit_input"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_margin="8dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView> <!--input + rv-->
 
     <Button
-        android:id="@+id/edit_btnDelete"
-        android:layout_width="80dp"
+        android:id="@+id/edit_delete"
+        android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/btn_delete"
-        android:text="Delete"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" /> <!-- delete -->
-
-    <Button
-        android:id="@+id/edit_btnEdit"
-        android:layout_width="140dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
         android:background="@drawable/btn_edit"
-        android:text="Finished Editing"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" /> <!-- finish edits -->
-
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="175dp"/> <!--rv guideline start-->
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="105dp"/> <!--rv guideline end-->
+        android:textColor="@color/white"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="parent"/> <!--delete-->
 
 </android.support.constraint.ConstraintLayout>

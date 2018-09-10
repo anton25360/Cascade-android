@@ -39,6 +39,7 @@ import anton25360.github.com.cascade2.Login.LoginActivity;
 import anton25360.github.com.cascade2.Popups.EditTask;
 import anton25360.github.com.cascade2.Popups.PopupFragment;
 import butterknife.ButterKnife;
+import io.armcha.debugBanner.DebugBanner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -318,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
                         db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document(snapshotID).set(tabsub);
 
                         adapter.notifyDataSetChanged();
+                        adapterSub.notifyDataSetChanged();
                     }
                 });
 

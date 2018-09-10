@@ -5,25 +5,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_marginBottom="5dp"
+    android:layout_marginBottom="9dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.uniquestudio.library.CircleCheckBox
         android:id="@+id/tab_checkBox"
         app:checked="false"
+        android:layout_margin="10dp"
         app:border_color="@color/Silver"
         app:background_color="@color/white"
         app:tick_color="@color/black"
-        android:layout_width="20dp"
-        android:layout_height="20dp"/>
+        android:padding="1dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"/>
+
 
     <TextView
         android:id="@+id/tab_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:textSize="20sp"
+        android:textSize="23sp"
         android:text="sub item 1"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/tab_checkBox"
