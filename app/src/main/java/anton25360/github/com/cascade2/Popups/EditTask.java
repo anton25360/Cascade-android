@@ -132,7 +132,6 @@ public class EditTask extends Activity{
                     @Override
                     public void onCheckedChanged(boolean isChecked) {
 
-
                         DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
                         String tabID = snapshot.getString("title");
                         String snapshotID = snapshot.getId();

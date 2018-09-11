@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
 
 
+
+
             Toast.makeText(this, "listening...", Toast.LENGTH_SHORT).show();
 
         } else {
@@ -161,8 +163,9 @@ public class MainActivity extends AppCompatActivity {
 
                 recyclerViewSub = holder.itemView.findViewById(R.id.widget_rvSub);
                 createSubAdaper();
-                adapterSub.startListening(); //connects to firebase collection
 
+                adapterSub.startListening();
+                adapterSub.notifyDataSetChanged();
             }
 
             @Override
@@ -318,8 +321,6 @@ public class MainActivity extends AppCompatActivity {
                         String docID_collection = docID + "collection";
                         db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document(snapshotID).set(tabsub);
 
-                        adapter.notifyDataSetChanged();
-                        adapterSub.notifyDataSetChanged();
                     }
                 });
 
@@ -334,7 +335,6 @@ public class MainActivity extends AppCompatActivity {
         };
 
         recyclerViewSub.setAdapter(adapterSub);
-        adapterSub.startListening();
         adapterSub.notifyDataSetChanged();
         Log.d(TAG, "adapterSub: created");
 
