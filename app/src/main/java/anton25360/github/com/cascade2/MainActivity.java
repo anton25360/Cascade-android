@@ -39,7 +39,6 @@ import anton25360.github.com.cascade2.Login.LoginActivity;
 import anton25360.github.com.cascade2.Popups.EditTask;
 import anton25360.github.com.cascade2.Popups.PopupFragment;
 import butterknife.ButterKnife;
-import io.armcha.debugBanner.DebugBanner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -293,37 +292,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull final TabSubHolder holder, final int position, @NonNull TabSub model) {
                 holder.bind(model);
-
-                //checkbox
-                final CircleCheckBox checkBox = holder.itemView.findViewById(R.id.tabSub_checkBox);
-                checkBox.setListener(new CircleCheckBox.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(boolean isChecked) {
-
-                        adapterSub.startListening();
-                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-                        String tabID = snapshot.getString("title");
-                        String snapshotID = snapshot.getId();
-                        String userID = user.getUid();
-                        boolean checked;
-
-                        if (checkBox.isChecked()){
-                            Toast.makeText(MainActivity.this, "checked", Toast.LENGTH_SHORT).show();
-                            checked = true;
-
-                        } else {
-                            Toast.makeText(MainActivity.this, "unchecked", Toast.LENGTH_SHORT).show();
-                            checked = false;
-                        }
-
-
-                        TabSub tabsub = new TabSub(tabID, checked); //uses our custom Tab class to easily add the item to db.
-                        String docID_collection = docID + "collection";
-                        db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document(snapshotID).set(tabsub);
-
-                    }
-                });
-
 
             }
 

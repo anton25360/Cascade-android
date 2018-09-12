@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,16 +27,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.uniquestudio.library.CircleCheckBox;
 
-import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.Classes.Tab;
 import anton25360.github.com.cascade2.Classes.TabHolder;
-import anton25360.github.com.cascade2.Login.LoginActivity;
 import anton25360.github.com.cascade2.MainActivity;
 import anton25360.github.com.cascade2.R;
 import butterknife.BindView;
@@ -59,6 +58,7 @@ public class EditTask extends Activity{
     @BindView(R.id.edit_input)TextInputEditText mInput;
     @BindView(R.id.edit_inputSend)Button mSend;
     @BindView(R.id.edit_delete)Button mDelete;
+    @BindView(R.id.edit_share)Button mShare;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -101,6 +101,15 @@ public class EditTask extends Activity{
             @Override
             public void onClick(View v) {
                 deleteTask();
+            }
+        });
+
+        mShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo task sharing
+
+                shareTask();
             }
         });
     }
@@ -264,6 +273,34 @@ public class EditTask extends Activity{
         builder.setNegativeButton("No", null);
 
         builder.show();
+
+    }
+
+    private void shareTask() {
+
+
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://www.cascade.com/")) //todo change link?
+                .setDynamicLinkDomain("cascade.page.link")
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build()) // Open links with this app on Android
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build()) // Open links with com.example.ios on iOS
+                .buildDynamicLink();
+
+        Uri dynamicLinkUri = dynamicLink.getUri();
+
+        String s = dynamicLink.toString();
+
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+
+
+
+
+        Intent sendIntent = new Intent();
+        String msg = "Hey, check this out: " + dynamicLink;
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, msg);
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
 
     }
 

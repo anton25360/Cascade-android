@@ -29,12 +29,24 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="foregroundClipArt">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="foregroundImage">
                                         <value>
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="253" />
+                                                <entry key="scalingPercent" value="60" />
+                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -69,8 +81,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundImage" value="C:\temp\Capture.PNG" />
-                                      <entry key="foregroundAssetType" value="TEXT" />
-                                      <entry key="foregroundImage" value="C:\temp\Picture1.png" />
+                                      <entry key="foregroundImage" value="C:\temp\iconX23.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -101,7 +112,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Android%20Studio/Stable/plugins/android/lib/android.jar!/images/material_design_icons/toggle/ic_radio_button_unchecked_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Android%20Studio/Stable/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_share_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -111,8 +122,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_dot" />
+                            <entry key="outputName" value="ic_share_black" />
                             <entry key="sourceFile" value="C:\Users\anton" />
                           </map>
                         </option>

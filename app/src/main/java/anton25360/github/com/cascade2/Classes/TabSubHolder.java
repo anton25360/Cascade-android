@@ -13,21 +13,17 @@ import anton25360.github.com.cascade2.R;
 public class TabSubHolder extends RecyclerView.ViewHolder {
 
     final private TextView mTitle;
-    final private CircleCheckBox checkBox;
-    private boolean checked;
 
     public TabSubHolder(View itemView) {
         super(itemView);
 
         mTitle = itemView.findViewById(R.id.tabSub_title);
-        checkBox = itemView.findViewById(R.id.tabSub_checkBox);
 
     }
 
     public void bind(TabSub tab) {
 
         setTitle(tab.getTitle());
-        setChecked(tab.getChecked());
 
     }
 
@@ -35,16 +31,4 @@ public class TabSubHolder extends RecyclerView.ViewHolder {
         mTitle.setText(title);
     }
 
-    private void setChecked(boolean checked) {
-
-        if (checked) {
-            checkBox.setChecked(true);
-            mTitle.setTextColor(Color.GRAY);
-
-        } else {
-            checkBox.setChecked(false);
-            mTitle.setTextColor(Color.BLACK);
-        }
-
-    }
 }
