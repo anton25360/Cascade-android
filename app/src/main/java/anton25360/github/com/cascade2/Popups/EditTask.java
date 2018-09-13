@@ -265,7 +265,6 @@ public class EditTask extends Activity{
             }
         });
         builder.setNegativeButton("No", null);
-
         builder.show();
 
     }
