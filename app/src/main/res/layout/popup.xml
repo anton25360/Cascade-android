@@ -163,7 +163,8 @@
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_blue_unchecked" /> <!--blue-->
+
+                android:background="@drawable/gradient_blue_checked" /> <!--blue-->
 
             <Button
                 android:id="@+id/popup_buttonOrange"
@@ -203,5 +204,6 @@
         </LinearLayout> <!--horizontal layout containing the buttons-->
 
     </HorizontalScrollView> <!--coloured buttons selection-->
+
 
 </android.support.constraint.ConstraintLayout>

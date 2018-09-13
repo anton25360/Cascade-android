@@ -2,6 +2,7 @@ package anton25360.github.com.cascade2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         if (user != null) { //if user is logged in...
 
             adapter.startListening(); //connects to firebase collection
-            adapter.notifyDataSetChanged();
 
 
 
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         query = FirebaseFirestore.getInstance()
-                .collection("Cascade").document(" " + userID).collection("reminders")
+                .collection(userID)
                 .orderBy(sortID, Query.Direction.ASCENDING);
 
         //todo user ( whereEqualTo("title", "hello"); ) for SEARCH
@@ -161,10 +161,16 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 recyclerViewSub = holder.itemView.findViewById(R.id.widget_rvSub);
-                createSubAdaper();
 
+
+                createSubAdaper();
+                recyclerViewSub.setAdapter(adapterSub);
                 adapterSub.startListening();
                 adapterSub.notifyDataSetChanged();
+
+
+                Toast.makeText(MainActivity.this, "adapterSub: created", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -175,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
 
     } //initialises the recyclerView and FirebaseRecyclerAdapter
 
@@ -275,11 +281,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         String userID = user.getUid();
-        String docID_collection = docID + "collection";
 
         final Query query = FirebaseFirestore.getInstance()
-                .collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection)
-                .orderBy("checked", Query.Direction.ASCENDING) //todo only display true FOR THE SUB ADAPTER
+                .collection(userID).document(docID).collection(docID + "collection")
+                .orderBy("checked", Query.Direction.ASCENDING)
                 .whereEqualTo("checked", false)
                 .limit(3);
 
@@ -302,8 +307,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        recyclerViewSub.setAdapter(adapterSub);
-        adapterSub.notifyDataSetChanged();
         Log.d(TAG, "adapterSub: created");
 
 

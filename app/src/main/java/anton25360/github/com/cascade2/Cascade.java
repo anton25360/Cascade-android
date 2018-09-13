@@ -3,7 +3,9 @@ package anton25360.github.com.cascade2;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 
 import java.security.KeyStore;
@@ -24,8 +26,8 @@ public class Cascade extends Application {
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //if Oreo or higher
 
-            NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_DEFAULT); //todo research notification importance
-            channel1.setDescription("balls"); //todo change this
+            NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Cascade Reminders", NotificationManager.IMPORTANCE_DEFAULT); //todo research notification importance
+            channel1.setDescription("Handles notifications for Cascade Reminders");
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);

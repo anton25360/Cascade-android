@@ -119,10 +119,9 @@ public class EditTask extends Activity{
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         String userID = user.getUid();
-        String docID_collection = docID + "collection";
 
         final Query query = FirebaseFirestore.getInstance()
-                .collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection)
+                .collection(userID).document(docID).collection(docID + "collection") //gets all the documents (or "tabs")
                 .orderBy("checked", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Tab> options = new FirestoreRecyclerOptions.Builder<Tab>()
@@ -148,18 +147,15 @@ public class EditTask extends Activity{
                         boolean checked;
 
                         if (checkBox.isChecked()){
-                            Toast.makeText(EditTask.this, "checked", Toast.LENGTH_SHORT).show();
                             checked = true;
 
                         } else {
-                            Toast.makeText(EditTask.this, "unchecked", Toast.LENGTH_SHORT).show();
                             checked = false;
                         }
 
 
                         Tab tab = new Tab(tabID, checked); //uses our custom Tab class to easily add the item to db.
-                        String docID_collection = docID + "collection";
-                        db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document(snapshotID).set(tab);
+                        db.collection(userID).document(docID).collection(docID + "collection").document(snapshotID).set(tab);
                     }
                 });
             }
@@ -181,8 +177,7 @@ public class EditTask extends Activity{
 
         String userID = user.getUid();
 
-        db.collection("Cascade").document(" " + userID).collection("reminders")
-                .document(docID) //gets docID from MainActivity (when card is first clicked)
+        db.collection(userID).document(docID) //gets docID from MainActivity (when card is first clicked)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -231,8 +226,8 @@ public class EditTask extends Activity{
         } else if (colour.equals("peach")) { //peach
             background.setBackgroundResource(R.drawable.gradient_peach_bg);
 
-        } else {
-            background.setBackgroundResource(R.drawable.gradient_cascade);
+        } else { //default is blue
+            background.setBackgroundResource(R.drawable.gradient_blue_bg);
         } //blank
 
 
@@ -249,8 +244,7 @@ public class EditTask extends Activity{
                 openMainActivity();
 
                 String userID = user.getUid();
-                db.collection("Cascade").document(" " + userID).collection("reminders")
-                        .document(docID) //gets docID from MainActivity (when card is first clicked)
+                db.collection(userID).document(docID) //gets docID from MainActivity (when card is first clicked)
                         .delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -317,9 +311,8 @@ public class EditTask extends Activity{
         //FIREBASE DB SAVING STARTS HERE
 
         Tab tab = new Tab(titleString, false); //uses our custom Tab class to easily add the item to db. (checkbox is unchecked by default)
-        String docID_collection = docID + "collection";
 
-        db.collection("Cascade").document(" " + userID).collection("reminders").document(docID).collection(docID_collection).document().set(tab) //Because document parameter is empty, Firebase auto generates the document id (So reminders don't get overwritten)
+        db.collection(userID).document(docID).collection(docID + "collection").document().set(tab)
 
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

@@ -28,6 +28,8 @@
             <!--android:theme="@style/AppTheme.PopupTheme"-->
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Login.RegisterActivity" />
+        
+        <receiver android:name=".Classes.AlertReciever"></receiver>
     </application>
 
 </manifest>

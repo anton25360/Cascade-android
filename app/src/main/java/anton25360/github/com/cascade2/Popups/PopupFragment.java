@@ -22,7 +22,6 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,7 +44,7 @@ import butterknife.ButterKnife;
 public class PopupFragment extends FragmentActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener{
 
     private static final String TAG = "Popup";
-    String notificationTitle;
+    public static String notificationTitle;
 
     @BindView(R.id.popup_description)TextInputLayout desc;
     @BindView(R.id.popup_date)TextView date;
@@ -67,6 +66,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     String userID;
+    long notificationTime, notificationDate;
 
     Calendar calendar = Calendar.getInstance();
 
@@ -109,6 +109,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         chooseDate();
         chooseTime();
         checkSwitch();
+
 
         //init buttons for onclick
         mBlue.setOnClickListener(this);
@@ -236,6 +237,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        notificationDate = calendar.getTimeInMillis();
 
         String selectedDateString = DateFormat.getDateInstance().format(calendar.getTime());
         date.setText(selectedDateString); //sets the date field to selected date from calendar
@@ -245,8 +247,9 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay); //gets hour of day from the time picker
+        calendar.set(Calendar.MINUTE, minute); //gets minute from the time picker
+        notificationTime = calendar.getTimeInMillis();
 
         String selectedTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
         time.setText(selectedTimeString); //sets the date field to selected date from calendar
@@ -344,7 +347,8 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         Reminder reminder = new Reminder(titleString, dateString, timeString, colour);
 
         userID = user.getUid();
-        db.collection("Cascade").document(" " + userID).collection("reminders").document().set(reminder) //Because document parameter is empty, Firebase auto generates the document id (So reminders don't get overwritten)
+        db.collection(userID).document().set(reminder) //document id is auto generated
+        //db.collection("Cascade").document(" " + userID).collection("reminders").document().set(reminder) // OLD
 
                 .addOnSuccessListener(new OnSuccessListener<Void>() { //if upload to Firebase db was successful...
                     @Override
@@ -383,13 +387,13 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         Notification notification = new NotificationCompat.Builder(this, Cascade.CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_chat_bubble_black) //todo change notification icon
                 .setContentTitle(notificationTitle) //todo change notification title
-                .setContentText("You have a new reminder")
-
+                .setContentText("Here is your reminder.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .build();
 
         notificationManager.notify(1, notification);
+
     } //sends a notification when reminder is created
 
 }
