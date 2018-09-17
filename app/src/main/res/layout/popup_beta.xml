@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup_layout"
+    android:layout_margin="10dp"
+    android:background="@drawable/dialog_bg"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+        android:theme="@style/customBlackAccent"
+        android:id="@+id/popup_titleInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="25"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.TextInputEditText
+            android:theme="@style/customBlackAccent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Description"
+            android:maxLength="25"
+            android:inputType="text" />
+
+    </android.support.design.widget.TextInputLayout><!--desc input-->
+
+    <HorizontalScrollView
+        android:id="@+id/popup_scrollGradients"
+        app:layout_constraintTop_toBottomOf="@id/popup_titleInput"
+        android:scrollbars="none"
+        android:layout_marginStart="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+
+            <Button
+                android:id="@+id/popup_buttonBlue"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+
+                android:background="@drawable/gradient_blue_checked" /> <!--blue-->
+
+            <Button
+                android:id="@+id/popup_buttonOrange"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_orange_unchecked"/> <!--orange-->
+
+            <Button
+                android:id="@+id/popup_buttonGreen"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_green_unchecked" /> <!--green-->
+
+            <Button
+                android:id="@+id/popup_buttonRed"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_red_unchecked"/> <!--red-->
+
+            <Button
+                android:id="@+id/popup_buttonPurple"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_purple_unchecked" /> <!--purple-->
+
+            <Button
+                android:id="@+id/popup_buttonPeach"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_peach_unchecked"/> <!--peach-->
+
+        </LinearLayout> <!--horizontal layout containing the buttons-->
+
+    </HorizontalScrollView> <!--coloured buttons selection-->
+
+    <Button
+        android:id="@+id/popup_addTask"
+        android:background="@drawable/btn_edit"
+        android:text="Add"
+        android:textColor="@color/white"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="8dp"/> <!--add-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More colours coming soon!"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="13dp"/>
+
+</android.support.constraint.ConstraintLayout>

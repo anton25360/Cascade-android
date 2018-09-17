@@ -1,12 +1,17 @@
 package anton25360.github.com.cascade2;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,16 +19,22 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,15 +53,19 @@ import anton25360.github.com.cascade2.Popups.PopupFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
 
+    private String colour = "";
+    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach;
     FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
     String userID, sortID;
     public static String docID;
+    TextInputLayout title;
     Query query;
+    Dialog mDialog;
     //SearchView mSearchView;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -89,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mDialog = new Dialog(this);
+
         //sets the toolbar
         initToolbar();
         FAB = findViewById(R.id.btnFAB2);
@@ -96,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                openPopupFragment();
+                openNewTaskPopup();
+
             }
         });
 
@@ -104,9 +122,38 @@ public class MainActivity extends AppCompatActivity {
 
     }//end of onCreate
 
-    private void openPopupFragment() {
-        Intent intent = new Intent(this, PopupFragment.class);
-        startActivity(intent);
+    private void openNewTaskPopup() {
+
+        mDialog.setContentView(R.layout.popup_beta);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        mDialog.show();
+
+        Window window = mDialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); //width + height
+        layoutParams.gravity = Gravity.BOTTOM; //anchors the popup to the bottom of the screen
+        window.setAttributes(layoutParams); //set changes
+
+        mBlue = mDialog.findViewById(R.id.popup_buttonBlue);
+        mOrange = mDialog.findViewById(R.id.popup_buttonOrange);
+        mGreen = mDialog.findViewById(R.id.popup_buttonGreen);
+        mRed = mDialog.findViewById(R.id.popup_buttonRed);
+        mPurple = mDialog.findViewById(R.id.popup_buttonPurple);
+        mPeach = mDialog.findViewById(R.id.popup_buttonPeach);
+
+        mBlue.setOnClickListener(this);
+        mOrange.setOnClickListener(this);
+        mGreen.setOnClickListener(this);
+        mRed.setOnClickListener(this);
+        mPurple.setOnClickListener(this);
+        mPeach.setOnClickListener(this);
+
+        mAdd = mDialog.findViewById(R.id.popup_addTask);
+        mAdd.setTransformationMethod(null);
+        mAdd.setOnClickListener(this);
+
+        title = mDialog.findViewById(R.id.popup_titleInput);
+
     }
 
     private void initRecyclerView() { //init rv
@@ -194,14 +241,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    //this bit controls the onclicks for the toolbar buttons (search and profile)
+    //this bit controls the onclicks for the toolbar buttons
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) { //gets button id
-
-            case R.id.action_search: //if user clicks search button
-                //todo implement search function
-                return true;
 
             case R.id.action_profile: //if user clicks profile button
                 openProfileDialog();
@@ -306,5 +349,109 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.popup_buttonBlue:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_checked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "blue";
+                break;
+
+            case R.id.popup_buttonOrange:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_checked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "orange";
+                break;
+
+            case R.id.popup_buttonGreen:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_checked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "green";
+                break;
+
+            case R.id.popup_buttonRed:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_checked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "red";
+                break;
+
+            case R.id.popup_buttonPurple:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_checked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "purple";
+                break;
+
+            case R.id.popup_buttonPeach:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_checked);
+                colour = "peach";
+                break;
+
+            case R.id.popup_addTask:
+                Toast.makeText(this, "boobs", Toast.LENGTH_SHORT).show();
+
+                String titleString = title.getEditText().getText().toString().trim();
+                String timeString = "REMOVED";
+                String dateString = "REMOVED";
+
+                if (titleString.isEmpty()) {
+                    title.setError("Field can't be empty");
+
+                } else {
+
+                    //adds the card to the main screen (and db)
+
+                    Reminder reminder = new Reminder(titleString, dateString, timeString, colour);
+
+                    userID = user.getUid();
+                    db.collection(userID).document().set(reminder) //document id is auto generated
+
+                            .addOnSuccessListener(new OnSuccessListener<Void>() { //if upload to Firebase db was successful...
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "onSuccessUpload: " + titleString);
+                                }
+                            })
+
+                            .addOnFailureListener(new OnFailureListener() { //if upload to Firebase db was unsuccessful...
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+
+                                    Log.d(TAG, "Error: " + e.toString()); //tells us the error
+                                }
+                            });
+
+                    mDialog.dismiss(); //closes popup
+                }
+                break;
+        }
+    } //control popup colour selection here
 
 }

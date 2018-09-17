@@ -1,6 +1,7 @@
 package anton25360.github.com.cascade2.Popups;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -94,7 +96,6 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup);
         ButterKnife.bind(this);
-
 
         notificationManager = NotificationManagerCompat.from(this);
 
@@ -187,7 +188,8 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*.8), (int)(height*.8));
+        getWindow().setLayout((int)(width*8), (int)(height*.8));
+
 
     } //sets the popup size
 

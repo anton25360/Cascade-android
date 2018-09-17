@@ -2,12 +2,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <!-- search button -->
-    <item android:id="@+id/action_search"
-        android:title="@string/search_icon"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always" />
-
     <!-- profile button -->
     <item android:id="@+id/action_profile"
         android:title="@string/profile_icon"
