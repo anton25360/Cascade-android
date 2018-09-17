@@ -28,6 +28,7 @@ import static android.support.constraint.Constraints.TAG;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    //todo remove full nsme field
     @BindView(R.id.registerName) TextInputLayout inputName;
     @BindView(R.id.registerEmail) TextInputLayout inputEmail;
     @BindView(R.id.registerPassword) TextInputLayout inputPassword;
@@ -101,8 +102,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     progressBar.setVisibility(View.INVISIBLE);
 
-                                    createDisplayName();
-
                                     startLogin(); //goes to login tab so user can login
 
                                 } else {
@@ -115,14 +114,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                             }
                         });
-
-            }
-
-            private void createDisplayName() { //todo still needed?
-
-                mUser = FirebaseAuth.getInstance().getCurrentUser();
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-                mUser.updateProfile(profileUpdates);
 
             }
 

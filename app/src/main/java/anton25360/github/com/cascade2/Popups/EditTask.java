@@ -47,8 +47,6 @@ public class EditTask extends Activity{
 
     private static final String TAG = "EditTask";
 
-    //todo use butterknife throughout app, dont forget to init in onCreate
-
     @BindView(R.id.edit_background) ImageView background;
     @BindView(R.id.edit_title) TextView titleField;
     @BindView(R.id.edit_date) TextView dateField;
@@ -63,7 +61,7 @@ public class EditTask extends Activity{
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static FirestoreRecyclerAdapter adapter;
-    String title, date, time, note, colour; //todo delete "note"
+    String title, date, time, colour;
 
     @Override
     protected void onStart() {
@@ -186,7 +184,6 @@ public class EditTask extends Activity{
                         title = documentSnapshot.getString("title");
                         date = documentSnapshot.getString("date");
                         time = documentSnapshot.getString("time");
-                        note = documentSnapshot.getString("note");
                         colour = documentSnapshot.getString("colour");
 
                         titleField.setText(title);

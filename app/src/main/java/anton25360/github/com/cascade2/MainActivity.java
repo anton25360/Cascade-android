@@ -39,19 +39,17 @@ import anton25360.github.com.cascade2.Classes.TabSubHolder;
 import anton25360.github.com.cascade2.Login.LoginActivity;
 import anton25360.github.com.cascade2.Popups.EditTask;
 import anton25360.github.com.cascade2.Popups.PopupFragment;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-
     FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
-    CardView cvItem;
     String userID, sortID;
     public static String docID;
-    CoordinatorLayout mCoordinatorLayout;
     Query query;
     //SearchView mSearchView;
 
@@ -93,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         //sets the toolbar
         initToolbar();
-
-        mCoordinatorLayout = findViewById(R.id.mainLayout);
         FAB = findViewById(R.id.btnFAB2);
         FAB.setOnClickListener(new View.OnClickListener() {
             @Override

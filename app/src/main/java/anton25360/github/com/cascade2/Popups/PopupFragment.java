@@ -348,7 +348,6 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
 
         userID = user.getUid();
         db.collection(userID).document().set(reminder) //document id is auto generated
-        //db.collection("Cascade").document(" " + userID).collection("reminders").document().set(reminder) // OLD
 
                 .addOnSuccessListener(new OnSuccessListener<Void>() { //if upload to Firebase db was successful...
                     @Override
