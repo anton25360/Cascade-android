@@ -35,9 +35,7 @@
 
 
     <style name="customDialog" parent="AlertDialog.AppCompat">
-
         <item name="android:color">@color/lightBlue</item>
-
     </style>
 
 </resources>

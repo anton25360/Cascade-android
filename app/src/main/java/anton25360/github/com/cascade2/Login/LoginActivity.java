@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.loginTitle) TextView title;
     @BindView(R.id.loginLayout) ConstraintLayout layout;
     @BindView(R.id.loginForgottenPassword) TextView forgottenPW;
+    @BindView(R.id.loginProgress) ProgressBar progressBar;
+
     private String email, password;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance(); //firebase
 
@@ -45,9 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        //title.setText("balls");
-
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        progressBar.setVisibility(View.INVISIBLE);
         loginEmail.setTransformationMethod(null); //forces button font to not be uppercase
         loginEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     inputPassword.setError(null);
                 }
 
+                progressBar.setVisibility(View.VISIBLE);
                 LoginNewUser();
             }
 
@@ -97,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail: success");
+                                    progressBar.setVisibility(View.INVISIBLE);
 
                                     openMainActivity();
 
@@ -104,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
                                     Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.INVISIBLE);
 
                                 }
                             }
@@ -125,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
     private void startRegister() {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left); //todo intent animations
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void startPasswordReset() {

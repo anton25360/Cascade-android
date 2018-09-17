@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.registerPassword) TextInputLayout inputPassword;
     @BindView(R.id.registerButton) Button register;
     @BindView(R.id.registerLogin) TextView login;
+    @BindView(R.id.registerProgress) ProgressBar progressBar;
+
     private String name, email, password;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -50,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        progressBar.setVisibility(View.INVISIBLE);
         register.setTransformationMethod(null);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                     inputPassword.setError(null);
                 }
 
+                progressBar.setVisibility(View.VISIBLE);
                 RegisterNewUser();
             }
 
@@ -94,6 +99,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     Log.d(TAG, "createUserWithEmail:success");
                                     Toast.makeText(RegisterActivity.this, "Account created", Toast.LENGTH_SHORT).show();
 
+                                    progressBar.setVisibility(View.INVISIBLE);
+
                                     createDisplayName();
 
                                     startLogin(); //goes to login tab so user can login
@@ -102,6 +109,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(RegisterActivity.this, "Account creation failed", Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.INVISIBLE);
+
                                 }
 
                             }
@@ -109,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
 
-            private void createDisplayName() {
+            private void createDisplayName() { //todo still needed?
 
                 mUser = FirebaseAuth.getInstance().getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();

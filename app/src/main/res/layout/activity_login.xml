@@ -75,7 +75,16 @@
         app:layout_constraintStart_toStartOf="@id/loginEmail"
         android:layout_marginStart="8dp"
         app:layout_constraintTop_toBottomOf="@+id/loginPassword" /><!-- login button -->
-
+    
+    <ProgressBar
+        android:id="@+id/loginProgress"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:indeterminateTint="@color/progressBarBlue"
+        app:layout_constraintTop_toTopOf="@id/loginButton"
+        app:layout_constraintBottom_toBottomOf="@id/loginButton"
+        app:layout_constraintStart_toEndOf="@id/loginButton"
+        android:layout_marginStart="10dp"/> <!--progress-->
 
     <LinearLayout
         android:id="@+id/x2"
@@ -93,6 +102,10 @@
             android:textColor="@color/lightBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="1dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:text="Sign up" />
 
         <TextView
@@ -109,11 +122,15 @@
             android:id="@+id/loginForgottenPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="1dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:text="Reset password"
             android:textColor="@color/lightBlue"
             android:textSize="17sp" /> <!--Forgotten password?-->
 
-    </LinearLayout> <!--No account yet? Sign up-->
+    </LinearLayout> <!--Sign up or reset pw-->
 
 
 

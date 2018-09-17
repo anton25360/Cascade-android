@@ -14,6 +14,7 @@
     <color name="dark">#000D1E</color>
     <color name="lightBlue">#0072ff</color>
     <color name="title">#00A3FF</color>
+    <color name="progressBarBlue">#00c6ff</color>
     <color name="whiteAccentColour">#C0C0C0</color>
 
     <color name="error_color">#C62828</color> // Error color (Red 800)

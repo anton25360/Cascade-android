@@ -49,13 +49,11 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
     CardView cvItem;
-    String userID, sortID, path;
+    String userID, sortID;
     public static String docID;
     CoordinatorLayout mCoordinatorLayout;
     Query query;
     //SearchView mSearchView;
-
-    //TODO DISABLE GOING BACK ON LOGOUT !!! (finish; ?)
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -250,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseAuth.getInstance().signOut(); //logs the user out
+                finish();
                 openLogin();
             }
         });
