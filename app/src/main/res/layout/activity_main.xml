@@ -28,6 +28,8 @@
         android:src="@drawable/ic_add_white_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:tint="@color/black"
+        app:backgroundTint="@color/white"
         app:layout_anchor="@id/rv"
         android:layout_margin="16dp"
         app:layout_anchorGravity="bottom|right|end" />

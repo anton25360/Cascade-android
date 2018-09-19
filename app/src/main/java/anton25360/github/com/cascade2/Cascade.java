@@ -27,7 +27,7 @@ public class Cascade extends Application {
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //if Oreo or higher
 
-            NotificationChannel channel = new NotificationChannel(CHANNEL_1_ID, "Cascade Reminders", NotificationManager.IMPORTANCE_DEFAULT); //todo research notification importance
+            NotificationChannel channel = new NotificationChannel(CHANNEL_1_ID, "Cascade Reminders", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("Handles notifications for Cascade Reminders");
 
             NotificationManager manager = getSystemService(NotificationManager.class);
