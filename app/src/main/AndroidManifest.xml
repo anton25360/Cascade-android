@@ -21,9 +21,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Popups.PopupFragment"
-            android:theme="@style/AppTheme.PopupTheme" />
-        <activity
             android:name=".Popups.EditTask" />
             <!--android:theme="@style/AppTheme.PopupTheme"-->
         <activity android:name=".Login.LoginActivity" />

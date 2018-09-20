@@ -11,9 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import anton25360.github.com.cascade2.Cascade;
+import anton25360.github.com.cascade2.MainActivity;
 import anton25360.github.com.cascade2.R;
-
-import static anton25360.github.com.cascade2.Popups.PopupFragment.notificationTitle;
 
 
 public class AlarmReciever extends BroadcastReceiver {
@@ -28,7 +27,7 @@ public class AlarmReciever extends BroadcastReceiver {
 
         Notification notification = new NotificationCompat.Builder(context, Cascade.CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_chat_bubble_black) //todo change notification icon
-                .setContentTitle(notificationTitle) //todo change notification title
+                .setContentTitle(MainActivity.titleString) //todo title is invisible
                 .setContentText("Here is your reminder.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)

@@ -6,7 +6,7 @@
     android:layout_margin="10dp"
     android:background="@drawable/dialog_bg"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="240dp"
     android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
@@ -34,11 +34,47 @@
 
     </android.support.design.widget.TextInputLayout><!--desc input-->
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/x1"
+        app:layout_constraintTop_toBottomOf="@id/popup_titleInput"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/popup_ReminderIcon"
+            android:src="@drawable/ic_alarm_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/popup_ReminderIcon"
+            android:id="@+id/popup_ReminderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Reminder set"/>
+
+        <Switch
+            android:id="@+id/popup_ReminderSwitch"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.constraint.ConstraintLayout>
+
     <HorizontalScrollView
         android:id="@+id/popup_scrollGradients"
-        app:layout_constraintTop_toBottomOf="@id/popup_titleInput"
+        app:layout_constraintTop_toBottomOf="@id/x1"
         android:scrollbars="none"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -112,6 +148,6 @@
         android:text="More colours coming soon!"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="13dp"/>
+        android:layout_margin="13dp"/> <!--more colours coming soon!-->
 
 </android.support.constraint.ConstraintLayout>

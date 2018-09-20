@@ -1,24 +1,23 @@
 package anton25360.github.com.cascade2;
 
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,6 +30,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 
@@ -43,23 +47,22 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.uniquestudio.library.CircleCheckBox;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
 import anton25360.github.com.cascade2.Classes.AlarmReciever;
 import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.Classes.ReminderHolder;
-import anton25360.github.com.cascade2.Classes.Tab;
 import anton25360.github.com.cascade2.Classes.TabSub;
 import anton25360.github.com.cascade2.Classes.TabSubHolder;
+import anton25360.github.com.cascade2.DateTimeFragments.DatePickerFragment;
+import anton25360.github.com.cascade2.DateTimeFragments.TimePickerFragment;
 import anton25360.github.com.cascade2.Login.LoginActivity;
 import anton25360.github.com.cascade2.Popups.EditTask;
-import anton25360.github.com.cascade2.Popups.PopupFragment;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
 
     private static final String TAG = "MainActivity";
 
@@ -67,13 +70,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach;
     FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
-    String userID, sortID;
-    public static String docID;
+    String userID, sortID, timeString, dateString;
+    public static String docID, titleString;
     TextInputLayout title;
     Query query;
     Dialog mDialog;
     Calendar calendar = Calendar.getInstance();
-    //SearchView mSearchView;
+    TextView reminderText;
+    Switch reminderSwitch;
+    long alarmTime, alarmDate;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -120,10 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
 
-                //openNewTaskDialog();
-                //todo setAlarm();
-                popup();
-
+                openNewTaskDialog();
             }
         });
 
@@ -131,18 +133,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }//end of onCreate
 
-    private void popup() {
-        Intent intent = new Intent(this, PopupFragment.class);
-        startActivity(intent);
-    }
-
     private void openNewTaskDialog() {
 
         mDialog.setContentView(R.layout.popup_beta);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
-
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
         mDialog.show();
 
         Window window = mDialog.getWindow();
@@ -171,6 +165,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         title = mDialog.findViewById(R.id.popup_titleInput);
 
+        setReminderSwitch();
+
+    } //opens dialog to create a new list
+
+    private void setReminderSwitch() {
+
+        reminderSwitch = mDialog.findViewById(R.id.popup_ReminderSwitch);
+        reminderText = mDialog.findViewById(R.id.popup_ReminderText);
+
+        reminderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+
+                    //todo time before date picker????
+
+                    //open DatePicker
+                    DialogFragment datePicker = new DatePickerFragment();
+                    datePicker.show(getSupportFragmentManager(), "date picker");
+
+                    //open TimePicker
+                    DialogFragment timePicker = new TimePickerFragment();
+                    timePicker.show(getSupportFragmentManager(), "time picker");
+
+                    setAlarm();
+
+                } else {
+                    reminderText.setText("No Reminder set");
+                    dateString = DateFormat.getDateInstance().format(calendar.getTime()); //uses Calendar to set current date (default if user chooses no reminder)
+                    timeString = "bahaha";
+                    //todo cancel alarm
+                }
+            }
+
+        });
+
+    } //controls dialog's reminder (using Date & Time picker)
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay); //gets hour of day from the time picker
+        calendar.set(Calendar.MINUTE, minute); //gets minute from the time picker
+        alarmTime = calendar.getTimeInMillis();
+
+        timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()); //for the reminder set for the... string
+        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        alarmDate = calendar.getTimeInMillis();
+
+        dateString = DateFormat.getDateInstance().format(calendar.getTime());
+        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
     }
 
     private void initRecyclerView() { //init rv
@@ -430,9 +485,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.popup_addTask:
 
-                String titleString = title.getEditText().getText().toString().trim();
-                String timeString = "REMOVED";
-                String dateString = "REMOVED";
+                titleString = title.getEditText().getText().toString().trim(); //gets title from editText
 
                 if (titleString.isEmpty()) {
                     title.setError("Field can't be empty");
@@ -452,7 +505,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     Log.d(TAG, "onSuccessUpload: " + titleString);
                                 }
                             })
-
                             .addOnFailureListener(new OnFailureListener() { //if upload to Firebase db was unsuccessful...
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
@@ -462,27 +514,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
 
+                    timeString = null;
+                    dateString = null;
                     mDialog.dismiss(); //closes popup
                 }
                 break;
         }
     } //control popup colour selection here
 
-
-
-
-
     private void setAlarm() {
 
-        Toast.makeText(this, "alarm", Toast.LENGTH_SHORT).show();
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(MainActivity.this, AlarmReciever.class);
-        PendingIntent  pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
-        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,SystemClock.elapsedRealtime() + 30000, pendingIntent); //ring after 3 seconds
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0); //todo request code must be unique for eqch pending intent !
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
 
     }
+
 
 }

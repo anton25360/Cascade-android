@@ -112,7 +112,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Android%20Studio/Stable/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_share_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Android%20Studio/Stable/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_alarm_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -122,7 +122,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_share_black" />
+                            <entry key="outputName" value="ic_alarm_black" />
                             <entry key="sourceFile" value="C:\Users\anton" />
                           </map>
                         </option>
