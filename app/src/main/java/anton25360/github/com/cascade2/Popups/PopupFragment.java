@@ -1,9 +1,13 @@
 package anton25360.github.com.cascade2.Popups;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import anton25360.github.com.cascade2.Cascade;
+import anton25360.github.com.cascade2.Classes.AlarmReciever;
 import anton25360.github.com.cascade2.R;
 import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.DateTimeFragments.DatePickerFragment;
@@ -52,7 +58,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
     @BindView(R.id.popup_date)TextView date;
     @BindView(R.id.popup_time)TextView time;
     @BindView(R.id.popup_timeAllDay) TextView timeAllDay;
-    @BindView(R.id.popup_addTask)Button addTask;
+    @BindView(R.id.popup_addTaskTEMP)Button addTask;
     @BindView(R.id.popup_cancel)Button cancel;
     @BindView(R.id.popup_checkbox)CheckBox mCheckBox;
 
@@ -129,7 +135,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
             }
         });
 
-        addTask.setTransformationMethod(null); //set button to lowercase
+        //addTask.setTransformationMethod(null); //set button to lowercase
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +194,7 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*8), (int)(height*.8));
+        getWindow().setLayout((int)(width*.8), (int)(height*.8));
 
 
     } //sets the popup size
@@ -372,16 +378,30 @@ public class PopupFragment extends FragmentActivity implements DatePickerDialog.
 
 
 
+        startAlarm();
 
 
 
         //todo notifications start here
-        sendOnChannel1();
+        //sendOnChannel1();
 
 
 
 
     } //end of addItem
+
+    private void startAlarm() {
+        String time = String.valueOf(notificationTime);
+        String date = String.valueOf(notificationDate);
+
+        Toast.makeText(this, "time: " + time, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "time: " + date, Toast.LENGTH_SHORT).show();
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0); //todo request code must be unique for eqch pending intent !
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, notificationTime, pendingIntent);
+    }
 
     public void sendOnChannel1() {
 

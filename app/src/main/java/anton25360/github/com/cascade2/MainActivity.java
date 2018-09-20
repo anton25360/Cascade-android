@@ -1,11 +1,14 @@
 package anton25360.github.com.cascade2;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
@@ -42,6 +45,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.uniquestudio.library.CircleCheckBox;
 
+import java.util.Calendar;
+
+import anton25360.github.com.cascade2.Classes.AlarmReciever;
 import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.Classes.ReminderHolder;
 import anton25360.github.com.cascade2.Classes.Tab;
@@ -66,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextInputLayout title;
     Query query;
     Dialog mDialog;
+    Calendar calendar = Calendar.getInstance();
     //SearchView mSearchView;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -113,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
 
-                openNewTaskPopup();
+                //openNewTaskDialog();
+                //todo setAlarm();
+                popup();
 
             }
         });
@@ -122,10 +131,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }//end of onCreate
 
-    private void openNewTaskPopup() {
+    private void popup() {
+        Intent intent = new Intent(this, PopupFragment.class);
+        startActivity(intent);
+    }
+
+    private void openNewTaskDialog() {
 
         mDialog.setContentView(R.layout.popup_beta);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
         mDialog.show();
 
         Window window = mDialog.getWindow();
@@ -209,9 +226,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 adapterSub.startListening();
                 adapterSub.notifyDataSetChanged();
 
-
-                Toast.makeText(MainActivity.this, "adapterSub: created", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -291,6 +305,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 openLogin();
             }
         });
+
 
         builder.show();
     } //opens a profile dialog
@@ -414,7 +429,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.popup_addTask:
-                Toast.makeText(this, "boobs", Toast.LENGTH_SHORT).show();
 
                 String titleString = title.getEditText().getText().toString().trim();
                 String timeString = "REMOVED";
@@ -453,5 +467,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     } //control popup colour selection here
+
+
+
+
+
+    private void setAlarm() {
+
+        Toast.makeText(this, "alarm", Toast.LENGTH_SHORT).show();
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(MainActivity.this, AlarmReciever.class);
+        PendingIntent  pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,SystemClock.elapsedRealtime() + 30000, pendingIntent); //ring after 3 seconds
+
+    }
 
 }

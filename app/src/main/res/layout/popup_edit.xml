@@ -23,7 +23,7 @@
         android:textColor="@android:color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@id/edit_background"
-        app:layout_constraintStart_toStartOf="@id/edit_background" /> <!--title-->
+        app:layout_constraintStart_toStartOf="@id/edit_background" /> <!--title--> <!--todo product sans font doesnt work on title-->
 
     <TextView
         android:id="@+id/edit_date"

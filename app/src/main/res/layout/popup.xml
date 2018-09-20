@@ -119,17 +119,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" /> <!--cancel-->
 
+
     <Button
-        android:id="@+id/popup_addTask"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/btn_edit"
-        android:text="Add Task"
-        android:textColor="@android:color/white"
+        android:id="@+id/popup_addTaskTEMP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" /> <!--add task-->
+        android:text="add"/> <!--add task-->
 
 
 
