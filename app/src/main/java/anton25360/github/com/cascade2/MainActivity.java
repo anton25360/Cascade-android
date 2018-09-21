@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -49,6 +50,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import anton25360.github.com.cascade2.Classes.AlarmReciever;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView reminderText;
     Switch reminderSwitch;
     long alarmTime, alarmDate;
+    boolean hasAlarm;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -173,6 +176,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         reminderSwitch = mDialog.findViewById(R.id.popup_ReminderSwitch);
         reminderText = mDialog.findViewById(R.id.popup_ReminderText);
+        dateString = DateFormat.getDateInstance().format(calendar.getTime()); //uses Calendar to set current date (default if user chooses no reminder)
+        timeString = "";
+        //cancelAlarm(); //set no alarm by default
 
         reminderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -180,41 +186,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (isChecked) {
 
-                    //todo time before date picker????
-
-                    //open DatePicker
-                    DialogFragment datePicker = new DatePickerFragment();
-                    datePicker.show(getSupportFragmentManager(), "date picker");
+                    hasAlarm = true;
 
                     //open TimePicker
                     DialogFragment timePicker = new TimePickerFragment();
                     timePicker.show(getSupportFragmentManager(), "time picker");
 
-                    setAlarm();
+                    //open DatePicker
+                    DialogFragment datePicker = new DatePickerFragment();
+                    datePicker.show(getSupportFragmentManager(), "date picker");
 
                 } else {
+                    hasAlarm = false;
                     reminderText.setText("No Reminder set");
-                    dateString = DateFormat.getDateInstance().format(calendar.getTime()); //uses Calendar to set current date (default if user chooses no reminder)
-                    timeString = "bahaha";
-                    //todo cancel alarm
                 }
             }
-
         });
 
     } //controls dialog's reminder (using Date & Time picker)
 
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay); //gets hour of day from the time picker
-        calendar.set(Calendar.MINUTE, minute); //gets minute from the time picker
-        alarmTime = calendar.getTimeInMillis();
-
-        timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()); //for the reminder set for the... string
-        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
-
-    }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -226,6 +216,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         dateString = DateFormat.getDateInstance().format(calendar.getTime());
         reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay); //gets hour of day from the time picker
+        calendar.set(Calendar.MINUTE, minute); //gets minute from the time picker
+        alarmTime = calendar.getTimeInMillis();
+
+        timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()); //for the reminder set for the... string
+        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+
     }
 
     private void initRecyclerView() { //init rv
@@ -485,6 +488,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.popup_addTask:
 
+                if (hasAlarm) {
+                    setAlarm();
+                } else {
+                    //no alarm set
+                }
+
                 titleString = title.getEditText().getText().toString().trim(); //gets title from editText
 
                 if (titleString.isEmpty()) {
@@ -514,8 +523,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
 
-                    timeString = null;
-                    dateString = null;
                     mDialog.dismiss(); //closes popup
                 }
                 break;
@@ -523,13 +530,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     } //control popup colour selection here
 
     private void setAlarm() {
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReciever.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0); //todo request code must be unique for eqch pending intent !
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
 
     }
-
 
 }

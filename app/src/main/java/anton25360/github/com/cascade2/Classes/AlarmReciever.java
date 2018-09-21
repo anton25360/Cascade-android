@@ -17,8 +17,7 @@ import anton25360.github.com.cascade2.R;
 
 public class AlarmReciever extends BroadcastReceiver {
 
-    private NotificationManagerCompat notificationManager;
-    //Context mContext;
+    NotificationManagerCompat notificationManager;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
