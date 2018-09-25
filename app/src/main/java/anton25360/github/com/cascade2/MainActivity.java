@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     //adds the card to the main screen (and db)
 
-                    Reminder reminder = new Reminder(titleString, dateString, timeString, colour);
+                    Reminder reminder = new Reminder(titleString, dateString, timeString, colour, hasAlarm);
 
                     userID = user.getUid();
                     db.collection(userID).document().set(reminder) //document id is auto generated

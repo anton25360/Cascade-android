@@ -4,7 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_marginBottom="9dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -24,12 +23,13 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tab_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:textSize="20sp"
-        android:text="sub item 1"
+        android:text="sub item"
         android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tab_checkBox" />
 
 </android.support.constraint.ConstraintLayout>

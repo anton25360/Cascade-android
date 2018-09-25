@@ -2,20 +2,27 @@ package anton25360.github.com.cascade2.Popups;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.uniquestudio.library.CircleCheckBox;
 
+import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.Classes.Tab;
 import anton25360.github.com.cascade2.Classes.TabHolder;
 import anton25360.github.com.cascade2.MainActivity;
@@ -43,7 +51,7 @@ import butterknife.ButterKnife;
 
 import static anton25360.github.com.cascade2.MainActivity.*;
 
-public class EditTask extends Activity{
+public class EditTask extends Activity implements View.OnClickListener{
 
     private static final String TAG = "EditTask";
 
@@ -56,12 +64,16 @@ public class EditTask extends Activity{
     @BindView(R.id.edit_input)TextInputEditText mInput;
     @BindView(R.id.edit_inputSend)Button mSend;
     @BindView(R.id.edit_delete)Button mDelete;
-    @BindView(R.id.edit_share)Button mShare;
+    @BindView(R.id.edit_edit)Button mEdit;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static FirestoreRecyclerAdapter adapter;
     String title, date, time, colour;
+    Dialog mDialog;
+    TextInputEditText titleEdit;
+    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach;
+    boolean hasAlarm;
 
     @Override
     protected void onStart() {
@@ -78,6 +90,7 @@ public class EditTask extends Activity{
         setContentView(R.layout.popup_edit);
         ButterKnife.bind(this);
 
+        mDialog = new Dialog(this);
         getDocInfo(); //gets title, date, and time from doc (in db)
         createAdaper(); // creates adapter
 
@@ -102,14 +115,54 @@ public class EditTask extends Activity{
             }
         });
 
-        mShare.setOnClickListener(new View.OnClickListener() {
+        mEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo task sharing
+                //todo task edit
 
-                shareTask();
+
+                openEditDialog();
             }
         });
+    }
+
+    private void openEditDialog() {
+        Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
+
+        //todo finish edit dialog
+
+        mDialog.setContentView(R.layout.popup_beta);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        mDialog.show();
+
+        Window window = mDialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); //width + height
+        layoutParams.gravity = Gravity.BOTTOM; //anchors the popup to the bottom of the screen
+        window.setAttributes(layoutParams); //set changes
+
+        mBlue = mDialog.findViewById(R.id.popup_buttonBlue);
+        mOrange = mDialog.findViewById(R.id.popup_buttonOrange);
+        mGreen = mDialog.findViewById(R.id.popup_buttonGreen);
+        mRed = mDialog.findViewById(R.id.popup_buttonRed);
+        mPurple = mDialog.findViewById(R.id.popup_buttonPurple);
+        mPeach = mDialog.findViewById(R.id.popup_buttonPeach);
+
+        mBlue.setOnClickListener(this);
+        mOrange.setOnClickListener(this);
+        mGreen.setOnClickListener(this);
+        mRed.setOnClickListener(this);
+        mPurple.setOnClickListener(this);
+        mPeach.setOnClickListener(this);
+
+        mAdd = mDialog.findViewById(R.id.popup_addTask);
+        mAdd.setTransformationMethod(null);
+        mAdd.setText("Done"); //todo change this text?
+        mAdd.setOnClickListener(this);
+
+        titleEdit = mDialog.findViewById(R.id.popup_titleInputSetTitle);
+        titleEdit.setText(title);
+
     }
 
     private void createAdaper() {
@@ -185,6 +238,8 @@ public class EditTask extends Activity{
                         date = documentSnapshot.getString("date");
                         time = documentSnapshot.getString("time");
                         colour = documentSnapshot.getString("colour");
+                        hasAlarm = documentSnapshot.getBoolean("hasAlarm");
+
 
                         titleField.setText(title);
                         dateField.setText(date);
@@ -266,34 +321,6 @@ public class EditTask extends Activity{
 
     }
 
-    private void shareTask() {
-
-
-        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://www.cascade.com/")) //todo change link?
-                .setDynamicLinkDomain("cascade.page.link")
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build()) // Open links with this app on Android
-                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build()) // Open links with com.example.ios on iOS
-                .buildDynamicLink();
-
-        Uri dynamicLinkUri = dynamicLink.getUri();
-
-        String s = dynamicLink.toString();
-
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-
-
-
-
-        Intent sendIntent = new Intent();
-        String msg = "Hey, check this out: " + dynamicLink;
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, msg);
-        sendIntent.setType("text/plain");
-        startActivity(sendIntent);
-
-    }
-
     private void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -336,4 +363,122 @@ public class EditTask extends Activity{
             adapter.stopListening();
         }
     }
+
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.popup_buttonBlue:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_checked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "blue";
+                break;
+
+            case R.id.popup_buttonOrange:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_checked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "orange";
+                break;
+
+            case R.id.popup_buttonGreen:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_checked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "green";
+                break;
+
+            case R.id.popup_buttonRed:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_checked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "red";
+                break;
+
+            case R.id.popup_buttonPurple:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_checked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                colour = "purple";
+                break;
+
+            case R.id.popup_buttonPeach:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_checked);
+                colour = "peach";
+                break;
+
+
+            case R.id.popup_addTask:
+
+                String bool = Boolean.toString(hasAlarm);
+                Toast.makeText(this, bool, Toast.LENGTH_SHORT).show();
+                break;
+
+            /*...
+
+            case R.id.popup_addTask:
+
+                if (hasAlarm) {
+                    setAlarm();
+                } else {
+                    //no alarm set
+                }
+
+                titleString = title.getEditText().getText().toString().trim(); //gets title from editText
+
+                if (titleString.isEmpty()) {
+                    title.setError("Field can't be empty");
+
+                } else {
+
+                    //adds the card to the main screen (and db)
+
+                    Reminder reminder = new Reminder(titleString, dateString, timeString, colour);
+
+                    userID = user.getUid();
+                    db.collection(userID).document().set(reminder) //document id is auto generated
+
+                            .addOnSuccessListener(new OnSuccessListener<Void>() { //if upload to Firebase db was successful...
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "onSuccessUpload: " + titleString);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() { //if upload to Firebase db was unsuccessful...
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+
+                                    Log.d(TAG, "Error: " + e.toString()); //tells us the error
+                                }
+                            });
+
+                    mDialog.dismiss(); //closes popup
+                }
+                break;
+
+                ...*/
+        }
+    } //control popup colour selection here
+
 }

@@ -5,15 +5,17 @@ public class Reminder {
     private String date;
     private String time;
     private String colour;
+    private boolean hasAlarm;
 
 
     public Reminder() {} //public no-arg constructor needed
 
-    public Reminder(String title, String date, String time, String colour) {
+    public Reminder(String title, String date, String time, String colour, boolean hasAlarm) {
         this.title = title;
         this.date = date;
         this.time = time;
         this.colour = colour;
+        this.hasAlarm = hasAlarm;
 
     }
 
@@ -32,6 +34,11 @@ public class Reminder {
     public String getColour() {
         return colour;
     }
+
+    public boolean gethasAlarm() {
+        return hasAlarm;
+    }
+
 
 
 }
