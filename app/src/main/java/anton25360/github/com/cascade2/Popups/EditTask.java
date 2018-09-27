@@ -2,7 +2,12 @@ package anton25360.github.com.cascade2.Popups;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,9 +18,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,8 +32,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -41,9 +53,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.uniquestudio.library.CircleCheckBox;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+
+import anton25360.github.com.cascade2.Classes.AlarmReciever;
 import anton25360.github.com.cascade2.Classes.Reminder;
 import anton25360.github.com.cascade2.Classes.Tab;
 import anton25360.github.com.cascade2.Classes.TabHolder;
+import anton25360.github.com.cascade2.DateTimeFragments.DatePickerFragment;
+import anton25360.github.com.cascade2.DateTimeFragments.TimePickerFragment;
 import anton25360.github.com.cascade2.MainActivity;
 import anton25360.github.com.cascade2.R;
 import butterknife.BindView;
@@ -51,7 +69,7 @@ import butterknife.ButterKnife;
 
 import static anton25360.github.com.cascade2.MainActivity.*;
 
-public class EditTask extends Activity implements View.OnClickListener{
+public class EditTask extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
 
     private static final String TAG = "EditTask";
 
@@ -69,11 +87,16 @@ public class EditTask extends Activity implements View.OnClickListener{
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static FirestoreRecyclerAdapter adapter;
-    String title, date, time, colour;
+    String title, date, time, colour, userID, dateString, timeString; //xxxString used for time & datepickers. (others used for cloud import)
     Dialog mDialog;
     TextInputEditText titleEdit;
     Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach;
     boolean hasAlarm;
+    long alarmTime, alarmDate;
+    TextView reminderText;
+    Switch reminderSwitch;
+    Calendar calendar  = Calendar.getInstance();
+    DocumentSnapshot snapshot;
 
     @Override
     protected void onStart() {
@@ -127,7 +150,6 @@ public class EditTask extends Activity implements View.OnClickListener{
     }
 
     private void openEditDialog() {
-        Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
 
         //todo finish edit dialog
 
@@ -140,6 +162,20 @@ public class EditTask extends Activity implements View.OnClickListener{
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); //width + height
         layoutParams.gravity = Gravity.BOTTOM; //anchors the popup to the bottom of the screen
         window.setAttributes(layoutParams); //set changes
+
+        setButtonsBackground();
+        setReminderSwitch();
+
+        /*reminderText = mDialog.findViewById(R.id.popup_ReminderText);
+        reminderSwitch = mDialog.findViewById(R.id.popup_ReminderSwitch);
+        if (hasAlarm) {
+            reminderSwitch.setChecked(true);
+            reminderText.setText("Reminder set for " + date + " @ " + time); //sets the date field to selected date from calendar //todo replate @ symbol
+
+        } else {
+            reminderText.setText("No Reminder set");
+            reminderSwitch.setChecked(false);
+        }*/
 
         mBlue = mDialog.findViewById(R.id.popup_buttonBlue);
         mOrange = mDialog.findViewById(R.id.popup_buttonOrange);
@@ -163,9 +199,79 @@ public class EditTask extends Activity implements View.OnClickListener{
         titleEdit = mDialog.findViewById(R.id.popup_titleInputSetTitle);
         titleEdit.setText(title);
 
+    } //open the edit dialog
+
+    private void setReminderSwitch() {
+
+        reminderSwitch = mDialog.findViewById(R.id.popup_ReminderSwitch);
+        reminderText = mDialog.findViewById(R.id.popup_ReminderText);
+
+        if (hasAlarm) {
+            reminderSwitch.setChecked(true);
+            reminderText.setText("Reminder set for " + date + " @ " + time); //sets the date field to selected date from calendar //todo replate @ symbol
+
+        } else {
+            reminderText.setText("No Reminder set");
+            reminderSwitch.setChecked(false);
+        }
+
+
+        dateString = DateFormat.getDateInstance().format(calendar.getTime()); //uses Calendar to set current date (default if user chooses no reminder)
+        timeString = "";
+        //cancelAlarm(); //set no alarm by default
+
+        reminderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+
+                    hasAlarm = true;
+
+                    //open TimePicker
+                    DialogFragment timePicker = new TimePickerFragment();
+                    timePicker.show(getSupportFragmentManager(), "time picker");
+
+                    //open DatePicker
+                    DialogFragment datePicker = new DatePickerFragment();
+                    datePicker.show(getSupportFragmentManager(), "date picker");
+
+                } else {
+                    hasAlarm = false;
+                    reminderText.setText("No Reminder set");
+                }
+            }
+        });
+
+    } //controls dialog's reminder (using Date & Time picker)
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        alarmDate = calendar.getTimeInMillis();
+
+        dateString = DateFormat.getDateInstance().format(calendar.getTime());
+        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay); //gets hour of day from the time picker
+        calendar.set(Calendar.MINUTE, minute); //gets minute from the time picker
+        alarmTime = calendar.getTimeInMillis();
+
+        timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()); //for the reminder set for the... string
+        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+
     }
 
     private void createAdaper() {
+
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -185,13 +291,14 @@ public class EditTask extends Activity implements View.OnClickListener{
             protected void onBindViewHolder(@NonNull final TabHolder holder, final int position, @NonNull Tab model) {
                 holder.bind(model);
 
+
                 //checkbox
                 final CircleCheckBox checkBox = holder.itemView.findViewById(R.id.tab_checkBox);
                 checkBox.setListener(new CircleCheckBox.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(boolean isChecked) {
 
-                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                        snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
                         String tabID = snapshot.getString("title");
                         String snapshotID = snapshot.getId();
                         String userID = user.getUid();
@@ -209,6 +316,8 @@ public class EditTask extends Activity implements View.OnClickListener{
                         db.collection(userID).document(docID).collection(docID + "collection").document(snapshotID).set(tab);
                     }
                 });
+
+
             }
 
             @Override
@@ -216,13 +325,20 @@ public class EditTask extends Activity implements View.OnClickListener{
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tab, group, false);
                 return new TabHolder(view);
             }
+
+
+
+
         };
 
         mRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        //todo ith here?
 
-    }
+
+
+    } //creates adapter for subtasks
 
     private void getDocInfo() {
 
@@ -256,12 +372,12 @@ public class EditTask extends Activity implements View.OnClickListener{
                     }
                 });
 
-    }
+    } //get info frm cloud to name the list attributes (title, date...)
 
     private void setBackground() {
 
         if (colour.equals("blue")) { //blue
-            background.setBackgroundResource(R.drawable.gradient_blue_bg);
+            background.setBackgroundResource(R.drawable.gradient_blue_bg); //BLUE IS CHECKED BY DEFAULT
 
         } else if (colour.equals("orange")) { //orange
             background.setBackgroundResource(R.drawable.gradient_orange_bg);
@@ -283,7 +399,51 @@ public class EditTask extends Activity implements View.OnClickListener{
         } //blank
 
 
-    }
+    } //set initial bg colour
+
+    private void setButtonsBackground() {
+
+        if (colour.equals("orange")) { //orange
+            Button button = mDialog.findViewById(R.id.popup_buttonOrange);
+            button.setBackgroundResource(R.drawable.gradient_orange_checked);
+
+            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+        } else if (colour.equals("green")) { //green
+            Button button = mDialog.findViewById(R.id.popup_buttonGreen);
+            button.setBackgroundResource(R.drawable.gradient_green_checked);
+
+            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+        } else if (colour.equals("red")) { //red
+            Button button = mDialog.findViewById(R.id.popup_buttonRed);
+            button.setBackgroundResource(R.drawable.gradient_red_checked);
+
+            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+        } else if (colour.equals("purple")) { //purple
+            Button button = mDialog.findViewById(R.id.popup_buttonPurple);
+            button.setBackgroundResource(R.drawable.gradient_purple_checked);
+
+            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+        } else if (colour.equals("peach")) { //peach
+            Button button = mDialog.findViewById(R.id.popup_buttonPeach);
+            button.setBackgroundResource(R.drawable.gradient_peach_checked);
+
+            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+        } else { //default is blue
+            background.setBackgroundResource(R.drawable.gradient_blue_bg);
+        } //blank
+
+
+    } //set dialog buttons colour
 
     private void deleteTask() {
 
@@ -319,12 +479,12 @@ public class EditTask extends Activity implements View.OnClickListener{
         builder.setNegativeButton("No", null);
         builder.show();
 
-    }
+    } //delete entire list
 
     private void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-    }
+    } //go to main activity
 
     private void addItem() {
 
@@ -353,7 +513,7 @@ public class EditTask extends Activity implements View.OnClickListener{
 
         mInput.getText().clear(); //clear edittext field
 
-    }
+    } //adds subtask
 
     @Override
     protected void onStop() {
@@ -362,7 +522,7 @@ public class EditTask extends Activity implements View.OnClickListener{
         if (adapter != null) {
             adapter.stopListening();
         }
-    }
+    } //onStop activity
 
     public void onClick(View v) {
 
@@ -375,6 +535,7 @@ public class EditTask extends Activity implements View.OnClickListener{
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "blue";
+                background.setBackgroundResource(R.drawable.gradient_blue_bg);
                 break;
 
             case R.id.popup_buttonOrange:
@@ -385,6 +546,7 @@ public class EditTask extends Activity implements View.OnClickListener{
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "orange";
+                background.setBackgroundResource(R.drawable.gradient_orange_bg);
                 break;
 
             case R.id.popup_buttonGreen:
@@ -395,6 +557,7 @@ public class EditTask extends Activity implements View.OnClickListener{
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "green";
+                background.setBackgroundResource(R.drawable.gradient_green_bg);
                 break;
 
             case R.id.popup_buttonRed:
@@ -405,6 +568,7 @@ public class EditTask extends Activity implements View.OnClickListener{
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "red";
+                background.setBackgroundResource(R.drawable.gradient_red_bg);
                 break;
 
             case R.id.popup_buttonPurple:
@@ -415,6 +579,7 @@ public class EditTask extends Activity implements View.OnClickListener{
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_checked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 colour = "purple";
+                background.setBackgroundResource(R.drawable.gradient_purple_bg);
                 break;
 
             case R.id.popup_buttonPeach:
@@ -425,38 +590,37 @@ public class EditTask extends Activity implements View.OnClickListener{
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_checked);
                 colour = "peach";
+                background.setBackgroundResource(R.drawable.gradient_peach_bg);
                 break;
 
-
-            case R.id.popup_addTask:
-
-                String bool = Boolean.toString(hasAlarm);
-                Toast.makeText(this, bool, Toast.LENGTH_SHORT).show();
-                break;
-
-            /*...
+            //...
 
             case R.id.popup_addTask:
 
                 if (hasAlarm) {
                     setAlarm();
+                    dateField.setText(dateString);
+                    timeField.setText(timeString);
                 } else {
                     //no alarm set
+                    timeField.setText("");
                 }
 
-                titleString = title.getEditText().getText().toString().trim(); //gets title from editText
+                title = titleEdit.getText().toString().trim(); //gets title from editText
+                MainActivity.titleString = title;
 
-                if (titleString.isEmpty()) {
-                    title.setError("Field can't be empty");
+                date = dateString;
+                time = timeString;
+
+                if (title.isEmpty()) {
+                    titleEdit.setError("Field can't be empty");
 
                 } else {
 
-                    //adds the card to the main screen (and db)
-
-                    Reminder reminder = new Reminder(titleString, dateString, timeString, colour);
+                    Reminder reminder = new Reminder(title, date, time, colour, hasAlarm);
 
                     userID = user.getUid();
-                    db.collection(userID).document().set(reminder) //document id is auto generated
+                    db.collection(userID).document(docID).set(reminder) //update fields
 
                             .addOnSuccessListener(new OnSuccessListener<Void>() { //if upload to Firebase db was successful...
                                 @Override
@@ -474,11 +638,26 @@ public class EditTask extends Activity implements View.OnClickListener{
                             });
 
                     mDialog.dismiss(); //closes popup
+
+                    titleField.setText(title);
+                    //todo update all fields
+
+
                 }
                 break;
 
-                ...*/
+                //...
         }
-    } //control popup colour selection here
+    } //control popup colour selection here + edit commits
+
+    private void setAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+
+    }
+
+
 
 }

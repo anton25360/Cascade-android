@@ -8,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
@@ -21,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
 
     private String colour = "";
-    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach;
+    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, openEdit;
     FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
     String userID, sortID, timeString, dateString;
@@ -205,7 +207,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     } //controls dialog's reminder (using Date & Time picker)
 
-
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
@@ -248,8 +249,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .collection(userID)
                 .orderBy(sortID, Query.Direction.ASCENDING);
 
-        //todo user ( whereEqualTo("title", "hello"); ) for SEARCH
-
         FirestoreRecyclerOptions<Reminder> options = new FirestoreRecyclerOptions.Builder<Reminder>()
                 .setQuery(query, Reminder.class)
                 .build();
@@ -262,8 +261,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
                 docID = snapshot.getId();
 
+                openEdit = holder.itemView.findViewById(R.id.btnOpenEdit);
+                openEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        openEditPopup();
+
+                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                        docID = snapshot.getId();
+                    }
+                });
+
                 holder.bind(model);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    
+                /*holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -274,10 +286,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                     }
-                });
+                });*/
 
                 recyclerViewSub = holder.itemView.findViewById(R.id.widget_rvSub);
-
 
                 createSubAdaper();
                 recyclerViewSub.setAdapter(adapterSub);
@@ -396,8 +407,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Query query = FirebaseFirestore.getInstance()
                 .collection(userID).document(docID).collection(docID + "collection")
                 .orderBy("checked", Query.Direction.ASCENDING)
-                .whereEqualTo("checked", false)
-                .limit(3);
+                .whereEqualTo("checked", false); //to limit number of subtasks, use .limit(3)
 
         FirestoreRecyclerOptions<TabSub> options = new FirestoreRecyclerOptions.Builder<TabSub>()
                 .setQuery(query, TabSub.class)
@@ -408,7 +418,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected void onBindViewHolder(@NonNull final TabSubHolder holder, final int position, @NonNull TabSub model) {
                 holder.bind(model);
-
             }
 
             @Override
@@ -419,8 +428,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         Log.d(TAG, "adapterSub: created");
-
-
     }
 
     public void onClick(View v) {
