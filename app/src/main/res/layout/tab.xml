@@ -35,6 +35,7 @@
         android:id="@+id/tab_delete"
         android:layout_width="26dp"
         android:layout_height="26dp"
+        android:padding="2dp"
         android:background="@drawable/ic_cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tab_title"
