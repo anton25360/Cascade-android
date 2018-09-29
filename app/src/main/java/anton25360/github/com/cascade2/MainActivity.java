@@ -290,10 +290,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerView.setAdapter(adapter);
 
-        int resId = R.anim.layout_animation_fall_down;
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this, resId);
-        recyclerView.setLayoutAnimation(animation);
-
     } //initialises the recyclerView and FirebaseRecyclerAdapter
 
     private void initToolbar() {
