@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/popup_layout"
     android:layout_margin="10dp"
     android:background="@drawable/dialog_bg"
     android:layout_width="match_parent"
@@ -127,6 +126,13 @@
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_peach_unchecked"/> <!--peach-->
+
+            <Button
+                android:id="@+id/popup_buttonSylvia"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_sylvia_unchecked"/> <!--sylvia-->
 
         </LinearLayout> <!--horizontal layout containing the buttons-->
 

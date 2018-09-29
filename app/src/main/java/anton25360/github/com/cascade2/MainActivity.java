@@ -8,10 +8,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +29,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -52,7 +51,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import anton25360.github.com.cascade2.Classes.AlarmReciever;
@@ -71,14 +69,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
 
     private String colour = "";
-    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, openEdit;
+    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia, openEdit;
     FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
     String userID, sortID, timeString, dateString;
     public static String docID, titleString;
     TextInputLayout title;
     Query query;
-    Dialog mDialog;
+    Dialog dialogCreate, dialogLogout;
     Calendar calendar = Calendar.getInstance();
     TextView reminderText;
     Switch reminderSwitch;
@@ -97,10 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (user != null) { //if user is logged in...
 
             adapter.startListening(); //connects to firebase collection
-
-
-
-
             Toast.makeText(this, "listening...", Toast.LENGTH_SHORT).show();
 
         } else {
@@ -121,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mDialog = new Dialog(this);
+        dialogCreate = new Dialog(this);
+        dialogLogout = new Dialog(this);
 
         //sets the toolbar
         initToolbar();
@@ -140,22 +135,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void openNewTaskDialog() {
 
-        mDialog.setContentView(R.layout.popup_beta);
-        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
-        mDialog.show();
+        dialogCreate.setContentView(R.layout.dialog_create);
+        dialogCreate.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        dialogCreate.show();
 
-        Window window = mDialog.getWindow();
+        Window window = dialogCreate.getWindow();
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); //width + height
         layoutParams.gravity = Gravity.BOTTOM; //anchors the popup to the bottom of the screen
         window.setAttributes(layoutParams); //set changes
 
-        mBlue = mDialog.findViewById(R.id.popup_buttonBlue);
-        mOrange = mDialog.findViewById(R.id.popup_buttonOrange);
-        mGreen = mDialog.findViewById(R.id.popup_buttonGreen);
-        mRed = mDialog.findViewById(R.id.popup_buttonRed);
-        mPurple = mDialog.findViewById(R.id.popup_buttonPurple);
-        mPeach = mDialog.findViewById(R.id.popup_buttonPeach);
+        mBlue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+        mOrange = dialogCreate.findViewById(R.id.popup_buttonOrange);
+        mGreen = dialogCreate.findViewById(R.id.popup_buttonGreen);
+        mRed = dialogCreate.findViewById(R.id.popup_buttonRed);
+        mPurple = dialogCreate.findViewById(R.id.popup_buttonPurple);
+        mPeach = dialogCreate.findViewById(R.id.popup_buttonPeach);
+        mSylvia = dialogCreate.findViewById(R.id.popup_buttonSylvia);
 
         mBlue.setOnClickListener(this);
         mOrange.setOnClickListener(this);
@@ -163,12 +159,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRed.setOnClickListener(this);
         mPurple.setOnClickListener(this);
         mPeach.setOnClickListener(this);
+        mSylvia.setOnClickListener(this);
 
-        mAdd = mDialog.findViewById(R.id.popup_addTask);
+        mAdd = dialogCreate.findViewById(R.id.popup_addTask);
         mAdd.setTransformationMethod(null);
         mAdd.setOnClickListener(this);
 
-        title = mDialog.findViewById(R.id.popup_titleInput);
+        title = dialogCreate.findViewById(R.id.popup_titleInput);
 
         setReminderSwitch();
 
@@ -176,8 +173,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setReminderSwitch() {
 
-        reminderSwitch = mDialog.findViewById(R.id.popup_ReminderSwitch);
-        reminderText = mDialog.findViewById(R.id.popup_ReminderText);
+        reminderSwitch = dialogCreate.findViewById(R.id.popup_ReminderSwitch);
+        reminderText = dialogCreate.findViewById(R.id.popup_ReminderText);
         dateString = DateFormat.getDateInstance().format(calendar.getTime()); //uses Calendar to set current date (default if user chooses no reminder)
         timeString = "";
         //cancelAlarm(); //set no alarm by default
@@ -216,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmDate = calendar.getTimeInMillis();
 
         dateString = DateFormat.getDateInstance().format(calendar.getTime());
-        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
 
     }
 
@@ -228,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmTime = calendar.getTimeInMillis();
 
         timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()); //for the reminder set for the... string
-        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
 
     }
 
@@ -274,19 +271,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
 
                 holder.bind(model);
-                    
-                /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        openEditPopup();
-
-                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-                        docID = snapshot.getId();
-
-
-                    }
-                });*/
 
                 recyclerViewSub = holder.itemView.findViewById(R.id.widget_rvSub);
 
@@ -306,6 +290,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerView.setAdapter(adapter);
 
+        int resId = R.anim.layout_animation_fall_down;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this, resId);
+        recyclerView.setLayoutAnimation(animation);
 
     } //initialises the recyclerView and FirebaseRecyclerAdapter
 
@@ -361,22 +348,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void openProfileDialog() {
 
-       String email = user.getEmail();
+        dialogLogout.setContentView(R.layout.dialog_confirm_logout);
+        dialogLogout.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        dialogLogout.show();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Signed in as " + email);
-        builder.setPositiveButton("Close", null);
-        builder.setNegativeButton("Log out", new DialogInterface.OnClickListener() {
+        Window window = dialogLogout.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); //width + height
+        layoutParams.gravity = Gravity.BOTTOM; //anchors the popup to the bottom of the screen
+        window.setAttributes(layoutParams); //set changes
+
+        String email = user.getEmail();
+        TextView textView = dialogLogout.findViewById(R.id.logoutText);
+        textView.setText("Signed in as " + email);
+
+        Button logout = dialogLogout.findViewById(R.id.logoutButton);
+        logout.setTransformationMethod(null);
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View view) {
+
                 FirebaseAuth.getInstance().signOut(); //logs the user out
                 finish();
                 openLogin();
+
             }
         });
 
+        //todo cancel dialogs padding
+        TextView cancel = dialogLogout.findViewById(R.id.cancelLogout);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        builder.show();
+                dialogLogout.dismiss();
+            }
+        });
+
     } //opens a profile dialog
 
     private void openEditPopup() {
@@ -400,7 +408,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViewSub.setLayoutManager(layoutManager);
-
 
         String userID = user.getUid();
 
@@ -440,6 +447,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "blue";
                 break;
 
@@ -450,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "orange";
                 break;
 
@@ -460,6 +469,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "green";
                 break;
 
@@ -470,6 +480,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mRed.setBackgroundResource(R.drawable.gradient_red_checked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "red";
                 break;
 
@@ -480,6 +491,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_checked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "purple";
                 break;
 
@@ -490,7 +502,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_checked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "peach";
+                break;
+
+            case R.id.popup_buttonSylvia:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_checked);
+                colour = "sylvia";
                 break;
 
             case R.id.popup_addTask:
@@ -530,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
 
-                    mDialog.dismiss(); //closes popup
+                    dialogCreate.dismiss(); //closes popup
                 }
                 break;
         }

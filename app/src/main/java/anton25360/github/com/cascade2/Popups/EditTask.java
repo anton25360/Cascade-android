@@ -1,7 +1,6 @@
 package anton25360.github.com.cascade2.Popups;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -12,18 +11,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,7 +34,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -46,8 +41,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -88,9 +81,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static FirestoreRecyclerAdapter adapter;
     String title, date, time, colour, userID, dateString, timeString; //xxxString used for time & datepickers. (others used for cloud import)
-    Dialog mDialog;
+    Dialog dialogCreate, dialogDelete;
     TextInputEditText titleEdit;
-    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach;
+    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia;
     boolean hasAlarm;
     long alarmTime, alarmDate;
     TextView reminderText;
@@ -113,7 +106,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         setContentView(R.layout.popup_edit);
         ButterKnife.bind(this);
 
-        mDialog = new Dialog(this);
+        dialogCreate = new Dialog(this);
+        dialogDelete = new Dialog(this);
+
         getDocInfo(); //gets title, date, and time from doc (in db)
         createAdaper(); // creates adapter
 
@@ -134,7 +129,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteTask();
+                deleteList();
             }
         });
 
@@ -153,11 +148,11 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
         //todo finish edit dialog
 
-        mDialog.setContentView(R.layout.popup_beta);
-        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
-        mDialog.show();
+        dialogCreate.setContentView(R.layout.dialog_create);
+        dialogCreate.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        dialogCreate.show();
 
-        Window window = mDialog.getWindow();
+        Window window = dialogCreate.getWindow();
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); //width + height
         layoutParams.gravity = Gravity.BOTTOM; //anchors the popup to the bottom of the screen
@@ -166,23 +161,13 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         setButtonsBackground();
         setReminderSwitch();
 
-        /*reminderText = mDialog.findViewById(R.id.popup_ReminderText);
-        reminderSwitch = mDialog.findViewById(R.id.popup_ReminderSwitch);
-        if (hasAlarm) {
-            reminderSwitch.setChecked(true);
-            reminderText.setText("Reminder set for " + date + " @ " + time); //sets the date field to selected date from calendar //todo replate @ symbol
-
-        } else {
-            reminderText.setText("No Reminder set");
-            reminderSwitch.setChecked(false);
-        }*/
-
-        mBlue = mDialog.findViewById(R.id.popup_buttonBlue);
-        mOrange = mDialog.findViewById(R.id.popup_buttonOrange);
-        mGreen = mDialog.findViewById(R.id.popup_buttonGreen);
-        mRed = mDialog.findViewById(R.id.popup_buttonRed);
-        mPurple = mDialog.findViewById(R.id.popup_buttonPurple);
-        mPeach = mDialog.findViewById(R.id.popup_buttonPeach);
+        mBlue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+        mOrange = dialogCreate.findViewById(R.id.popup_buttonOrange);
+        mGreen = dialogCreate.findViewById(R.id.popup_buttonGreen);
+        mRed = dialogCreate.findViewById(R.id.popup_buttonRed);
+        mPurple = dialogCreate.findViewById(R.id.popup_buttonPurple);
+        mPeach = dialogCreate.findViewById(R.id.popup_buttonPeach);
+        mSylvia = dialogCreate.findViewById(R.id.popup_buttonSylvia);
 
         mBlue.setOnClickListener(this);
         mOrange.setOnClickListener(this);
@@ -190,25 +175,26 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         mRed.setOnClickListener(this);
         mPurple.setOnClickListener(this);
         mPeach.setOnClickListener(this);
+        mSylvia.setOnClickListener(this);
 
-        mAdd = mDialog.findViewById(R.id.popup_addTask);
+        mAdd = dialogCreate.findViewById(R.id.popup_addTask);
         mAdd.setTransformationMethod(null);
         mAdd.setText("Done"); //todo change this text?
         mAdd.setOnClickListener(this);
 
-        titleEdit = mDialog.findViewById(R.id.popup_titleInputSetTitle);
+        titleEdit = dialogCreate.findViewById(R.id.popup_titleInputSetTitle);
         titleEdit.setText(title);
 
     } //open the edit dialog
 
     private void setReminderSwitch() {
 
-        reminderSwitch = mDialog.findViewById(R.id.popup_ReminderSwitch);
-        reminderText = mDialog.findViewById(R.id.popup_ReminderText);
+        reminderSwitch = dialogCreate.findViewById(R.id.popup_ReminderSwitch);
+        reminderText = dialogCreate.findViewById(R.id.popup_ReminderText);
 
         if (hasAlarm) {
             reminderSwitch.setChecked(true);
-            reminderText.setText("Reminder set for " + date + " @ " + time); //sets the date field to selected date from calendar //todo replate @ symbol
+            reminderText.setText(date + " at " + time); //sets the date field to selected date from calendar //todo replate @ symbol
 
         } else {
             reminderText.setText("No Reminder set");
@@ -254,7 +240,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         alarmDate = calendar.getTimeInMillis();
 
         dateString = DateFormat.getDateInstance().format(calendar.getTime());
-        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
 
     }
 
@@ -266,7 +252,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         alarmTime = calendar.getTimeInMillis();
 
         timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()); //for the reminder set for the... string
-        reminderText.setText("Reminder set for " + dateString + " @ " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
 
     }
 
@@ -314,6 +300,20 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
                         Tab tab = new Tab(tabID, checked); //uses our custom Tab class to easily add the item to db.
                         db.collection(userID).document(docID).collection(docID + "collection").document(snapshotID).set(tab);
+                    }
+                });
+
+                Button delete = holder.itemView.findViewById(R.id.tab_delete);
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                        String snapshotID = snapshot.getId();
+                        String userID = user.getUid();
+
+                        db.collection(userID).document(docID).collection(docID + "collection").document(snapshotID).delete();
+
                     }
                 });
 
@@ -394,6 +394,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         } else if (colour.equals("peach")) { //peach
             background.setBackgroundResource(R.drawable.gradient_peach_bg);
 
+        } else if (colour.equals("sylvia")) { //peach
+            background.setBackgroundResource(R.drawable.gradient_sylvia_bg);
+
         } else { //default is blue
             background.setBackgroundResource(R.drawable.gradient_blue_bg);
         } //blank
@@ -404,38 +407,45 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
     private void setButtonsBackground() {
 
         if (colour.equals("orange")) { //orange
-            Button button = mDialog.findViewById(R.id.popup_buttonOrange);
+            Button button = dialogCreate.findViewById(R.id.popup_buttonOrange);
             button.setBackgroundResource(R.drawable.gradient_orange_checked);
 
-            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
             blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
         } else if (colour.equals("green")) { //green
-            Button button = mDialog.findViewById(R.id.popup_buttonGreen);
+            Button button = dialogCreate.findViewById(R.id.popup_buttonGreen);
             button.setBackgroundResource(R.drawable.gradient_green_checked);
 
-            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
             blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
         } else if (colour.equals("red")) { //red
-            Button button = mDialog.findViewById(R.id.popup_buttonRed);
+            Button button = dialogCreate.findViewById(R.id.popup_buttonRed);
             button.setBackgroundResource(R.drawable.gradient_red_checked);
 
-            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
             blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
         } else if (colour.equals("purple")) { //purple
-            Button button = mDialog.findViewById(R.id.popup_buttonPurple);
+            Button button = dialogCreate.findViewById(R.id.popup_buttonPurple);
             button.setBackgroundResource(R.drawable.gradient_purple_checked);
 
-            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
             blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
         } else if (colour.equals("peach")) { //peach
-            Button button = mDialog.findViewById(R.id.popup_buttonPeach);
+            Button button = dialogCreate.findViewById(R.id.popup_buttonPeach);
             button.setBackgroundResource(R.drawable.gradient_peach_checked);
 
-            Button blue = mDialog.findViewById(R.id.popup_buttonBlue);
+            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+        } else if (colour.equals("sylvia")) { //green
+            Button button = dialogCreate.findViewById(R.id.popup_buttonSylvia);
+            button.setBackgroundResource(R.drawable.gradient_sylvia_checked);
+
+            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
             blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
         } else { //default is blue
@@ -445,13 +455,23 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
     } //set dialog buttons colour
 
-    private void deleteTask() {
+    private void deleteList() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Are you sure ?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        dialogDelete.setContentView(R.layout.dialog_confirm_delete);
+        dialogDelete.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        dialogDelete.show();
+
+        Window window = dialogDelete.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); //width + height
+        layoutParams.gravity = Gravity.BOTTOM; //anchors the popup to the bottom of the screen
+        window.setAttributes(layoutParams); //set changes
+
+        Button delete = dialogDelete.findViewById(R.id.deleteButton);
+        delete.setTransformationMethod(null);
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View view) {
 
                 openMainActivity();
 
@@ -472,14 +492,19 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                         });
                 adapter.notifyDataSetChanged();
 
-
-
             }
         });
-        builder.setNegativeButton("No", null);
-        builder.show();
 
-    } //delete entire list
+        TextView cancel = dialogDelete.findViewById(R.id.cancelDelete);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialogDelete.dismiss();
+            }
+        });
+
+    } //delete entire list with delete dialog
 
     private void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -534,6 +559,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "blue";
                 background.setBackgroundResource(R.drawable.gradient_blue_bg);
                 break;
@@ -545,6 +571,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "orange";
                 background.setBackgroundResource(R.drawable.gradient_orange_bg);
                 break;
@@ -556,6 +583,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "green";
                 background.setBackgroundResource(R.drawable.gradient_green_bg);
                 break;
@@ -567,6 +595,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mRed.setBackgroundResource(R.drawable.gradient_red_checked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "red";
                 background.setBackgroundResource(R.drawable.gradient_red_bg);
                 break;
@@ -578,6 +607,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_checked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "purple";
                 background.setBackgroundResource(R.drawable.gradient_purple_bg);
                 break;
@@ -589,8 +619,21 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_checked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
                 colour = "peach";
                 background.setBackgroundResource(R.drawable.gradient_peach_bg);
+                break;
+
+            case R.id.popup_buttonSylvia:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_checked);
+                colour = "sylvia";
+                background.setBackgroundResource(R.drawable.gradient_sylvia_bg);
                 break;
 
             //...
@@ -637,7 +680,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                                 }
                             });
 
-                    mDialog.dismiss(); //closes popup
+                    dialogCreate.dismiss(); //closes popup
 
                     titleField.setText(title);
                     //todo update all fields

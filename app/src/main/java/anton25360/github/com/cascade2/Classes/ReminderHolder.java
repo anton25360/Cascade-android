@@ -70,6 +70,9 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
         } else if (colour.equals("peach")) { //peach
             mBackground.setBackgroundResource(R.drawable.gradient_peach_bg);
 
+        } else if (colour.equals("sylvia")) { //sylvia
+            mBackground.setBackgroundResource(R.drawable.gradient_sylvia_bg);
+
         } else { //default colour is blue
             mBackground.setBackgroundResource(R.drawable.gradient_blue_bg);
         } //blank
