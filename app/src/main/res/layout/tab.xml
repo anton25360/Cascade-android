@@ -27,7 +27,7 @@
         android:layout_margin="10dp"
         android:text="sub item"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@id/tab_delete"
         app:layout_constraintStart_toEndOf="@+id/tab_checkBox" />
 
