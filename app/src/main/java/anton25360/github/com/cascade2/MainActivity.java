@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmDate = calendar.getTimeInMillis();
 
         dateString = DateFormat.getDateInstance().format(calendar.getTime());
-        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar
 
     }
 
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmTime = calendar.getTimeInMillis();
 
         timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()); //for the reminder set for the... string
-        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar
 
     }
 
@@ -371,7 +371,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        //todo cancel dialogs padding
         TextView cancel = dialogLogout.findViewById(R.id.cancelLogout);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

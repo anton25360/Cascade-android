@@ -136,8 +136,6 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         mEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo task edit
-
 
                 openEditDialog();
             }
@@ -145,8 +143,6 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void openEditDialog() {
-
-        //todo finish edit dialog
 
         dialogCreate.setContentView(R.layout.dialog_create);
         dialogCreate.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
@@ -179,7 +175,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
         mAdd = dialogCreate.findViewById(R.id.popup_addTask);
         mAdd.setTransformationMethod(null);
-        mAdd.setText("Done"); //todo change this text?
+        mAdd.setText("Done");
         mAdd.setOnClickListener(this);
 
         titleEdit = dialogCreate.findViewById(R.id.popup_titleInputSetTitle);
@@ -194,7 +190,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
         if (hasAlarm) {
             reminderSwitch.setChecked(true);
-            reminderText.setText(date + " at " + time); //sets the date field to selected date from calendar //todo replate @ symbol
+            reminderText.setText(date + " at " + time); //sets the date field to selected date from calendar
 
         } else {
             reminderText.setText("No Reminder set");
@@ -240,7 +236,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         alarmDate = calendar.getTimeInMillis();
 
         dateString = DateFormat.getDateInstance().format(calendar.getTime());
-        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar
 
     }
 
@@ -252,7 +248,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         alarmTime = calendar.getTimeInMillis();
 
         timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()); //for the reminder set for the... string
-        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar //todo replate @ symbol
+        reminderText.setText(dateString + " at " + timeString); //sets the date field to selected date from calendar
 
     }
 
@@ -333,10 +329,6 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
         mRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
-        //todo ith here?
-
-
 
     } //creates adapter for subtasks
 
@@ -684,6 +676,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
                     titleField.setText(title);
                     //todo update all fields
+                    //todo colour is old colour if none selcted
 
 
                 }

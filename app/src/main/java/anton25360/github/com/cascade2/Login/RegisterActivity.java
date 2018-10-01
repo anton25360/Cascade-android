@@ -28,18 +28,15 @@ import static android.support.constraint.Constraints.TAG;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    //todo remove full name field
-    @BindView(R.id.registerName) TextInputLayout inputName;
     @BindView(R.id.registerEmail) TextInputLayout inputEmail;
     @BindView(R.id.registerPassword) TextInputLayout inputPassword;
     @BindView(R.id.registerButton) Button register;
     @BindView(R.id.registerLogin) TextView login;
     @BindView(R.id.registerProgress) ProgressBar progressBar;
 
-    private String name, email, password;
+    private String email, password;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +57,8 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                name = inputName.getEditText().getText().toString();
                 email = inputEmail. getEditText().getText().toString();
                 password = inputPassword.getEditText().getText().toString();
-
-                if (TextUtils.isEmpty(name)) {
-                    inputName.setError("Field can't be empty");
-                    return;
-                } else {
-                    inputName.setError(null);
-                }
 
                 if (TextUtils.isEmpty(email)) {
                     inputEmail.setError("Field can't be empty");

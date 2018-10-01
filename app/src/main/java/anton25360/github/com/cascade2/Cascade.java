@@ -16,7 +16,7 @@ import anton25360.github.com.cascade2.Popups.EditTask;
 
 public class Cascade extends Application {
 
-    public static final String CHANNEL_1_ID = "channel"; //todo change name
+    public static final String CHANNEL_1_ID = "Notification channel";
 
     @Override
     public void onCreate() {

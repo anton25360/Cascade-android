@@ -28,9 +28,9 @@ public class AlarmReciever extends BroadcastReceiver {
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
 
         Notification notification = new NotificationCompat.Builder(context, Cascade.CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_chat_bubble_black) //todo change notification icon
-                .setContentTitle(MainActivity.titleString) //todo title is invisible
-                .setContentText("Here is your reminder.")
+                .setSmallIcon(R.drawable.ic_alarm)
+                .setContentTitle(MainActivity.titleString)
+                .setContentText("Here is your reminder")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setContentIntent(contentIntent)

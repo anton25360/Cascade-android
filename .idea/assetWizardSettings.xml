@@ -113,7 +113,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_cancel_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Android%20Studio/Stable/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_access_alarm_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -124,7 +124,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="606060" />
-                            <entry key="outputName" value="ic_cancel" />
+                            <entry key="outputName" value="ic_alarm" />
                             <entry key="sourceFile" value="C:\Users\anton" />
                           </map>
                         </option>
