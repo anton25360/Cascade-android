@@ -79,7 +79,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
     String title, date, time, colour, userID, dateString, timeString; //xxxString used for time & datepickers. (others used for cloud import)
     Dialog dialogCreate, dialogDelete;
     TextInputEditText titleEdit;
-    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia;
+    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia, mSocialive, mIbiza, mKimoby;
     boolean hasAlarm;
     long alarmTime, alarmDate;
     TextView reminderText;
@@ -146,6 +146,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         mPurple = dialogCreate.findViewById(R.id.popup_buttonPurple);
         mPeach = dialogCreate.findViewById(R.id.popup_buttonPeach);
         mSylvia = dialogCreate.findViewById(R.id.popup_buttonSylvia);
+        mSocialive = dialogCreate.findViewById(R.id.popup_buttonSocialive);
+        mIbiza = dialogCreate.findViewById(R.id.popup_buttonIbiza);
+        mKimoby = dialogCreate.findViewById(R.id.popup_buttonKimoby);
 
         mBlue.setOnClickListener(this);
         mOrange.setOnClickListener(this);
@@ -154,6 +157,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         mPurple.setOnClickListener(this);
         mPeach.setOnClickListener(this);
         mSylvia.setOnClickListener(this);
+        mSocialive.setOnClickListener(this);
+        mIbiza.setOnClickListener(this);
+        mKimoby.setOnClickListener(this);
 
         mAdd = dialogCreate.findViewById(R.id.popup_addTask);
         mAdd.setTransformationMethod(null);
@@ -356,8 +362,20 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 background.setBackgroundResource(R.drawable.gradient_peach_bg);
                 break;
 
-            case "sylvia":  //peach
+            case "sylvia":  //sylvia
                 background.setBackgroundResource(R.drawable.gradient_sylvia_bg);
+                break;
+
+            case "socialive":  //socialive
+                background.setBackgroundResource(R.drawable.gradient_socialive_bg);
+                break;
+
+            case "ibiza":  //ibiza
+                background.setBackgroundResource(R.drawable.gradient_ibiza_bg);
+                break;
+
+            case "kimoby":  //kimoby
+                background.setBackgroundResource(R.drawable.gradient_kimoby_bg);
                 break;
 
             default:  //default is blue
@@ -416,7 +434,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
                 break;
             }
-            case "sylvia": { //green
+            case "sylvia": { //sylvia
                 Button button = dialogCreate.findViewById(R.id.popup_buttonSylvia);
                 button.setBackgroundResource(R.drawable.gradient_sylvia_checked);
 
@@ -425,6 +443,34 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
                 break;
             }
+            case "socialive": { //socialive
+                Button button = dialogCreate.findViewById(R.id.popup_buttonSocialive);
+                button.setBackgroundResource(R.drawable.gradient_socialive_checked);
+
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+                break;
+            }
+            case "ibiza": { //ibiza
+                Button button = dialogCreate.findViewById(R.id.popup_buttonIbiza);
+                button.setBackgroundResource(R.drawable.gradient_ibiza_checked);
+
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+                break;
+            }
+            case "kimoby": { //kimoby
+                Button button = dialogCreate.findViewById(R.id.popup_buttonKimoby);
+                button.setBackgroundResource(R.drawable.gradient_kimoby_checked);
+
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+
+                break;
+            }
+
             default:  //default is blue
                 background.setBackgroundResource(R.drawable.gradient_blue_bg);
                 break;
@@ -508,6 +554,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "blue";
                 background.setBackgroundResource(R.drawable.gradient_blue_bg);
                 break;
@@ -520,6 +569,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "orange";
                 background.setBackgroundResource(R.drawable.gradient_orange_bg);
                 break;
@@ -532,6 +584,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "green";
                 background.setBackgroundResource(R.drawable.gradient_green_bg);
                 break;
@@ -544,6 +599,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "red";
                 background.setBackgroundResource(R.drawable.gradient_red_bg);
                 break;
@@ -556,6 +614,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_checked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "purple";
                 background.setBackgroundResource(R.drawable.gradient_purple_bg);
                 break;
@@ -568,6 +629,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_checked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "peach";
                 background.setBackgroundResource(R.drawable.gradient_peach_bg);
                 break;
@@ -580,8 +644,56 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_checked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "sylvia";
                 background.setBackgroundResource(R.drawable.gradient_sylvia_bg);
+                break;
+
+            case R.id.popup_buttonSocialive:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_checked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
+                colour = "socialive";
+                background.setBackgroundResource(R.drawable.gradient_socialive_bg);
+                break;
+
+            case R.id.popup_buttonIbiza:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_checked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
+                colour = "ibiza";
+                background.setBackgroundResource(R.drawable.gradient_ibiza_bg);
+                break;
+
+            case R.id.popup_buttonKimoby:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_checked);
+                colour = "kimoby";
+                background.setBackgroundResource(R.drawable.gradient_kimoby_bg);
                 break;
 
             //...
@@ -620,11 +732,8 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                     dialogCreate.dismiss(); //closes popup
 
                     titleField.setText(title);
-                    //todo update all fields
-                    //todo colour is old colour if none selcted
 
-
-                }
+/**/                }
                 break;
 
                 //...

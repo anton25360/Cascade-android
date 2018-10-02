@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
 
     private String colour = "";
-    Button mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia, openEdit;
+    Button openEdit, mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia, mSocialive, mIbiza, mKimoby;
     FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
     String userID, sortID, timeString, dateString;
@@ -138,6 +138,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPurple = dialogCreate.findViewById(R.id.popup_buttonPurple);
         mPeach = dialogCreate.findViewById(R.id.popup_buttonPeach);
         mSylvia = dialogCreate.findViewById(R.id.popup_buttonSylvia);
+        mSocialive = dialogCreate.findViewById(R.id.popup_buttonSocialive);
+        mIbiza = dialogCreate.findViewById(R.id.popup_buttonIbiza);
+        mKimoby = dialogCreate.findViewById(R.id.popup_buttonKimoby);
+
 
         mBlue.setOnClickListener(this);
         mOrange.setOnClickListener(this);
@@ -146,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPurple.setOnClickListener(this);
         mPeach.setOnClickListener(this);
         mSylvia.setOnClickListener(this);
+        mSocialive.setOnClickListener(this);
+        mIbiza.setOnClickListener(this);
+        mKimoby.setOnClickListener(this);
 
         mAdd = dialogCreate.findViewById(R.id.popup_addTask);
         mAdd.setTransformationMethod(null);
@@ -419,6 +426,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "blue";
                 break;
 
@@ -430,6 +440,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "orange";
                 break;
 
@@ -441,6 +454,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "green";
                 break;
 
@@ -452,6 +468,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "red";
                 break;
 
@@ -463,6 +482,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_checked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "purple";
                 break;
 
@@ -474,6 +496,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_checked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "peach";
                 break;
 
@@ -485,7 +510,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
                 mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
                 mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_checked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
                 colour = "sylvia";
+                break;
+
+            case R.id.popup_buttonSocialive:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_checked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
+                colour = "socialive";
+                break;
+
+            case R.id.popup_buttonIbiza:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_checked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_unchecked);
+                colour = "ibiza";
+                break;
+
+            case R.id.popup_buttonKimoby:
+                mBlue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                mOrange.setBackgroundResource(R.drawable.gradient_orange_unchecked);
+                mGreen.setBackgroundResource(R.drawable.gradient_green_unchecked);
+                mRed.setBackgroundResource(R.drawable.gradient_red_unchecked);
+                mPurple.setBackgroundResource(R.drawable.gradient_purple_unchecked);
+                mPeach.setBackgroundResource(R.drawable.gradient_peach_unchecked);
+                mSylvia.setBackgroundResource(R.drawable.gradient_sylvia_unchecked);
+                mSocialive.setBackgroundResource(R.drawable.gradient_socialive_unchecked);
+                mIbiza.setBackgroundResource(R.drawable.gradient_ibiza_unchecked);
+                mKimoby.setBackgroundResource(R.drawable.gradient_kimoby_checked);
+                colour = "kimoby";
                 break;
 
             case R.id.popup_addTask:

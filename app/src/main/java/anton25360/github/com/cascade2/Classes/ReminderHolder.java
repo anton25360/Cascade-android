@@ -81,6 +81,18 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
                 mBackground.setBackgroundResource(R.drawable.gradient_sylvia_bg);
                 break;
 
+            case "socialive":  //socialive
+                mBackground.setBackgroundResource(R.drawable.gradient_socialive_bg);
+                break;
+
+            case "ibiza":  //ibiza
+                mBackground.setBackgroundResource(R.drawable.gradient_ibiza_bg);
+                break;
+
+            case "kimoby":  //kimoby
+                mBackground.setBackgroundResource(R.drawable.gradient_kimoby_bg);
+                break;
+
             default:  //default colour is blue
                 mBackground.setBackgroundResource(R.drawable.gradient_blue_bg);
                 break;

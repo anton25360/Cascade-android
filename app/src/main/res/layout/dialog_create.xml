@@ -142,6 +142,32 @@
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_sylvia_unchecked"/> <!--sylvia-->
 
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonSocialive"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_socialive_unchecked"/> <!--socialive-->
+
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonIbiza"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_ibiza_unchecked"/> <!--ibiza-->
+
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonKimoby"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_kimoby_unchecked"/> <!--kimoby-->
+
+
+
         </LinearLayout> <!--horizontal layout containing the buttons-->
 
     </HorizontalScrollView> <!--coloured buttons selection-->
