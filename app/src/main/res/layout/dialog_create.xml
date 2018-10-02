@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="10dp"
     android:background="@drawable/dialog_bg"
     android:layout_width="match_parent"
@@ -28,7 +29,7 @@
             android:theme="@style/customBlackAccent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Title"
+            android:hint="@string/title"
             android:maxLength="25"
             android:inputType="textCapSentences" />
 
@@ -49,7 +50,8 @@
             android:id="@+id/popup_ReminderIcon"
             android:src="@drawable/ic_alarm_black"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image" />
 
         <TextView
             app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +61,7 @@
             android:id="@+id/popup_ReminderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Reminder set"/>
+            android:text="@string/no_reminder_set"/>
 
         <Switch
             android:id="@+id/popup_ReminderSwitch"
@@ -85,14 +87,15 @@
 
 
             <Button
+                tools:ignore="ButtonStyle"
                 android:id="@+id/popup_buttonBlue"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
-
-                android:background="@drawable/gradient_blue_checked" /> <!--blue-->
+                android:background="@drawable/gradient_blue_checked"/> <!--blue-->
 
             <Button
+                tools:ignore="ButtonStyle"
                 android:id="@+id/popup_buttonOrange"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
@@ -100,6 +103,7 @@
                 android:background="@drawable/gradient_orange_unchecked"/> <!--orange-->
 
             <Button
+                tools:ignore="ButtonStyle"
                 android:id="@+id/popup_buttonGreen"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
@@ -107,6 +111,7 @@
                 android:background="@drawable/gradient_green_unchecked" /> <!--green-->
 
             <Button
+                tools:ignore="ButtonStyle"
                 android:id="@+id/popup_buttonRed"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
@@ -114,6 +119,7 @@
                 android:background="@drawable/gradient_red_unchecked"/> <!--red-->
 
             <Button
+                tools:ignore="ButtonStyle"
                 android:id="@+id/popup_buttonPurple"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
@@ -121,6 +127,7 @@
                 android:background="@drawable/gradient_purple_unchecked" /> <!--purple-->
 
             <Button
+                tools:ignore="ButtonStyle"
                 android:id="@+id/popup_buttonPeach"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
@@ -128,6 +135,7 @@
                 android:background="@drawable/gradient_peach_unchecked"/> <!--peach-->
 
             <Button
+                tools:ignore="ButtonStyle"
                 android:id="@+id/popup_buttonSylvia"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
@@ -141,7 +149,7 @@
     <Button
         android:id="@+id/popup_addTask"
         android:background="@drawable/btn_edit"
-        android:text="Add"
+        android:text="@string/add"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -152,7 +160,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="More colours coming soon!"
+        android:text="@string/more_colours_coming_soon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="13dp"/> <!--more colours coming soon!-->

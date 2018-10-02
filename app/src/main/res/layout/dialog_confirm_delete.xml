@@ -16,14 +16,14 @@
         android:layout_margin="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Are you sure?"/>
+        android:text="@string/are_you_sure"/>
 
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:layout_margin="10dp"
-        android:text="Delete"
+        android:text="@string/delete"
         android:textColor="@color/white"
         android:background="@drawable/btn_edit"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +33,7 @@
         android:id="@+id/cancelDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textSize="20sp"
         android:textColor="@color/lightBlue"
         android:padding="5dp"

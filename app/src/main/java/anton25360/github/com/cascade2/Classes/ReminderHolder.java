@@ -51,31 +51,40 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
             colour = "";
         }
 
-        if (colour.equals("blue")) { //blue
-            mBackground.setBackgroundResource(R.drawable.gradient_blue_bg);
-            //mBackground.setAlpha(0.8f); //setAlpha for transparency
+        switch (colour) {
 
-        } else if (colour.equals("orange")) { //orange
-            mBackground.setBackgroundResource(R.drawable.gradient_orange_bg);
+            case "blue":  //blue
+                mBackground.setBackgroundResource(R.drawable.gradient_blue_bg);
+                break;
 
-        } else if (colour.equals("green")) { //green
-            mBackground.setBackgroundResource(R.drawable.gradient_green_bg);
+            case "orange":  //orange
+                mBackground.setBackgroundResource(R.drawable.gradient_orange_bg);
+                break;
 
-        } else if (colour.equals("red")) { //red
-            mBackground.setBackgroundResource(R.drawable.gradient_red_bg);
+            case "green":  //green
+                mBackground.setBackgroundResource(R.drawable.gradient_green_bg);
+                break;
 
-        } else if (colour.equals("purple")) { //purple
-            mBackground.setBackgroundResource(R.drawable.gradient_purple_bg);
+            case "red":  //red
+                mBackground.setBackgroundResource(R.drawable.gradient_red_bg);
+                break;
 
-        } else if (colour.equals("peach")) { //peach
-            mBackground.setBackgroundResource(R.drawable.gradient_peach_bg);
+            case "purple":  //purple
+                mBackground.setBackgroundResource(R.drawable.gradient_purple_bg);
+                break;
 
-        } else if (colour.equals("sylvia")) { //sylvia
-            mBackground.setBackgroundResource(R.drawable.gradient_sylvia_bg);
+            case "peach":  //peach
+                mBackground.setBackgroundResource(R.drawable.gradient_peach_bg);
+                break;
 
-        } else { //default colour is blue
-            mBackground.setBackgroundResource(R.drawable.gradient_blue_bg);
-        } //blank
+            case "sylvia":  //sylvia
+                mBackground.setBackgroundResource(R.drawable.gradient_sylvia_bg);
+                break;
+
+            default:  //default colour is blue
+                mBackground.setBackgroundResource(R.drawable.gradient_blue_bg);
+                break;
+        }
     }
 
 }

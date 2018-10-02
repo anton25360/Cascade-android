@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.WakefulBroadcastReceiver;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import anton25360.github.com.cascade2.Cascade;
 import anton25360.github.com.cascade2.MainActivity;

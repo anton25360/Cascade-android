@@ -14,7 +14,6 @@ public class TabHolder extends RecyclerView.ViewHolder {
 
     final private TextView mTitle;
     final private CircleCheckBox checkBox;
-    private boolean checked;
 
     public TabHolder(View itemView) {
         super(itemView);

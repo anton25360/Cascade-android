@@ -1,8 +1,6 @@
 package anton25360.github.com.cascade2.Login;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import anton25360.github.com.cascade2.MainActivity;
@@ -49,19 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRegister();
-            }
-        });
+        signUp.setOnClickListener(v -> startRegister());
 
-        forgottenPW.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startPasswordReset();
-            }
-        });
+        forgottenPW.setOnClickListener(v -> startPasswordReset());
 
         progressBar.setVisibility(View.INVISIBLE);
         loginEmail.setTransformationMethod(null); //forces button font to not be uppercase
@@ -93,36 +76,27 @@ public class LoginActivity extends AppCompatActivity {
             private void LoginNewUser() {
 
                 mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "signInWithEmail: success");
-                                    progressBar.setVisibility(View.INVISIBLE);
+                        .addOnCompleteListener(LoginActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithEmail: success");
+                                progressBar.setVisibility(View.INVISIBLE);
 
-                                    openMainActivity();
+                                openMainActivity();
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                    progressBar.setVisibility(View.INVISIBLE);
-
-                                }
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
-
-
             }
 
             private void openMainActivity() {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
-
             }
-
-
         });
     }
 
@@ -130,7 +104,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
     }
 
     private void startPasswordReset() {
@@ -145,17 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         mAuth.sendPasswordResetEmail(email)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(LoginActivity.this, "Success, check your inbox.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(LoginActivity.this, "Error, please try again.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Toast.makeText(LoginActivity.this, "Success, check your inbox.", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(LoginActivity.this, "Error, please try again.", Toast.LENGTH_SHORT).show());
     }
 }

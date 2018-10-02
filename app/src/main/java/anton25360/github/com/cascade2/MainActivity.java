@@ -1,12 +1,12 @@
 package anton25360.github.com.cascade2;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,21 +28,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -52,6 +44,7 @@ import com.google.firebase.firestore.Query;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 import anton25360.github.com.cascade2.Classes.AlarmReciever;
 import anton25360.github.com.cascade2.Classes.Reminder;
@@ -95,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (user != null) { //if user is logged in...
 
             adapter.startListening(); //connects to firebase collection
-            Toast.makeText(this, "listening...", Toast.LENGTH_SHORT).show();
 
         } else {
 
@@ -121,13 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //sets the toolbar
         initToolbar();
         FAB = findViewById(R.id.btnFAB2);
-        FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                openNewTaskDialog();
-            }
-        });
+        FAB.setOnClickListener(v -> openNewTaskDialog());
 
         initRecyclerView();
 
@@ -136,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void openNewTaskDialog() {
 
         dialogCreate.setContentView(R.layout.dialog_create);
-        dialogCreate.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        Objects.requireNonNull(dialogCreate.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
         dialogCreate.show();
 
         Window window = dialogCreate.getWindow();
@@ -179,31 +165,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         timeString = "";
         //cancelAlarm(); //set no alarm by default
 
-        reminderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        reminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-                if (isChecked) {
+            if (isChecked) {
 
-                    hasAlarm = true;
+                hasAlarm = true;
 
-                    //open TimePicker
-                    DialogFragment timePicker = new TimePickerFragment();
-                    timePicker.show(getSupportFragmentManager(), "time picker");
+                //open TimePicker
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getSupportFragmentManager(), "time picker");
 
-                    //open DatePicker
-                    DialogFragment datePicker = new DatePickerFragment();
-                    datePicker.show(getSupportFragmentManager(), "date picker");
+                //open DatePicker
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "date picker");
 
-                } else {
-                    hasAlarm = false;
-                    reminderText.setText("No Reminder set");
-                }
+            } else {
+                hasAlarm = false;
+                reminderText.setText(R.string.no_reminder_set);
             }
         });
 
     } //controls dialog's reminder (using Date & Time picker)
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
@@ -217,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
@@ -253,21 +238,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //create new FirestoreRecyclerAdapter:
         adapter = new FirestoreRecyclerAdapter<Reminder, ReminderHolder>(options) {
             @Override
-            public void onBindViewHolder(final ReminderHolder holder, int position, final Reminder model) {
+            public void onBindViewHolder(@NonNull final ReminderHolder holder, int position, @NonNull final Reminder model) {
 
                 DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
                 docID = snapshot.getId();
 
                 openEdit = holder.itemView.findViewById(R.id.btnOpenEdit);
-                openEdit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                openEdit.setOnClickListener(v -> {
 
-                        openEditPopup();
+                    openEditPopup();
 
-                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-                        docID = snapshot.getId();
-                    }
+                    DocumentSnapshot snapshot1 = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                    docID = snapshot1.getId();
                 });
 
                 holder.bind(model);
@@ -281,8 +263,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
+            @NonNull
             @Override
-            public ReminderHolder onCreateViewHolder(ViewGroup group, int i) {
+            public ReminderHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.item, group, false);
                 return new ReminderHolder(view);
             }
@@ -296,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //sets the custom toolbar + title
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Cascade"); //set toolbar title
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Cascade"); //set toolbar title
         toolbar.setTitleTextColor(0xFFFFFFFF); //set toolbar colour in UJML to white(0xFFFFFFFF) OR black(0xFF000000 )
     } //initialises the toolbar
 
@@ -342,10 +325,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void openProfileDialog() {
 
         dialogLogout.setContentView(R.layout.dialog_confirm_logout);
-        dialogLogout.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        Objects.requireNonNull(dialogLogout.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
         dialogLogout.show();
 
         Window window = dialogLogout.getWindow();
@@ -360,25 +344,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button logout = dialogLogout.findViewById(R.id.logoutButton);
         logout.setTransformationMethod(null);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        logout.setOnClickListener(view -> {
 
-                FirebaseAuth.getInstance().signOut(); //logs the user out
-                finish();
-                openLogin();
+            FirebaseAuth.getInstance().signOut(); //logs the user out
+            finish();
+            openLogin();
 
-            }
         });
 
         TextView cancel = dialogLogout.findViewById(R.id.cancelLogout);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                dialogLogout.dismiss();
-            }
-        });
+        cancel.setOnClickListener(view -> dialogLogout.dismiss());
 
     } //opens a profile dialog
 
@@ -422,8 +397,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 holder.bind(model);
             }
 
+            @NonNull
             @Override
-            public TabSubHolder onCreateViewHolder(ViewGroup group, int i) {
+            public TabSubHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tab_sub, group, false);
                 return new TabSubHolder(view);
             }
@@ -516,11 +492,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (hasAlarm) {
                     setAlarm();
-                } else {
-                    //no alarm set
                 }
 
-                titleString = title.getEditText().getText().toString().trim(); //gets title from editText
+                titleString = Objects.requireNonNull(title.getEditText()).getText().toString().trim(); //gets title from editText
 
                 if (titleString.isEmpty()) {
                     title.setError("Field can't be empty");
@@ -534,20 +508,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     userID = user.getUid();
                     db.collection(userID).document().set(reminder) //document id is auto generated
 
-                            .addOnSuccessListener(new OnSuccessListener<Void>() { //if upload to Firebase db was successful...
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "onSuccessUpload: " + titleString);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() { //if upload to Firebase db was unsuccessful...
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-
-                                    Log.d(TAG, "Error: " + e.toString()); //tells us the error
-                                }
-                            });
+                            .addOnSuccessListener(aVoid -> Log.d(TAG, "onSuccessUpload: " + titleString))
+                            .addOnFailureListener(e -> Log.d(TAG, "Error: " + e.toString()));
 
                     dialogCreate.dismiss(); //closes popup
                 }
@@ -559,6 +521,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReciever.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        assert alarmManager != null;
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
 
     }

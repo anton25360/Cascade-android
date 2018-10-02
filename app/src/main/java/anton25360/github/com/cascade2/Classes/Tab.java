@@ -1,7 +1,5 @@
 package anton25360.github.com.cascade2.Classes;
 
-import android.widget.CheckBox;
-
 public class Tab {
     private String title;
     private boolean checked;

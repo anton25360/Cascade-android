@@ -1,12 +1,8 @@
 package anton25360.github.com.cascade2.Classes;
 
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-
-import com.uniquestudio.library.CircleCheckBox;
 
 import anton25360.github.com.cascade2.R;
 

@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +26,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -37,8 +34,6 @@ import android.widget.TimePicker;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,6 +43,7 @@ import com.uniquestudio.library.CircleCheckBox;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 import anton25360.github.com.cascade2.Classes.AlarmReciever;
 import anton25360.github.com.cascade2.Classes.Reminder;
@@ -113,39 +109,25 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         createAdaper(); // creates adapter
 
         mSend.setTransformationMethod(null);
-        mSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mSend.setOnClickListener(v -> {
 
-                if (mInput.length() == 0) {
-                    //do nothing
-                } else {
-                    addItem(); //adds the item to the sub rv
-                }
+            if (mInput.length() == 0) {
+                //do nothing
+            } else {
+                addItem(); //adds the item to the sub rv
             }
         });
 
         mDelete.setTransformationMethod(null);
-        mDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteList();
-            }
-        });
+        mDelete.setOnClickListener(v -> deleteList());
 
-        mEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                openEditDialog();
-            }
-        });
+        mEdit.setOnClickListener(v -> openEditDialog());
     }
 
     private void openEditDialog() {
 
         dialogCreate.setContentView(R.layout.dialog_create);
-        dialogCreate.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
+        Objects.requireNonNull(dialogCreate.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //makes bg transparent
         dialogCreate.show();
 
         Window window = dialogCreate.getWindow();
@@ -175,7 +157,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
         mAdd = dialogCreate.findViewById(R.id.popup_addTask);
         mAdd.setTransformationMethod(null);
-        mAdd.setText("Done");
+        mAdd.setText(R.string.done);
         mAdd.setOnClickListener(this);
 
         titleEdit = dialogCreate.findViewById(R.id.popup_titleInputSetTitle);
@@ -183,6 +165,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
     } //open the edit dialog
 
+    @SuppressLint("SetTextI18n")
     private void setReminderSwitch() {
 
         reminderSwitch = dialogCreate.findViewById(R.id.popup_ReminderSwitch);
@@ -193,40 +176,38 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
             reminderText.setText(date + " at " + time); //sets the date field to selected date from calendar
 
         } else {
-            reminderText.setText("No Reminder set");
+            reminderText.setText(R.string.no_reminder_set);
             reminderSwitch.setChecked(false);
         }
 
 
         dateString = DateFormat.getDateInstance().format(calendar.getTime()); //uses Calendar to set current date (default if user chooses no reminder)
         timeString = "";
-        //cancelAlarm(); //set no alarm by default
+        //set no alarm by default
 
-        reminderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        reminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-                if (isChecked) {
+            if (isChecked) {
 
-                    hasAlarm = true;
+                hasAlarm = true;
 
-                    //open TimePicker
-                    DialogFragment timePicker = new TimePickerFragment();
-                    timePicker.show(getSupportFragmentManager(), "time picker");
+                //open TimePicker
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getSupportFragmentManager(), "time picker");
 
-                    //open DatePicker
-                    DialogFragment datePicker = new DatePickerFragment();
-                    datePicker.show(getSupportFragmentManager(), "date picker");
+                //open DatePicker
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "date picker");
 
-                } else {
-                    hasAlarm = false;
-                    reminderText.setText("No Reminder set");
-                }
+            } else {
+                hasAlarm = false;
+                reminderText.setText("No Reminder set");
             }
         });
 
     } //controls dialog's reminder (using Date & Time picker)
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
@@ -240,6 +221,7 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
@@ -276,48 +258,37 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
                 //checkbox
                 final CircleCheckBox checkBox = holder.itemView.findViewById(R.id.tab_checkBox);
-                checkBox.setListener(new CircleCheckBox.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(boolean isChecked) {
+                checkBox.setListener(isChecked -> {
 
-                        snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-                        String tabID = snapshot.getString("title");
-                        String snapshotID = snapshot.getId();
-                        String userID = user.getUid();
-                        boolean checked;
+                    snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                    String tabID = snapshot.getString("title");
+                    String snapshotID = snapshot.getId();
+                    String userID1 = user.getUid();
+                    boolean checked;
 
-                        if (checkBox.isChecked()){
-                            checked = true;
+                    checked = checkBox.isChecked();
 
-                        } else {
-                            checked = false;
-                        }
-
-
-                        Tab tab = new Tab(tabID, checked); //uses our custom Tab class to easily add the item to db.
-                        db.collection(userID).document(docID).collection(docID + "collection").document(snapshotID).set(tab);
-                    }
+                    Tab tab = new Tab(tabID, checked); //uses our custom Tab class to easily add the item to db.
+                    db.collection(userID1).document(docID).collection(docID + "collection").document(snapshotID).set(tab);
                 });
 
                 Button delete = holder.itemView.findViewById(R.id.tab_delete);
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                delete.setOnClickListener(view -> {
 
-                        snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-                        String snapshotID = snapshot.getId();
-                        String userID = user.getUid();
+                    snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                    String snapshotID = snapshot.getId();
+                    String userID12 = user.getUid();
 
-                        db.collection(userID).document(docID).collection(docID + "collection").document(snapshotID).delete();
+                    db.collection(userID12).document(docID).collection(docID + "collection").document(snapshotID).delete();
 
-                    }
                 });
 
 
             }
 
+            @NonNull
             @Override
-            public TabHolder onCreateViewHolder(ViewGroup group, int i) {
+            public TabHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tab, group, false);
                 return new TabHolder(view);
             }
@@ -338,111 +309,126 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
         db.collection(userID).document(docID) //gets docID from MainActivity (when card is first clicked)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                .addOnSuccessListener(documentSnapshot -> {
 
-                        title = documentSnapshot.getString("title");
-                        date = documentSnapshot.getString("date");
-                        time = documentSnapshot.getString("time");
-                        colour = documentSnapshot.getString("colour");
-                        hasAlarm = documentSnapshot.getBoolean("hasAlarm");
+                    title = documentSnapshot.getString("title");
+                    date = documentSnapshot.getString("date");
+                    time = documentSnapshot.getString("time");
+                    colour = documentSnapshot.getString("colour");
+                    hasAlarm = documentSnapshot.getBoolean("hasAlarm");
 
 
-                        titleField.setText(title);
-                        dateField.setText(date);
-                        timeField.setText(time);
+                    titleField.setText(title);
+                    dateField.setText(date);
+                    timeField.setText(time);
 
-                        setBackground();
+                    setBackground();
 
-                    }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: "+ e.getLocalizedMessage());
-                    }
-                });
+                .addOnFailureListener(e -> Log.d(TAG, "onFailure: "+ e.getLocalizedMessage()));
 
     } //get info frm cloud to name the list attributes (title, date...)
 
     private void setBackground() {
 
-        if (colour.equals("blue")) { //blue
-            background.setBackgroundResource(R.drawable.gradient_blue_bg); //BLUE IS CHECKED BY DEFAULT
+        switch (colour) {
+            case "blue":  //blue
+                background.setBackgroundResource(R.drawable.gradient_blue_bg); //BLUE IS CHECKED BY DEFAULT
+                break;
 
-        } else if (colour.equals("orange")) { //orange
-            background.setBackgroundResource(R.drawable.gradient_orange_bg);
+            case "orange":  //orange
+                background.setBackgroundResource(R.drawable.gradient_orange_bg);
+                break;
 
-        } else if (colour.equals("green")) { //green
-            background.setBackgroundResource(R.drawable.gradient_green_bg);
+            case "green":  //green
+                background.setBackgroundResource(R.drawable.gradient_green_bg);
+                break;
 
-        } else if (colour.equals("red")) { //red
-            background.setBackgroundResource(R.drawable.gradient_red_bg);
+            case "red":  //red
+                background.setBackgroundResource(R.drawable.gradient_red_bg);
+                break;
 
-        } else if (colour.equals("purple")) { //purple
-            background.setBackgroundResource(R.drawable.gradient_purple_bg);
+            case "purple":  //purple
+                background.setBackgroundResource(R.drawable.gradient_purple_bg);
+                break;
 
-        } else if (colour.equals("peach")) { //peach
-            background.setBackgroundResource(R.drawable.gradient_peach_bg);
+            case "peach":  //peach
+                background.setBackgroundResource(R.drawable.gradient_peach_bg);
+                break;
 
-        } else if (colour.equals("sylvia")) { //peach
-            background.setBackgroundResource(R.drawable.gradient_sylvia_bg);
+            case "sylvia":  //peach
+                background.setBackgroundResource(R.drawable.gradient_sylvia_bg);
+                break;
 
-        } else { //default is blue
-            background.setBackgroundResource(R.drawable.gradient_blue_bg);
-        } //blank
+            default:  //default is blue
+                background.setBackgroundResource(R.drawable.gradient_blue_bg);
+                break;
+        }
 
 
     } //set initial bg colour
 
     private void setButtonsBackground() {
 
-        if (colour.equals("orange")) { //orange
-            Button button = dialogCreate.findViewById(R.id.popup_buttonOrange);
-            button.setBackgroundResource(R.drawable.gradient_orange_checked);
+        switch (colour) {
+            case "orange": { //orange
+                Button button = dialogCreate.findViewById(R.id.popup_buttonOrange);
+                button.setBackgroundResource(R.drawable.gradient_orange_checked);
 
-            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
-            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
-        } else if (colour.equals("green")) { //green
-            Button button = dialogCreate.findViewById(R.id.popup_buttonGreen);
-            button.setBackgroundResource(R.drawable.gradient_green_checked);
+                break;
+            }
+            case "green": { //green
+                Button button = dialogCreate.findViewById(R.id.popup_buttonGreen);
+                button.setBackgroundResource(R.drawable.gradient_green_checked);
 
-            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
-            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
-        } else if (colour.equals("red")) { //red
-            Button button = dialogCreate.findViewById(R.id.popup_buttonRed);
-            button.setBackgroundResource(R.drawable.gradient_red_checked);
+                break;
+            }
+            case "red": { //red
+                Button button = dialogCreate.findViewById(R.id.popup_buttonRed);
+                button.setBackgroundResource(R.drawable.gradient_red_checked);
 
-            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
-            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
-        } else if (colour.equals("purple")) { //purple
-            Button button = dialogCreate.findViewById(R.id.popup_buttonPurple);
-            button.setBackgroundResource(R.drawable.gradient_purple_checked);
+                break;
+            }
+            case "purple": { //purple
+                Button button = dialogCreate.findViewById(R.id.popup_buttonPurple);
+                button.setBackgroundResource(R.drawable.gradient_purple_checked);
 
-            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
-            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
-        } else if (colour.equals("peach")) { //peach
-            Button button = dialogCreate.findViewById(R.id.popup_buttonPeach);
-            button.setBackgroundResource(R.drawable.gradient_peach_checked);
+                break;
+            }
+            case "peach": { //peach
+                Button button = dialogCreate.findViewById(R.id.popup_buttonPeach);
+                button.setBackgroundResource(R.drawable.gradient_peach_checked);
 
-            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
-            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
-        } else if (colour.equals("sylvia")) { //green
-            Button button = dialogCreate.findViewById(R.id.popup_buttonSylvia);
-            button.setBackgroundResource(R.drawable.gradient_sylvia_checked);
+                break;
+            }
+            case "sylvia": { //green
+                Button button = dialogCreate.findViewById(R.id.popup_buttonSylvia);
+                button.setBackgroundResource(R.drawable.gradient_sylvia_checked);
 
-            Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
-            blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
+                Button blue = dialogCreate.findViewById(R.id.popup_buttonBlue);
+                blue.setBackgroundResource(R.drawable.gradient_blue_unchecked);
 
-        } else { //default is blue
-            background.setBackgroundResource(R.drawable.gradient_blue_bg);
-        } //blank
+                break;
+            }
+            default:  //default is blue
+                background.setBackgroundResource(R.drawable.gradient_blue_bg);
+                break;
+        }
 
 
     } //set dialog buttons colour
@@ -461,40 +447,21 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
         Button delete = dialogDelete.findViewById(R.id.deleteButton);
         delete.setTransformationMethod(null);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        delete.setOnClickListener(view -> {
 
-                openMainActivity();
+            openMainActivity();
 
-                String userID = user.getUid();
-                db.collection(userID).document(docID) //gets docID from MainActivity (when card is first clicked)
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "onSuccess: deleted");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d(TAG, "Error: " + e.getLocalizedMessage());
-                            }
-                        });
-                adapter.notifyDataSetChanged();
+            String userID = user.getUid();
+            db.collection(userID).document(docID) //gets docID from MainActivity (when card is first clicked)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> Log.d(TAG, "onSuccess: deleted"))
+                    .addOnFailureListener(e -> Log.d(TAG, "Error: " + e.getLocalizedMessage()));
+            adapter.notifyDataSetChanged();
 
-            }
         });
 
         TextView cancel = dialogDelete.findViewById(R.id.cancelDelete);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                dialogDelete.dismiss();
-            }
-        });
+        cancel.setOnClickListener(view -> dialogDelete.dismiss());
 
     } //delete entire list with delete dialog
 
@@ -514,19 +481,8 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
         db.collection(userID).document(docID).collection(docID + "collection").document().set(tab)
 
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "onSuccess: " + titleString);
-                    }
-                })
-
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error: " + e.toString());
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "onSuccess: " + titleString))
+                .addOnFailureListener(e -> Log.d(TAG, "Error: " + e.toString()));
 
         mInput.getText().clear(); //clear edittext field
 
@@ -657,19 +613,8 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                     userID = user.getUid();
                     db.collection(userID).document(docID).set(reminder) //update fields
 
-                            .addOnSuccessListener(new OnSuccessListener<Void>() { //if upload to Firebase db was successful...
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "onSuccessUpload: " + titleString);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() { //if upload to Firebase db was unsuccessful...
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-
-                                    Log.d(TAG, "Error: " + e.toString()); //tells us the error
-                                }
+                            .addOnSuccessListener(aVoid -> Log.d(TAG, "onSuccessUpload: " + titleString))
+                            .addOnFailureListener(e -> { Log.d(TAG, "Error: " + e.toString()); //tells us the error
                             });
 
                     dialogCreate.dismiss(); //closes popup

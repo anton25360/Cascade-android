@@ -1,7 +1,6 @@
 package anton25360.github.com.cascade2.Login;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,12 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import anton25360.github.com.cascade2.R;
 import butterknife.BindView;
@@ -35,7 +29,6 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.registerProgress) ProgressBar progressBar;
 
     private String email, password;
-
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -44,12 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startLogin();
-            }
-        });
+        login.setOnClickListener(v -> startLogin());
 
         progressBar.setVisibility(View.INVISIBLE);
         register.setTransformationMethod(null);
@@ -81,31 +69,23 @@ public class RegisterActivity extends AppCompatActivity {
             private void RegisterNewUser() {
 
                 mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success");
-                                    Toast.makeText(RegisterActivity.this, "Account created", Toast.LENGTH_SHORT).show();
+                        .addOnCompleteListener(RegisterActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success");
+                                Toast.makeText(RegisterActivity.this, "Account created", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
 
-                                    progressBar.setVisibility(View.INVISIBLE);
+                                startLogin(); //goes to login tab so user can login
 
-                                    startLogin(); //goes to login tab so user can login
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegisterActivity.this, "Account creation failed", Toast.LENGTH_SHORT).show();
-                                    progressBar.setVisibility(View.INVISIBLE);
-
-                                }
-
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(RegisterActivity.this, "Account creation failed", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
-
             }
-
         });
     }
 
