@@ -3,7 +3,6 @@
     android:id="@+id/widget_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="9dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,16 +18,21 @@
         app:layout_constraintTop_toTopOf="@id/tab_title"
         app:layout_constraintBottom_toBottomOf="@id/tab_title"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <EditText
         android:id="@+id/tab_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:backgroundTint="@color/white"
         android:text="@string/placeholder_text"
         android:textColor="@color/black"
         android:textSize="18sp"
+        android:inputType="textFilter"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toStartOf="@id/tab_delete"
         app:layout_constraintStart_toEndOf="@+id/tab_checkBox" />
+
+
 
     <Button
         android:id="@+id/tab_delete"

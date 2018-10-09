@@ -1,6 +1,7 @@
 package anton25360.github.com.cascade2.Popups;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -18,24 +19,32 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -261,7 +270,6 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
             protected void onBindViewHolder(@NonNull final TabHolder holder, final int position, @NonNull Tab model) {
                 holder.bind(model);
 
-
                 //checkbox
                 final CircleCheckBox checkBox = holder.itemView.findViewById(R.id.tab_checkBox);
                 checkBox.setListener(isChecked -> {
@@ -286,6 +294,32 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                     String userID12 = user.getUid();
 
                     db.collection(userID12).document(docID).collection(docID + "collection").document(snapshotID).delete();
+
+                });
+
+                EditText title = holder.itemView.findViewById(R.id.tab_title);
+                title.setHorizontallyScrolling(false);
+                title.setMaxLines(Integer.MAX_VALUE);
+                title.setOnEditorActionListener((textView, i, keyEvent) -> {
+
+                    //update the task
+                    snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+                    String s = title.getText().toString();
+                    String snapshotID = snapshot.getId();
+                    String userID1 = user.getUid();
+                    boolean checked;
+
+                    checked = checkBox.isChecked();
+
+                    Tab tab = new Tab(s, checked); //uses our custom Tab class to easily add the item to db.
+                    db.collection(userID1).document(docID).collection(docID + "collection").document(snapshotID).set(tab);
+
+                    //clears edittext focus and keyboard
+                    title.clearFocus();
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+
+                    return false;
 
                 });
 
@@ -534,15 +568,6 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
     } //adds subtask
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (adapter != null) {
-            adapter.stopListening();
-        }
-    } //onStop activity
-
     public void onClick(View v) {
 
         switch (v.getId()) {
@@ -733,10 +758,10 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
                     titleField.setText(title);
 
-/**/                }
+                    /**/                }
                 break;
 
-                //...
+            //...
         }
     } //control popup colour selection here + edit commits
 
@@ -748,6 +773,21 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
     }
 
+    private void updateTab() {
 
+        Toast.makeText(this, "update", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        updateTab();
+
+        if (adapter != null) {
+            adapter.stopListening();
+        }
+    } //onStop activity
 
 }
