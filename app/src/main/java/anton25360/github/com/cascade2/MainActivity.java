@@ -223,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initRecyclerView() { //init rv
         recyclerView = findViewById(R.id.rv);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         sortID = PreferenceManager.getDefaultSharedPreferences(this).getString("sortID", "colour");

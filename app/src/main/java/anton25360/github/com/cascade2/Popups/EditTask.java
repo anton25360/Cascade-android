@@ -773,17 +773,9 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
     }
 
-    private void updateTab() {
-
-        Toast.makeText(this, "update", Toast.LENGTH_SHORT).show();
-
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
-
-        updateTab();
 
         if (adapter != null) {
             adapter.stopListening();
