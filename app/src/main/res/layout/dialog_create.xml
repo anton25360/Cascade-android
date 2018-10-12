@@ -96,59 +96,11 @@
 
             <Button
                 tools:ignore="ButtonStyle"
-                android:id="@+id/popup_buttonOrange"
-                android:layout_margin="@dimen/popup_colourButton_margin"
-                android:layout_width="@dimen/popup_colourButton_size"
-                android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_orange_unchecked"/> <!--orange-->
-
-            <Button
-                tools:ignore="ButtonStyle"
                 android:id="@+id/popup_buttonGreen"
                 android:layout_margin="@dimen/popup_colourButton_margin"
                 android:layout_width="@dimen/popup_colourButton_size"
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_green_unchecked" /> <!--green-->
-
-            <Button
-                tools:ignore="ButtonStyle"
-                android:id="@+id/popup_buttonRed"
-                android:layout_margin="@dimen/popup_colourButton_margin"
-                android:layout_width="@dimen/popup_colourButton_size"
-                android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_red_unchecked"/> <!--red-->
-
-            <Button
-                tools:ignore="ButtonStyle"
-                android:id="@+id/popup_buttonPurple"
-                android:layout_margin="@dimen/popup_colourButton_margin"
-                android:layout_width="@dimen/popup_colourButton_size"
-                android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_purple_unchecked" /> <!--purple-->
-
-            <Button
-                tools:ignore="ButtonStyle"
-                android:id="@+id/popup_buttonPeach"
-                android:layout_margin="@dimen/popup_colourButton_margin"
-                android:layout_width="@dimen/popup_colourButton_size"
-                android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_peach_unchecked"/> <!--peach-->
-
-            <Button
-                tools:ignore="ButtonStyle"
-                android:id="@+id/popup_buttonSylvia"
-                android:layout_margin="@dimen/popup_colourButton_margin"
-                android:layout_width="@dimen/popup_colourButton_size"
-                android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_sylvia_unchecked"/> <!--sylvia-->
-
-            <Button
-                tools:ignore="ButtonStyle"
-                android:id="@+id/popup_buttonSocialive"
-                android:layout_margin="@dimen/popup_colourButton_margin"
-                android:layout_width="@dimen/popup_colourButton_size"
-                android:layout_height="@dimen/popup_colourButton_size"
-                android:background="@drawable/gradient_socialive_unchecked"/> <!--socialive-->
 
             <Button
                 tools:ignore="ButtonStyle"
@@ -166,7 +118,53 @@
                 android:layout_height="@dimen/popup_colourButton_size"
                 android:background="@drawable/gradient_kimoby_unchecked"/> <!--kimoby-->
 
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonOrange"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_orange_unchecked"/> <!--orange-->
 
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonPeach"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_peach_unchecked"/> <!--peach-->
+
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonPurple"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_purple_unchecked" /> <!--purple-->
+
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonRed"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_red_unchecked"/> <!--red-->
+
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonSocialive"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_socialive_unchecked"/> <!--socialive-->
+
+            <Button
+                tools:ignore="ButtonStyle"
+                android:id="@+id/popup_buttonSylvia"
+                android:layout_margin="@dimen/popup_colourButton_margin"
+                android:layout_width="@dimen/popup_colourButton_size"
+                android:layout_height="@dimen/popup_colourButton_size"
+                android:background="@drawable/gradient_sylvia_unchecked"/> <!--sylvia-->
 
         </LinearLayout> <!--horizontal layout containing the buttons-->
 
