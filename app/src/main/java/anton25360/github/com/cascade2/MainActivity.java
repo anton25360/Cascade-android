@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button openEdit, mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia, mSocialive, mIbiza, mKimoby;
     FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
-    String userID, sortID, timeString, dateString;
+    String userID, sortID, timeString, dateString, test;
     public static String docID, titleString;
     TextInputLayout title;
     Query query;
@@ -261,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 holder.bind(model);
 
                 recyclerViewSub = holder.itemView.findViewById(R.id.widget_rvSub);
-
                 createSubAdaper();
                 recyclerViewSub.setAdapter(adapterSub);
                 adapterSub.startListening();

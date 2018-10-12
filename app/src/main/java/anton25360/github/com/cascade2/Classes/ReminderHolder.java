@@ -40,7 +40,13 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
     }
 
     private void setTime(String time) {
-        mTime.setText(time);
+
+        if (time.isEmpty()){
+            mTime.setHeight(0);
+            mDate.setHeight(0);
+        } else {
+            mTime.setText(time);
+        }
     }
 
     private void setBackground(String colour) {
