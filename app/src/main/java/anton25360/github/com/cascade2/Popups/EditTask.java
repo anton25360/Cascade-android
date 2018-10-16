@@ -101,7 +101,6 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
         super.onStart();
 
         adapter.startListening(); //connects to firebase collection
-        adapter.notifyDataSetChanged();
     }
 
     @SuppressLint("SetTextI18n")
@@ -357,10 +356,20 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                     colour = documentSnapshot.getString("colour");
                     hasAlarm = documentSnapshot.getBoolean("hasAlarm");
 
-
                     titleField.setText(title);
-                    dateField.setText(date);
-                    timeField.setText(time);
+
+
+                    if (time.isEmpty()) {
+                        timeField.setHeight(0);
+                    } else {
+                        timeField.setText(time);
+                    }
+
+                    if (date.isEmpty()) {
+                        dateField.setHeight(0);
+                    } else {
+                        dateField.setText(date);
+                    }
 
                     setBackground();
 
@@ -721,18 +730,21 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 background.setBackgroundResource(R.drawable.gradient_kimoby_bg);
                 break;
 
-            //...
 
             case R.id.popup_addTask:
 
                 if (hasAlarm) {
                     setAlarm();
-                    dateField.setText(dateString);
-                    timeField.setText(timeString);
+
                 } else {
                     //no alarm set
                     timeField.setText("");
+                    dateField.setText("");
+
+                    timeField.setHeight(0);
+                    dateField.setHeight(0);
                 }
+
 
                 title = titleEdit.getText().toString().trim(); //gets title from editText
                 MainActivity.titleString = title;
@@ -741,7 +753,6 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 time = timeString;
 
                 if (title.isEmpty()) {
-                    titleEdit.setError("Field can't be empty");
 
                 } else {
 
@@ -751,17 +762,18 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                     db.collection(userID).document(docID).set(reminder) //update fields
 
                             .addOnSuccessListener(aVoid -> Log.d(TAG, "onSuccessUpload: " + titleString))
-                            .addOnFailureListener(e -> { Log.d(TAG, "Error: " + e.toString()); //tells us the error
-                            });
+                            .addOnFailureListener(e -> Log.d(TAG, "Error: " + e.toString()));
 
                     dialogCreate.dismiss(); //closes popup
 
                     titleField.setText(title);
+                    dateField.setText(date);
+                    timeField.setText(time);
 
-                    /**/                }
-                break;
+                    }
 
-            //...
+                    break;
+
         }
     } //control popup colour selection here + edit commits
 

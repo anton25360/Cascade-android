@@ -33,6 +33,7 @@ import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -63,9 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String colour = "";
     Button openEdit, mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia, mSocialive, mIbiza, mKimoby;
-    FloatingActionButton FAB;
+    FloatingActionButton FAB, test;
     RecyclerView recyclerView, recyclerViewSub;
-    String userID, sortID, timeString, dateString, test;
+    String userID, sortID, timeString, dateString;
     public static String docID, titleString;
     TextInputLayout title;
     Query query;
@@ -87,7 +88,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (user != null) { //if user is logged in...
 
+            initRecyclerView();
+
             adapter.startListening(); //connects to firebase collection
+            adapter.notifyDataSetChanged();
+
+
+            Toast.makeText(this, "main start", Toast.LENGTH_SHORT).show();
 
         } else {
 
@@ -115,9 +122,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FAB = findViewById(R.id.btnFAB2);
         FAB.setOnClickListener(v -> openNewTaskDialog());
 
+        test = findViewById(R.id.test);
+        test.setOnClickListener(v -> openTest());
+
         initRecyclerView();
 
+        adapter.startListening();
+        adapter.notifyDataSetChanged();
+
     }//end of onCreate
+
+    private void openTest() {
+        Intent intent = new Intent(this, test.class);
+        startActivity(intent);
+    }
 
     private void openNewTaskDialog() {
 
@@ -170,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         reminderText = dialogCreate.findViewById(R.id.popup_ReminderText);
         dateString = DateFormat.getDateInstance().format(calendar.getTime()); //uses Calendar to set current date (default if user chooses no reminder)
         timeString = "";
+        dateString = "";
         //cancelAlarm(); //set no alarm by default
 
         reminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

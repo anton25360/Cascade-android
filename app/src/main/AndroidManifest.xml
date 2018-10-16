@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="anton25360.github.com.cascade2">
 
-    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <application
         android:name=".Cascade"
@@ -17,16 +17,18 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Popups.EditTask" />
-            <!--android:theme="@style/AppTheme.PopupTheme"-->
+        <activity android:name=".Popups.EditTask" />
+        <!-- android:theme="@style/AppTheme.PopupTheme" -->
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Login.RegisterActivity" />
-        
-        <receiver android:name=".Classes.AlarmReciever"></receiver>
+
+        <receiver android:name=".Classes.AlarmReciever" />
+
+        <activity android:name=".test"></activity>
     </application>
 
 </manifest>

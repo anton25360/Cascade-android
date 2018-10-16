@@ -36,14 +36,18 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
     }
 
     private void setDate(String date) {
-        mDate.setText(date);
+
+        if (date.isEmpty()){
+            mDate.setHeight(0);
+        } else {
+            mDate.setText(date);
+        }
     }
 
     private void setTime(String time) {
 
         if (time.isEmpty()){
             mTime.setHeight(0);
-            mDate.setHeight(0);
         } else {
             mTime.setText(time);
         }
