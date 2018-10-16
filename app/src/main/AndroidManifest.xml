@@ -28,7 +28,6 @@
 
         <receiver android:name=".Classes.AlarmReciever" />
 
-        <activity android:name=".test"></activity>
     </application>
 
 </manifest>

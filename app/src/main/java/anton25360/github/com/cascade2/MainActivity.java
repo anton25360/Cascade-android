@@ -35,7 +35,6 @@ import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -64,11 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String TAG = "MainActivity";
 
-    //todo get rid of black text accents (accent colour is now black by default)
-
     private String colour = "";
     Button openEdit, mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia, mSocialive, mIbiza, mKimoby;
-    FloatingActionButton FAB, test;
+    FloatingActionButton FAB;
     RecyclerView recyclerView, recyclerViewSub;
     String userID, sortID, timeString, dateString;
     public static String docID, titleString;
@@ -98,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             adapter.notifyDataSetChanged();
 
 
-            Toast.makeText(this, "main start", Toast.LENGTH_SHORT).show();
-
         } else {
 
             userID = null;
@@ -126,20 +121,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FAB = findViewById(R.id.btnFAB2);
         FAB.setOnClickListener(v -> openNewTaskDialog());
 
-        test = findViewById(R.id.test);
-        test.setOnClickListener(v -> openTest());
-
         initRecyclerView();
 
         adapter.startListening();
         adapter.notifyDataSetChanged();
 
     }//end of onCreate
-
-    private void openTest() {
-        Intent intent = new Intent(this, test.class);
-        startActivity(intent);
-    }
 
     private void openNewTaskDialog() {
 
