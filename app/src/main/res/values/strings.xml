@@ -31,5 +31,10 @@
     <string name="add_a_task">Add a task…</string>
     <string name="done">Done</string>
 
+    <!--Sort-->
+    <string name="sort_colour">Sort by colour</string>
+    <string name="sort_date">Sort by date</string>
+    <string name="sort_alphabet">Sort alphabetically</string>
+
 
 </resources>

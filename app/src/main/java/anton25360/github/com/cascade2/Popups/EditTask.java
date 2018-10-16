@@ -792,6 +792,12 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
 

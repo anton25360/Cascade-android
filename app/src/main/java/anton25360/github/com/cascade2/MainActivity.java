@@ -28,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
@@ -61,6 +63,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
 
     private static final String TAG = "MainActivity";
+
+    //todo get rid of black text accents (accent colour is now black by default)
 
     private String colour = "";
     Button openEdit, mAdd, mBlue, mOrange, mGreen, mRed, mPurple, mPeach, mSylvia, mSocialive, mIbiza, mKimoby;
@@ -242,9 +246,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initRecyclerView() { //init rv
         recyclerView = findViewById(R.id.rv);
+
+        int resId = R.anim.layout_animation_fall_down;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this, resId);
+        recyclerView.setLayoutAnimation(animation);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        sortID = PreferenceManager.getDefaultSharedPreferences(this).getString("sortID", "colour");
+        sortID = PreferenceManager.getDefaultSharedPreferences(this).getString("sortID", "title"); //sorts alphabetically by default
 
         if (user != null) {
             userID = user.getUid();
@@ -327,18 +336,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putString("sortID", "colour").apply();
                 initRecyclerView(); //re-creates the adapter with the new Query
                 adapter.startListening();
+                item.setChecked(true);
                 return true;
 
             case R.id.menu_sortByDate:
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putString("sortID", "date").apply();
                 initRecyclerView(); //re-creates the adapter with the new Query
                 adapter.startListening();
+                item.setChecked(true);
                 return true;
 
             case R.id.menu_sortByAlphabet:
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putString("sortID", "title").apply();
                 initRecyclerView(); //re-creates the adapter with the new Query
                 adapter.startListening();
+                item.setChecked(true);
                 return true;
 
             default: //default message below
@@ -385,6 +397,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = new Intent(this, EditTask.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_up, R.anim.slide_down); //new, old
+
     }
 
     @Override
