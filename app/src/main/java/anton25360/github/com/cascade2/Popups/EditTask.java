@@ -244,14 +244,13 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
     private void createAdaper() {
 
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         String userID = user.getUid();
 
         final Query query = FirebaseFirestore.getInstance()
                 .collection(userID).document(docID).collection(docID + "collection") //gets all the documents (or "tabs")
-                .orderBy("checked", Query.Direction.ASCENDING);
+                .orderBy("checked");
 
         FirestoreRecyclerOptions<Tab> options = new FirestoreRecyclerOptions.Builder<Tab>()
                 .setQuery(query, Tab.class)
