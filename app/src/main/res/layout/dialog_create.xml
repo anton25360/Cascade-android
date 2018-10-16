@@ -181,12 +181,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="8dp"/> <!--add-->
 
+<!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/more_colours_coming_soon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="13dp"/> <!--more colours coming soon!-->
+        android:layout_margin="13dp"/> &lt;!&ndash;more colours coming soon!&ndash;&gt;
+-->
 
 </android.support.constraint.ConstraintLayout>
