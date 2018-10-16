@@ -736,6 +736,12 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                 if (hasAlarm) {
                     setAlarm();
 
+                    timeField.setHeight(35);
+                    dateField.setHeight(35);
+
+                    dateField.setText(dateString);
+                    timeField.setText(timeString);
+
                 } else {
                     //no alarm set
                     timeField.setText("");
@@ -743,8 +749,10 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
                     timeField.setHeight(0);
                     dateField.setHeight(0);
-                }
 
+                    dateString = "";
+                    timeString = "";
+                }
 
                 title = titleEdit.getText().toString().trim(); //gets title from editText
                 MainActivity.titleString = title;
@@ -767,8 +775,6 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
                     dialogCreate.dismiss(); //closes popup
 
                     titleField.setText(title);
-                    dateField.setText(date);
-                    timeField.setText(time);
 
                     }
 
