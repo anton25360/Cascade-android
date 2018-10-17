@@ -7,9 +7,10 @@ android {
         applicationId "anton25360.github.com.cascade2"
         minSdkVersion 21
         targetSdkVersion 27
+
         //new version of app documented here
-        versionCode 1
-        versionName "1.0"
+        versionCode 2 //play store data
+        versionName "1.1" //what the user sees
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
