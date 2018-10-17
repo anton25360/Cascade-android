@@ -354,12 +354,14 @@ public class EditTask extends AppCompatActivity implements View.OnClickListener,
 
                     if (time.isEmpty()) {
                         timeField.setHeight(0);
+
                     } else {
                         timeField.setText(time);
                     }
 
                     if (date.isEmpty()) {
                         dateField.setHeight(0);
+
                     } else {
                         dateField.setText(date);
                     }
