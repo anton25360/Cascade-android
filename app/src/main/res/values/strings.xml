@@ -19,6 +19,7 @@
     <string name="sign_up">Sign up</string>
     <string name="or">or</string>
     <string name="reset_password">Reset password</string>
+    <string name="signed_in_as">Signed in as </string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
@@ -34,6 +35,17 @@
     <string name="sort_date">Sort by date</string>
     <string name="sort_alphabet">Sort alphabetically</string>
     <string name="search_icon">Search</string>
+
+    <!--Login / Sign up-->
+    <string name="account_creation_success">Account created</string>
+    <string name="account_creation_failure">Account creation failed</string>
+    <string name="authentication_failure">Authentication failed</string>
+    <string name="field_mustNotBeEmpty">Field can\'t be empty</string>
+
+    <!--pw reset-->
+    <string name="field_pwReset">Enter a valid Email for password reset</string>
+    <string name="pwReset_success">Success, check your inbox</string>
+    <string name="pwReset_failure">Error, please try again</string>
 
 
 </resources>

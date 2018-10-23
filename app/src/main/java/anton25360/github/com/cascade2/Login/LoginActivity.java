@@ -56,14 +56,14 @@ public class LoginActivity extends AppCompatActivity {
                 password = inputPassword.getEditText().getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
-                    inputEmail.setError("Field can't be empty");
+                    inputEmail.setError(getText(R.string.field_mustNotBeEmpty));
                     return;
                 } else {
                     inputEmail.setError(null);
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    inputPassword.setError("Field can't be empty");
+                    inputPassword.setError(getText(R.string.field_mustNotBeEmpty));
                     return;
                 } else {
                     inputPassword.setError(null);
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, R.string.authentication_failure, Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
@@ -111,14 +111,14 @@ public class LoginActivity extends AppCompatActivity {
         email = inputEmail.getEditText().getText().toString();
 
         if (TextUtils.isEmpty(email)) {
-            inputEmail.setError("Enter a valid Email for password reset");
+            inputEmail.setError(getText(R.string.field_pwReset));
             return;
         } else {
             inputEmail.setError(null); //remove error and continue
         }
 
         mAuth.sendPasswordResetEmail(email)
-                .addOnSuccessListener(aVoid -> Toast.makeText(LoginActivity.this, "Success, check your inbox.", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(LoginActivity.this, "Error, please try again.", Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(aVoid -> Toast.makeText(LoginActivity.this, R.string.pwReset_success, Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(LoginActivity.this, R.string.pwReset_failure, Toast.LENGTH_SHORT).show());
     }
 }

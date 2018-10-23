@@ -49,14 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
                 password = inputPassword.getEditText().getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
-                    inputEmail.setError("Field can't be empty");
+                    inputEmail.setError(getText(R.string.field_mustNotBeEmpty));
                     return;
                 } else {
                     inputEmail.setError(null);
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    inputPassword.setError("Field can't be empty");
+                    inputPassword.setError(getText(R.string.field_mustNotBeEmpty));
                     return;
                 } else {
                     inputPassword.setError(null);
@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "createUserWithEmail:success");
-                                Toast.makeText(RegisterActivity.this, "Account created", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, R.string.account_creation_success, Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.INVISIBLE);
 
                                 startLogin(); //goes to login tab so user can login
@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(RegisterActivity.this, "Account creation failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, R.string.account_creation_failure, Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
