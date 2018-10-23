@@ -2,18 +2,17 @@
     <string name="app_name">Cascade</string>
 
     <!-- Toolbar button names-->
-    <string name="search_icon">Search</string>
     <string name="profile_icon">Profile</string>
     <string name="sort_icon">Sort</string>
 
     <!-- In app-->
     <string name="add_task">Add Task</string>
-    <string name="placeholder_text">Placeholder Text</string>
-    <string name="placeholder_date">Placeholder Date</string>
-    <string name="placeholder_time">Placeholder Time</string>
+    <string name="placeholder_text" translatable="false">Placeholder Text</string>
+    <string name="placeholder_date" translatable="false">Placeholder Date</string>
+    <string name="placeholder_time" translatable="false">Placeholder Time</string>
 
-    <string name="background">bg img</string>
-    <string name="image">img</string>
+    <string name="background" translatable="false">bg img</string>
+    <string name="image" translatable="false">img</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -27,7 +26,6 @@
     <string name="title">Title</string>
     <string name="no_reminder_set">No Reminder set</string>
     <string name="add">Add</string>
-    <string name="more_colours_coming_soon">More colours coming soon!</string>
     <string name="add_a_task">Add a task…</string>
     <string name="done">Done</string>
 
@@ -35,6 +33,7 @@
     <string name="sort_colour">Sort by colour</string>
     <string name="sort_date">Sort by date</string>
     <string name="sort_alphabet">Sort alphabetically</string>
+    <string name="search_icon">Search</string>
 
 
 </resources>
