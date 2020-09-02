@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String email = user.getEmail();
         TextView textView = dialogLogout.findViewById(R.id.logoutText);
-        textView.setText(getText(R.string.signed_in_as) + email);
+        textView.setText(getText(R.string.signed_in_as) + " " + email);
 
         Button logout = dialogLogout.findViewById(R.id.logoutButton);
         logout.setTransformationMethod(null);
